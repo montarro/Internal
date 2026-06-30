@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="color-scheme" content="dark" />
+  <title>Montarro · Revenue Infrastructure Scorecard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="app" aria-label="Revenue Infrastructure Scorecard">
+    <!-- Header -->
+    <header class="app__header">
+      <div class="brand">
+        <span class="brand__mark" aria-hidden="true"></span>
+        <span class="brand__name">Montarro</span>
+      </div>
+      <h1 class="app__title">Revenue Infrastructure Scorecard</h1>
+      <p class="app__subtitle">
+        Score each part of your revenue engine from 0&ndash;10 to reveal where leads,
+        time and revenue are leaking &mdash; and what to fix first.
+      </p>
+    </header>
+
+    <!-- Score summary -->
+    <section class="summary" aria-live="polite">
+      <div class="summary__gauge">
+        <svg class="gauge" viewBox="0 0 120 120" role="img" aria-label="Total score gauge">
+          <circle class="gauge__track" cx="60" cy="60" r="52" />
+          <circle class="gauge__fill" cx="60" cy="60" r="52" />
+        </svg>
+        <div class="gauge__center">
+          <span class="gauge__value" id="totalScore">0</span>
+          <span class="gauge__max">/ 100</span>
+        </div>
+      </div>
+      <div class="summary__status">
+        <span class="status__label" id="statusLabel">High Leakage</span>
+        <p class="status__hint" id="statusHint">Critical gaps &mdash; opportunities are slipping through.</p>
+        <div class="status__bar" aria-hidden="true">
+          <span class="status__bar-fill" id="statusBar"></span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Sliders -->
+    <section class="categories" id="categories" aria-label="Scoring categories">
+      <!-- populated by script.js -->
+    </section>
+
+    <!-- Recommendations -->
+    <section class="recos" aria-label="Recommended modules">
+      <div class="recos__head">
+        <h2 class="recos__title">Recommended Modules</h2>
+        <span class="recos__tag" id="recosTag">Weakest areas first</span>
+      </div>
+      <div class="recos__list" id="recosList">
+        <!-- populated by script.js -->
+      </div>
+    </section>
+
+    <!-- Actions -->
+    <footer class="actions">
+      <button class="btn btn--primary" id="copyBtn" type="button">
+        <span class="btn__icon" aria-hidden="true">&#9633;</span>
+        <span class="btn__label">Copy Summary</span>
+      </button>
+      <button class="btn btn--ghost" id="resetBtn" type="button">Reset</button>
+    </footer>
+
+    <p class="legal">Built for Montarro strategy calls.</p>
+  </main>
+
+  <script src="script.js" defer></script>
+</body>
+</html>
