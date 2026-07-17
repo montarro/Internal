@@ -254,8 +254,12 @@ function escapeHtml(str) {
 function cardHTML(a) {
   const time = timeAgo(a.publishedAt);
   const liked = isLiked(a.link);
+  const img = a.image
+    ? `<img class="card__img" src="${escapeHtml(a.image)}" alt="" loading="lazy" onerror="this.remove()" />`
+    : '';
   return (
     '<article class="card">' +
+    img +
     '<div class="card__top">' +
     `<span class="card__source">${escapeHtml(a.source)}</span>` +
     (time ? '<span class="card__dot">·</span><span class="card__time">' + escapeHtml(time) + '</span>' : '') +

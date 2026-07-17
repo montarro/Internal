@@ -57,6 +57,7 @@
   .feed{display:flex;flex-direction:column;gap:12px}
   .card{display:block;text-decoration:none;color:inherit;background:var(--card);border:1px solid var(--border-soft);border-radius:var(--radius);padding:16px 18px;transition:transform .14s,border-color .14s,background .14s}
   .card:hover{transform:translateY(-2px);border-color:var(--emerald);background:var(--card-2)}
+  .card__img{display:block;width:100%;height:180px;object-fit:cover;border-radius:10px;margin-bottom:12px;background:var(--card-2)}
   .card__top{display:flex;align-items:center;gap:8px;margin-bottom:8px;font-size:.76rem;color:var(--text-faint)}
   .card__source{color:var(--emerald-bright);font-weight:700;letter-spacing:.01em}
   .card__title{font-size:1.04rem;line-height:1.35;font-weight:700;color:var(--text);margin-bottom:6px}
@@ -287,6 +288,16 @@ async function fetchFeed(url){
 }
 
 function txt(node,sel){ var el=node.querySelector(sel); return el?el.textContent.trim():""; }
+function normImg(u){ if(!u) return null; u=u.trim(); if(u.indexOf("//")===0) return "https:"+u; return /^https?:\/\//i.test(u)?u:null; }
+function extractImg(item, desc){
+  var el = item.getElementsByTagName("media:content")[0] || item.getElementsByTagName("media:thumbnail")[0];
+  if(el && el.getAttribute("url")) return normImg(el.getAttribute("url"));
+  var enc = item.querySelector("enclosure");
+  if(enc && /image/i.test(enc.getAttribute("type")||"") && enc.getAttribute("url")) return normImg(enc.getAttribute("url"));
+  var im = (desc||"").match(/<img[^>]*src=["']([^"']+)["']/i);
+  if(im) return normImg(im[1]);
+  return null;
+}
 function parseFeed(xml){
   var out=[], doc;
   try{ doc = new DOMParser().parseFromString(xml,"application/xml"); }catch(e){ return out; }
@@ -299,7 +310,7 @@ function parseFeed(xml){
     var source = srcEl?srcEl.textContent.trim():hostOf(link);
     var date = txt(item,"pubDate")||txt(item,"published")||txt(item,"updated");
     var desc = txt(item,"description")||txt(item,"summary")||"";
-    out.push({title:stripTags(title),link:link,source:source,publishedAt:date?new Date(date):null,snippet:stripTags(desc).slice(0,280)});
+    out.push({title:stripTags(title),link:link,source:source,publishedAt:date?new Date(date):null,snippet:stripTags(desc).slice(0,280),image:extractImg(item,desc)});
   });
   return out;
 }
@@ -394,6 +405,7 @@ function esc(s){ var d=document.createElement("div"); d.textContent=s==null?"":S
 function cardHTML(a){
   var tm=timeAgo(a.publishedAt), liked=isLiked(a.link);
   return '<article class="card">'
+    +(a.image?'<img class="card__img" src="'+esc(a.image)+'" alt="" loading="lazy" onerror="this.remove()" />':'')
     +'<div class="card__top"><span class="card__source">'+esc(a.source)+'</span>'
     +(tm?'<span>·</span><span class="card__time">'+esc(tm)+'</span>':'')
     +'<button class="like" type="button" data-link="'+esc(a.link)+'" aria-pressed="'+(liked?'true':'false')+'" aria-label="Save">'+(liked?'♥':'♡')+'</button>'

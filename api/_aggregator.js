@@ -178,6 +178,26 @@ function extractSource(block, fallbackSource, link) {
   }
 }
 
+// Best-effort thumbnail from an item: media:content / media:thumbnail, an image
+// enclosure, or the first <img> embedded in the description HTML.
+function extractImage(block) {
+  let m = block.match(/<media:(?:content|thumbnail)[^>]*\burl=["']([^"']+)["']/i);
+  if (m) return normalizeImg(m[1]);
+  m = block.match(/<enclosure[^>]*\burl=["']([^"']+)["'][^>]*\btype=["']image\//i)
+    || block.match(/<enclosure[^>]*\btype=["']image\/[^>]*\burl=["']([^"']+)["']/i);
+  if (m) return normalizeImg(m[1]);
+  m = block.match(/<img[^>]*\bsrc=["']([^"']+)["']/i);
+  if (m) return normalizeImg(decodeEntities(m[1]));
+  return null;
+}
+
+function normalizeImg(u) {
+  if (!u) return null;
+  u = u.trim();
+  if (u.startsWith('//')) return 'https:' + u;
+  return /^https?:\/\//i.test(u) ? u : null;
+}
+
 // Parse one feed's XML into normalized article objects.
 function parseFeed(xml, feedSource) {
   const articles = [];
@@ -202,6 +222,7 @@ function parseFeed(xml, feedSource) {
       source: extractSource(block, feedSource, link),
       publishedAt: date ? date.toISOString() : null,
       snippet: stripTags(rawSnippet).slice(0, 280),
+      image: extractImage(block),
     });
   }
   return articles;
