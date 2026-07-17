@@ -345,14 +345,32 @@ async function getNews({ categories, q, limit, lang, source } = {}) {
 
   const results = await Promise.all(uniqueFeeds.map((f) => fetchFeed(f, 12000)));
 
-  let articles = [];
+  const byDateDesc = (a, b) => {
+    const ta = a.publishedAt ? Date.parse(a.publishedAt) : 0;
+    const tb = b.publishedAt ? Date.parse(b.publishedAt) : 0;
+    return tb - ta;
+  };
+
+  // Keep each feed's articles as its own list (newest first), so no single
+  // high-volume topic (e.g. "World & Politics") can bury the others.
+  const lists = [];
   const sources = [];
   for (const r of results) {
     if (r.ok) {
-      articles.push(...r.articles);
+      lists.push(r.articles.slice().sort(byDateDesc));
       sources.push({ url: r.feed.url, source: r.feed.source, count: r.articles.length });
     } else {
       sources.push({ url: r.feed.url, source: r.feed.source, error: r.error });
+    }
+  }
+
+  // Round-robin across the feeds so every selected topic/channel is represented
+  // near the top, while each feed stays newest-first internally.
+  let articles = [];
+  for (let i = 0, more = true; more; i++) {
+    more = false;
+    for (const lst of lists) {
+      if (lst[i]) { articles.push(lst[i]); more = true; }
     }
   }
 
@@ -364,13 +382,6 @@ async function getNews({ categories, q, limit, lang, source } = {}) {
     const tokens = phrase.split(/\s+/).filter((t) => t.length > 1);
     articles = articles.filter((a) => matchesQuery(a, tokens, phrase));
   }
-
-  // Newest first; undated articles sink to the bottom.
-  articles.sort((a, b) => {
-    const ta = a.publishedAt ? Date.parse(a.publishedAt) : 0;
-    const tb = b.publishedAt ? Date.parse(b.publishedAt) : 0;
-    return tb - ta;
-  });
 
   const capped = articles.slice(0, limit || 120);
 

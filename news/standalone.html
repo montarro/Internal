@@ -343,7 +343,16 @@ async function load(){
   var lists = await Promise.all([...urls].map(fetchFeed));
   if(mine !== reqId) return;
   var reachable = lists.some(function(l){return l.length>0;});
-  var articles = dedupe([].concat.apply([],lists));
+
+  // Each feed newest-first, then round-robin so no single high-volume topic
+  // buries the others (e.g. World & Politics vs Tunisia).
+  lists.forEach(function(l){ l.sort(function(a,b){ return (b.publishedAt?b.publishedAt.getTime():0)-(a.publishedAt?a.publishedAt.getTime():0); }); });
+  var articles = [];
+  for(var i=0, more=true; more; i++){
+    more=false;
+    lists.forEach(function(l){ if(l[i]){ articles.push(l[i]); more=true; } });
+  }
+  articles = dedupe(articles);
 
   if(keyword){
     var phrase = keyword.toLowerCase();
@@ -353,7 +362,6 @@ async function load(){
       return hay.indexOf(phrase)!==-1 || toks.every(function(x){return hay.indexOf(x)!==-1;});
     });
   }
-  articles.sort(function(a,b){ return (b.publishedAt?b.publishedAt.getTime():0)-(a.publishedAt?a.publishedAt.getTime():0); });
   articles = articles.slice(0,120);
 
   if(articles.length){
