@@ -5,26 +5,26 @@
    ========================================================= */
 
 :root {
-  --bg:            #11151a;
-  --bg-2:          #161b22;
-  --card:          #1a2129;
-  --card-2:        #1f2730;
-  --border:        #2a333d;
-  --border-soft:   #232c35;
+  --bg:            #ffffff;
+  --bg-2:          #f5f8fc;
+  --card:          #ffffff;
+  --card-2:        #eef5fc;
+  --border:        #d6e2ee;
+  --border-soft:   #e6eef6;
 
-  --emerald:       #10b981;
-  --emerald-bright:#34d399;
-  --mint:          #a7f3d0;
-  --mint-soft:     #d1fae5;
+  --emerald:       #87cefa;
+  --emerald-bright:#2f8fd0;
+  --mint:          #bfe0fb;
+  --mint-soft:     #2f7fb5;
 
-  --text:          #e8eef2;
-  --text-muted:    #97a4b1;
-  --text-faint:    #687581;
+  --text:          #17222e;
+  --text-muted:    #566370;
+  --text-faint:    #8a97a3;
 
   --radius:        16px;
   --radius-sm:     11px;
-  --shadow:        0 18px 40px -18px rgba(0, 0, 0, 0.7);
-  --ring:          0 0 0 1px rgba(52, 211, 153, 0.35);
+  --shadow:        0 12px 30px -16px rgba(31, 71, 112, 0.28);
+  --ring:          0 0 0 1px rgba(135, 206, 250, 0.6);
 
   --font: "Inter", "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont,
           "Helvetica Neue", Arial, sans-serif;
@@ -44,8 +44,8 @@ body {
   min-height: 100vh;
   padding: 22px;
   background:
-    radial-gradient(900px 500px at 100% -10%, rgba(16, 185, 129, 0.10), transparent 60%),
-    radial-gradient(700px 420px at -10% 110%, rgba(52, 211, 153, 0.07), transparent 55%),
+    radial-gradient(900px 500px at 100% -10%, rgba(135, 206, 250, 0.22), transparent 60%),
+    radial-gradient(700px 420px at -10% 110%, rgba(135, 206, 250, 0.14), transparent 55%),
     var(--bg);
 }
 
@@ -72,7 +72,7 @@ body {
   height: 22px;
   border-radius: 7px;
   background: linear-gradient(135deg, var(--emerald-bright), var(--emerald));
-  box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.12);
+  box-shadow: 0 0 0 4px rgba(135, 206, 250, 0.28);
 }
 .brand__name {
   font-weight: 700;
@@ -164,7 +164,7 @@ body {
 }
 .chip:hover { border-color: var(--emerald); color: var(--text); }
 .chip[aria-pressed="true"] {
-  background: linear-gradient(135deg, rgba(52, 211, 153, 0.22), rgba(16, 185, 129, 0.16));
+  background: linear-gradient(135deg, rgba(135, 206, 250, 0.32), rgba(135, 206, 250, 0.18));
   border-color: var(--emerald);
   color: var(--mint-soft);
 }
@@ -271,7 +271,7 @@ body {
 .skeleton__line {
   height: 12px;
   border-radius: 6px;
-  background: linear-gradient(90deg, var(--card-2) 25%, #26313b 50%, var(--card-2) 75%);
+  background: linear-gradient(90deg, var(--card-2) 25%, #dbe7f2 50%, var(--card-2) 75%);
   background-size: 200% 100%;
   animation: shimmer 1.3s ease-in-out infinite;
   margin-bottom: 10px;

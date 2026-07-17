@@ -4,25 +4,25 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta name="color-scheme" content="dark" />
-<title>News Brief</title>
+<title>Aymen's News</title>
 <style>
   :root{
-    --bg:#11151a;--bg-2:#161b22;--card:#1a2129;--card-2:#1f2730;
-    --border:#2a333d;--border-soft:#232c35;
-    --emerald:#10b981;--emerald-bright:#34d399;--mint:#a7f3d0;--mint-soft:#d1fae5;
-    --text:#e8eef2;--text-muted:#97a4b1;--text-faint:#687581;
-    --radius:16px;--radius-sm:11px;--shadow:0 18px 40px -18px rgba(0,0,0,.7);
-    --ring:0 0 0 1px rgba(52,211,153,.35);
+    --bg:#ffffff;--bg-2:#f5f8fc;--card:#ffffff;--card-2:#eef5fc;
+    --border:#d6e2ee;--border-soft:#e6eef6;
+    --emerald:#87cefa;--emerald-bright:#2f8fd0;--mint:#bfe0fb;--mint-soft:#2f7fb5;
+    --text:#17222e;--text-muted:#566370;--text-faint:#8a97a3;
+    --radius:16px;--radius-sm:11px;--shadow:0 12px 30px -16px rgba(31,71,112,.28);
+    --ring:0 0 0 1px rgba(135,206,250,.6);
     --font:"Inter","Segoe UI",system-ui,-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif;
   }
   *{box-sizing:border-box;margin:0;padding:0}
   html,body{background:var(--bg);color:var(--text);font-family:var(--font);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
   body{min-height:100vh;padding:22px;background:
-    radial-gradient(900px 500px at 100% -10%,rgba(16,185,129,.10),transparent 60%),
-    radial-gradient(700px 420px at -10% 110%,rgba(52,211,153,.07),transparent 55%),var(--bg)}
+    radial-gradient(900px 500px at 100% -10%,rgba(135,206,250,.22),transparent 60%),
+    radial-gradient(700px 420px at -10% 110%,rgba(135,206,250,.14),transparent 55%),var(--bg)}
   .app{width:100%;max-width:780px;margin:0 auto;display:flex;flex-direction:column;gap:20px}
   .brand{display:inline-flex;align-items:center;gap:9px;margin-bottom:14px}
-  .brand__mark{width:22px;height:22px;border-radius:7px;background:linear-gradient(135deg,var(--emerald-bright),var(--emerald));box-shadow:0 0 0 4px rgba(16,185,129,.12)}
+  .brand__mark{width:22px;height:22px;border-radius:7px;background:linear-gradient(135deg,var(--emerald-bright),var(--emerald));box-shadow:0 0 0 4px rgba(135,206,250,.28)}
   .brand__name{font-weight:700;letter-spacing:.02em;font-size:.95rem;color:var(--mint-soft)}
   .app__title{font-size:1.72rem;line-height:1.15;font-weight:800;letter-spacing:-.01em;margin-bottom:8px}
   .app__subtitle{color:var(--text-muted);font-size:.96rem;line-height:1.5;max-width:60ch}
@@ -37,7 +37,7 @@
   .chips{display:flex;flex-wrap:wrap;gap:8px}
   .chip{border:1px solid var(--border);background:var(--card);color:var(--text-muted);border-radius:999px;padding:7px 14px;font-size:.86rem;font-weight:600;font-family:inherit;cursor:pointer;transition:all .14s;white-space:nowrap}
   .chip:hover{border-color:var(--emerald);color:var(--text)}
-  .chip[aria-pressed="true"]{background:linear-gradient(135deg,rgba(52,211,153,.22),rgba(16,185,129,.16));border-color:var(--emerald);color:var(--mint-soft)}
+  .chip[aria-pressed="true"]{background:linear-gradient(135deg,rgba(135,206,250,.32),rgba(135,206,250,.18));border-color:var(--emerald);color:var(--mint-soft)}
   .controls__foot{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
   .meta{font-size:.82rem;color:var(--text-faint)}
   .refresh{display:inline-flex;align-items:center;gap:6px;background:var(--card-2);border:1px solid var(--border);color:var(--text-muted);border-radius:var(--radius-sm);padding:7px 13px;font-size:.84rem;font-weight:600;font-family:inherit;cursor:pointer;transition:all .14s}
@@ -54,7 +54,7 @@
   .card:hover .card__title{color:var(--mint-soft)}
   .card__snippet{font-size:.9rem;line-height:1.5;color:var(--text-muted);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
   .skeleton{background:var(--card);border:1px solid var(--border-soft);border-radius:var(--radius);padding:16px 18px}
-  .skeleton__line{height:12px;border-radius:6px;background:linear-gradient(90deg,var(--card-2) 25%,#26313b 50%,var(--card-2) 75%);background-size:200% 100%;animation:shimmer 1.3s ease-in-out infinite;margin-bottom:10px}
+  .skeleton__line{height:12px;border-radius:6px;background:linear-gradient(90deg,var(--card-2) 25%,#dbe7f2 50%,var(--card-2) 75%);background-size:200% 100%;animation:shimmer 1.3s ease-in-out infinite;margin-bottom:10px}
   .skeleton__line.short{width:40%}.skeleton__line.title{width:85%;height:16px}
   .skeleton__line.body{width:100%}.skeleton__line.body.b2{width:70%;margin-bottom:0}
   @keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
@@ -68,8 +68,8 @@
 <body>
 <main class="app">
   <header>
-    <div class="brand"><span class="brand__mark"></span><span class="brand__name">News&nbsp;Brief</span></div>
-    <h1 class="app__title">Your news, filtered</h1>
+    <div class="brand"><span class="brand__mark"></span><span class="brand__name">Aymen's&nbsp;News</span></div>
+    <h1 class="app__title">What's happening today</h1>
     <p class="app__subtitle">Pick the subjects you care about and pull matching headlines from across the web &mdash; world &amp; politics, sports, Tunisia, the Middle East, North Africa and France.</p>
   </header>
 
@@ -116,10 +116,14 @@ var CATEGORIES = [
 ];
 var DEFAULT_SELECTED = ["world","tunisia","middleeast","northafrica","france"];
 
-/* ---- CORS proxies (tried in order so a static file can fetch feeds) ------- */
+/* ---- CORS proxies (tried in order so a static file can fetch feeds) -------
+   These allow requests from a local file:// page. Free public services, so
+   they can be slow or rate-limited; the deployed Vercel app needs none of them. */
 var PROXIES = [
-  function(u){return "https://api.allorigins.win/raw?url="+encodeURIComponent(u);},
-  function(u){return "https://corsproxy.io/?url="+encodeURIComponent(u);}
+  {url:function(u){return "https://api.codetabs.com/v1/proxy/?quest="+encodeURIComponent(u);}, json:false},
+  {url:function(u){return "https://api.allorigins.win/raw?url="+encodeURIComponent(u);}, json:false},
+  {url:function(u){return "https://api.allorigins.win/get?url="+encodeURIComponent(u);}, json:true},
+  {url:function(u){return "https://thingproxy.freeboard.io/fetch/"+u;}, json:false}
 ];
 
 var els = {
@@ -147,13 +151,25 @@ function writeState(){
 }
 
 /* ---- Fetch + parse -------------------------------------------------------- */
+async function fetchWithTimeout(u, ms){
+  var ctrl = new AbortController();
+  var t = setTimeout(function(){ ctrl.abort(); }, ms);
+  try{ return await fetch(u, {cache:"no-store", signal:ctrl.signal}); }
+  finally{ clearTimeout(t); }
+}
 async function fetchFeed(url){
   for(var i=0;i<PROXIES.length;i++){
     try{
-      var res = await fetch(PROXIES[i](url), {cache:"no-store"});
+      var res = await fetchWithTimeout(PROXIES[i].url(url), 9000);
       if(!res.ok) continue;
       var text = await res.text();
-      if(text && text.indexOf("<")!==-1) return parseFeed(text);
+      if(PROXIES[i].json){
+        try{ text = JSON.parse(text).contents || ""; }catch(e){ continue; }
+      }
+      if(text && /<(rss|feed|item|entry)[\s>]/i.test(text)){
+        var arts = parseFeed(text);
+        if(arts.length) return arts;
+      }
     }catch(e){/* try next proxy */}
   }
   return [];
@@ -216,6 +232,7 @@ async function load(){
   var lists = await Promise.all([...urls].map(fetchFeed));
   if(mine !== reqId) return; // a newer request superseded this one
 
+  var reachable = lists.some(function(l){ return l.length>0; });
   var articles = dedupe([].concat.apply([],lists));
 
   if(keyword){
@@ -232,10 +249,27 @@ async function load(){
   });
   articles = articles.slice(0,120);
 
-  render(articles);
-  els.meta.textContent = articles.length
-    ? articles.length+" headline"+(articles.length===1?"":"s")+" · updated "+new Date().toLocaleTimeString([], {hour:"2-digit",minute:"2-digit"})
-    : "No results";
+  if(articles.length){
+    render(articles);
+    els.meta.textContent = articles.length+" headline"+(articles.length===1?"":"s")+" · updated "+new Date().toLocaleTimeString([], {hour:"2-digit",minute:"2-digit"});
+  } else {
+    showEmpty(reachable);
+    els.meta.textContent = reachable ? "No results" : "Couldn't reach the news service";
+  }
+}
+function showEmpty(reachable){
+  els.feed.innerHTML="";
+  els.stateBox.hidden=false;
+  if(!reachable){
+    els.stateTitle.textContent="Couldn't reach the news service";
+    els.stateHint.textContent="The free public reader proxy didn't respond (it can be slow or rate-limited). Wait a few seconds and press Refresh. The deployed online version doesn't rely on this proxy.";
+  }else if(keyword){
+    els.stateTitle.textContent="No matching headlines";
+    els.stateHint.textContent="Nothing found for “"+keyword+"”. Try a broader keyword or add more topics.";
+  }else{
+    els.stateTitle.textContent="No headlines yet";
+    els.stateHint.textContent="Select at least one topic above, then press Refresh.";
+  }
 }
 
 /* ---- Render --------------------------------------------------------------- */
