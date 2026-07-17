@@ -56,7 +56,13 @@
   .card__top{display:flex;align-items:center;gap:8px;margin-bottom:8px;font-size:.76rem;color:var(--text-faint)}
   .card__source{color:var(--emerald-bright);font-weight:700;letter-spacing:.01em}
   .card__title{font-size:1.04rem;line-height:1.35;font-weight:700;color:var(--text);margin-bottom:6px}
+  a.card__title{display:block;text-decoration:none}
   .card:hover .card__title{color:var(--mint-soft)}
+  .like{margin-inline-start:auto;border:none;background:transparent;color:var(--text-faint);font-size:1.1rem;line-height:1;cursor:pointer;padding:2px 4px;border-radius:6px;transition:transform .12s,color .14s}
+  .like:hover{color:#e0556b;transform:scale(1.15)}
+  .like[aria-pressed="true"]{color:#e0556b}
+  .foot__actions{display:flex;gap:8px;flex-wrap:wrap}
+  .refresh[aria-pressed="true"]{border-color:var(--emerald);color:var(--mint-soft);background:linear-gradient(135deg,rgba(135,206,250,.28),rgba(135,206,250,.18))}
   .card__snippet{font-size:.9rem;line-height:1.5;color:var(--text-muted);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
   .skeleton{background:var(--card);border:1px solid var(--border-soft);border-radius:var(--radius);padding:16px 18px}
   .skeleton__line{height:12px;border-radius:6px;background:linear-gradient(90deg,var(--card-2) 25%,#dbe7f2 50%,var(--card-2) 75%);background-size:200% 100%;animation:shimmer 1.3s ease-in-out infinite;margin-bottom:10px}
@@ -86,7 +92,6 @@
       </div>
     </div>
     <h1 class="app__title" id="tagline">What's happening today</h1>
-    <p class="app__subtitle" id="subtitle"></p>
   </header>
 
   <section class="controls">
@@ -98,7 +103,10 @@
     <div class="chips" id="chips" role="group" aria-label="Topics"></div>
     <div class="controls__foot">
       <span class="meta" id="metaLine"></span>
-      <button class="refresh" id="refreshBtn" type="button"><span class="refresh__icon">&#8635;</span> <span id="refreshLabel">Refresh</span></button>
+      <div class="foot__actions">
+        <button class="refresh" id="savedBtn" type="button" aria-pressed="false"><span aria-hidden="true">&#9825;</span> <span id="savedLabel">Saved</span> <span id="savedCount"></span></button>
+        <button class="refresh" id="refreshBtn" type="button"><span class="refresh__icon">&#8635;</span> <span id="refreshLabel">Refresh</span></button>
+      </div>
     </div>
   </section>
 
@@ -127,7 +135,7 @@ function gnews(query, lang){
 // Localized labels + search queries per topic.
 var CATEGORIES = [
   {key:"world",       label:{en:"World & Politics",fr:"Monde & Politique",ar:"العالم والسياسة"},           q:{en:"world politics",fr:"politique mondiale",ar:"العالم سياسة"}},
-  {key:"sports",      label:{en:"Sports",fr:"Sport",ar:"رياضة"},                                          q:{en:"sports",fr:"sport",ar:"رياضة"}},
+  {key:"sports",      label:{en:"Soccer",fr:"Football",ar:"كرة القدم"},                                   q:{en:"soccer football",fr:"football",ar:"كرة القدم"}},
   {key:"tunisia",     label:{en:"Tunisia",fr:"Tunisie",ar:"تونس"},                                        q:{en:"Tunisia",fr:"Tunisie",ar:"تونس"}},
   {key:"middleeast",  label:{en:"Middle East",fr:"Moyen-Orient",ar:"الشرق الأوسط"},                       q:{en:'"Middle East"',fr:"Moyen-Orient",ar:"الشرق الأوسط"}},
   {key:"northafrica", label:{en:"North Africa / Maghreb",fr:"Afrique du Nord / Maghreb",ar:"شمال أفريقيا / المغرب العربي"}, q:{en:'Maghreb OR "North Africa" OR Algeria OR Morocco OR Libya',fr:'Maghreb OR "Afrique du Nord" OR Algérie OR Maroc OR Libye',ar:"المغرب العربي OR شمال أفريقيا OR الجزائر OR المغرب OR ليبيا"}},
@@ -138,21 +146,21 @@ var DEFAULT_SELECTED = ["world","tunisia","middleeast","northafrica","france"];
 var I18N = {
   en:{subtitle:"Pick the subjects you care about and pull matching headlines from across the web.",
     placeholder:"Add a keyword (e.g. election, football, energy)…",tagline:"What's happening today",
-    refresh:"Refresh",loading:"Loading…",footer:"Headlines link out to their original publishers. Live news is fetched in your browser via a public reader proxy.",
+    refresh:"Refresh",loading:"Loading…",saved:"Saved",savedEmptyTitle:"No saved articles yet",savedEmptyHint:"Tap the ♥ on any headline to save it here for next time.",savedCount:function(n){return n+" saved";},footer:"Headlines link out to their original publishers. Live news is fetched in your browser via a public reader proxy.",
     noMatchTitle:"No matching headlines",noMatchKeyword:function(k){return "Nothing found for “"+k+"”. Try a broader keyword or add more topics.";},
     noTopic:"Select at least one topic above.",offTitle:"Couldn't reach the news service",
     offHint:"The free public reader proxy didn't respond (it can be slow or rate-limited). Wait a moment and press Refresh. The online version doesn't rely on this proxy.",
     headline:function(n){return n+" headline"+(n===1?"":"s");},updated:"updated"},
   fr:{subtitle:"Choisissez les sujets qui vous intéressent et recevez les titres correspondants de tout le web.",
     placeholder:"Ajouter un mot-clé (ex. élection, football, énergie)…",tagline:"L'actualité du jour",
-    refresh:"Actualiser",loading:"Chargement…",footer:"Les titres renvoient vers leurs éditeurs d'origine. Les actualités sont récupérées dans votre navigateur via un relais public.",
+    refresh:"Actualiser",loading:"Chargement…",saved:"Enregistrés",savedEmptyTitle:"Aucun article enregistré",savedEmptyHint:"Touchez le ♥ sur un titre pour l’enregistrer ici.",savedCount:function(n){return n+" enregistré"+(n===1?"":"s");},footer:"Les titres renvoient vers leurs éditeurs d'origine. Les actualités sont récupérées dans votre navigateur via un relais public.",
     noMatchTitle:"Aucun titre correspondant",noMatchKeyword:function(k){return "Rien trouvé pour « "+k+" ». Essayez un mot-clé plus large ou ajoutez des sujets.";},
     noTopic:"Sélectionnez au moins un sujet ci-dessus.",offTitle:"Impossible de joindre le service",
     offHint:"Le relais public gratuit n'a pas répondu (il peut être lent ou limité). Patientez puis appuyez sur Actualiser. La version en ligne ne dépend pas de ce relais.",
     headline:function(n){return n+" titre"+(n===1?"":"s");},updated:"mis à jour"},
   ar:{subtitle:"اختر المواضيع التي تهمّك واحصل على العناوين المطابقة من مختلف مواقع الويب.",
     placeholder:"أضف كلمة مفتاحية (مثال: انتخابات، كرة القدم، طاقة)…",tagline:"أخبار اليوم",
-    refresh:"تحديث",loading:"جارٍ التحميل…",footer:"تحيل العناوين إلى مصادرها الأصلية. تُجلب الأخبار في متصفحك عبر وسيط قراءة عام.",
+    refresh:"تحديث",loading:"جارٍ التحميل…",saved:"المحفوظة",savedEmptyTitle:"لا مقالات محفوظة بعد",savedEmptyHint:"اضغط على ♥ في أي عنوان لحفظه هنا.",savedCount:function(n){return n+" محفوظ";},footer:"تحيل العناوين إلى مصادرها الأصلية. تُجلب الأخبار في متصفحك عبر وسيط قراءة عام.",
     noMatchTitle:"لا توجد عناوين مطابقة",noMatchKeyword:function(k){return "لا نتائج عن «"+k+"». جرّب كلمة أعمّ أو أضف مواضيع.";},
     noTopic:"اختر موضوعًا واحدًا على الأقل بالأعلى.",offTitle:"تعذّر الوصول إلى خدمة الأخبار",
     offHint:"لم يستجب وسيط القراءة العام المجاني (قد يكون بطيئًا أو محدودًا). انتظر لحظة ثم اضغط تحديث. النسخة على الإنترنت لا تعتمد على هذا الوسيط.",
@@ -168,12 +176,26 @@ var PROXIES = [
 
 function q(s){return document.querySelector(s);}
 var els = {chips:q("#chips"),feed:q("#feed"),searchForm:q("#searchForm"),searchInput:q("#searchInput"),
-  clearBtn:q("#clearBtn"),refreshBtn:q("#refreshBtn"),refreshLabel:q("#refreshLabel"),meta:q("#metaLine"),
+  clearBtn:q("#clearBtn"),refreshBtn:q("#refreshBtn"),refreshLabel:q("#refreshLabel"),
+  savedBtn:q("#savedBtn"),savedLabel:q("#savedLabel"),savedCount:q("#savedCount"),meta:q("#metaLine"),
   stateBox:q("#stateBox"),stateTitle:q("#stateTitle"),stateHint:q("#stateHint"),langSwitch:q("#langSwitch"),
-  tagline:q("#tagline"),subtitle:q("#subtitle"),footer:q("#footer")};
+  tagline:q("#tagline"),footer:q("#footer")};
 
 var selected = new Set(DEFAULT_SELECTED), keyword = "", lang = "en", reqId = 0;
+var currentArticles = [], savedView = false;
 function t(){return I18N[lang]||I18N.en;}
+
+var LIKES_KEY = "aymen_likes_v1";
+function loadLikes(){ try{ return JSON.parse(localStorage.getItem(LIKES_KEY))||[]; }catch(e){ return []; } }
+function saveLikes(a){ try{ localStorage.setItem(LIKES_KEY, JSON.stringify(a)); }catch(e){} }
+var likes = loadLikes();
+function isLiked(link){ return likes.some(function(l){return l.link===link;}); }
+function toggleLike(a){
+  if(isLiked(a.link)) likes = likes.filter(function(l){return l.link!==a.link;});
+  else likes = [Object.assign({likedAt:Date.now()}, a)].concat(likes);
+  saveLikes(likes); updateSavedCount();
+}
+function updateSavedCount(){ els.savedCount.textContent = likes.length ? "("+likes.length+")" : ""; }
 
 function readState(){
   var p = new URLSearchParams(location.hash.slice(1));
@@ -193,9 +215,9 @@ function applyLanguageChrome(){
   document.documentElement.setAttribute("dir", lang==="ar"?"rtl":"ltr");
   document.documentElement.setAttribute("lang", lang);
   els.tagline.textContent = t().tagline;
-  els.subtitle.textContent = t().subtitle;
   els.searchInput.placeholder = t().placeholder;
   els.refreshLabel.textContent = t().refresh;
+  els.savedLabel.textContent = t().saved;
   els.footer.textContent = t().footer;
   els.langSwitch.querySelectorAll(".lang").forEach(function(b){
     b.setAttribute("aria-pressed", b.dataset.lang===lang?"true":"false");
@@ -248,6 +270,8 @@ function dedupe(list){
 }
 
 async function load(){
+  savedView = false;
+  els.savedBtn.setAttribute("aria-pressed","false");
   var mine = ++reqId;
   skeletons();
   els.meta.textContent = t().loading;
@@ -300,16 +324,29 @@ function timeAgo(d){
   return d.toLocaleDateString(loc,{month:"short",day:"numeric"});
 }
 function esc(s){ var d=document.createElement("div"); d.textContent=s==null?"":String(s); return d.innerHTML; }
+function cardHTML(a){
+  var tm=timeAgo(a.publishedAt), liked=isLiked(a.link);
+  return '<article class="card">'
+    +'<div class="card__top"><span class="card__source">'+esc(a.source)+'</span>'
+    +(tm?'<span>·</span><span class="card__time">'+esc(tm)+'</span>':'')
+    +'<button class="like" type="button" data-link="'+esc(a.link)+'" aria-pressed="'+(liked?'true':'false')+'" aria-label="Save">'+(liked?'♥':'♡')+'</button>'
+    +'</div>'
+    +'<a class="card__title" href="'+encodeURI(a.link)+'" target="_blank" rel="noopener noreferrer">'+esc(a.title)+'</a>'
+    +(a.snippet?'<div class="card__snippet">'+esc(a.snippet)+'</div>':'')+'</article>';
+}
 function render(list){
+  currentArticles = list;
   els.stateBox.hidden=true;
-  els.feed.innerHTML = list.map(function(a){
-    var tm=timeAgo(a.publishedAt);
-    return '<a class="card" href="'+encodeURI(a.link)+'" target="_blank" rel="noopener noreferrer">'
-      +'<div class="card__top"><span class="card__source">'+esc(a.source)+'</span>'
-      +(tm?'<span>·</span><span class="card__time">'+esc(tm)+'</span>':'')+'</div>'
-      +'<div class="card__title">'+esc(a.title)+'</div>'
-      +(a.snippet?'<div class="card__snippet">'+esc(a.snippet)+'</div>':'')+'</a>';
-  }).join("");
+  els.feed.innerHTML = list.map(cardHTML).join("");
+}
+function showSaved(){
+  savedView = true;
+  els.savedBtn.setAttribute("aria-pressed","true");
+  var list = likes.slice().sort(function(a,b){return (b.likedAt||0)-(a.likedAt||0);});
+  currentArticles = list;
+  if(!list.length){ els.feed.innerHTML=""; els.stateBox.hidden=false; els.stateTitle.textContent=t().savedEmptyTitle; els.stateHint.textContent=t().savedEmptyHint; }
+  else render(list);
+  els.meta.textContent = t().savedCount(likes.length);
 }
 function showEmpty(reachable){
   els.feed.innerHTML="";
@@ -336,7 +373,20 @@ function renderChips(){
 
 function setLanguage(next){
   if(LANGS.indexOf(next)===-1 || next===lang) return;
-  lang = next; writeState(); applyLanguageChrome(); renderChips(); load();
+  lang = next; writeState(); applyLanguageChrome(); renderChips();
+  if(savedView) showSaved(); else load();
+}
+function onFeedClick(e){
+  var btn = e.target.closest(".like");
+  if(!btn) return;
+  var link = btn.dataset.link;
+  var article = currentArticles.find(function(a){return a.link===link;});
+  if(!article) return;
+  toggleLike(article);
+  var nowLiked = isLiked(link);
+  btn.setAttribute("aria-pressed", nowLiked?"true":"false");
+  btn.textContent = nowLiked?"♥":"♡";
+  if(savedView && !nowLiked) showSaved();
 }
 
 var searchTimer=null;
@@ -348,11 +398,14 @@ els.searchForm.addEventListener("submit",function(e){ e.preventDefault(); clearT
 els.clearBtn.addEventListener("click",function(){ els.searchInput.value=""; els.clearBtn.hidden=true; keyword=""; writeState(); load(); });
 els.refreshBtn.addEventListener("click",function(){ els.refreshBtn.classList.add("is-spinning"); load().finally(function(){ els.refreshBtn.classList.remove("is-spinning"); }); });
 els.langSwitch.querySelectorAll(".lang").forEach(function(b){ b.addEventListener("click",function(){ setLanguage(b.dataset.lang); }); });
+els.savedBtn.addEventListener("click",function(){ if(savedView) load(); else showSaved(); });
+els.feed.addEventListener("click", onFeedClick);
 
 readState();
 applyLanguageChrome();
 els.searchInput.value=keyword;
 els.clearBtn.hidden=!keyword;
+updateSavedCount();
 renderChips();
 load();
 </script>
