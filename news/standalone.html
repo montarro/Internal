@@ -173,9 +173,10 @@ function channelByKey(k){ for(var i=0;i<CHANNELS.length;i++) if(CHANNELS[i].key=
 
 // A picked channel reads its own RSS feed so real photos come through.
 var CHANNEL_FEEDS = {
-  aljazeera:{ en:["https://www.aljazeera.com/xml/rss/all.xml"], fr:["https://www.aljazeera.com/xml/rss/all.xml"], ar:[] },
+  aljazeera:{ en:["https://www.aljazeera.com/xml/rss/all.xml"], fr:["https://www.aljazeera.com/xml/rss/all.xml"], ar:["https://www.aljazeera.net/feed"] },
   bbc:{ en:["https://feeds.bbci.co.uk/news/world/rss.xml"], fr:["https://feeds.bbci.co.uk/news/world/rss.xml"], ar:["https://feeds.bbci.co.uk/arabic/rss.xml"] },
-  sky:{ en:["https://feeds.skynews.com/feeds/rss/world.xml"], fr:["https://feeds.skynews.com/feeds/rss/world.xml"], ar:["https://feeds.skynews.com/feeds/rss/world.xml"] },
+  sky:{ en:["https://feeds.skynews.com/feeds/rss/world.xml"], fr:["https://feeds.skynews.com/feeds/rss/world.xml"], ar:["https://www.skynewsarabia.com/rss"] },
+  alarabiya:{ en:[], fr:[], ar:[] },
   france24:{ en:["https://www.france24.com/en/rss"], fr:["https://www.france24.com/fr/rss"], ar:["https://www.france24.com/ar/rss"] }
 };
 var CAT_TERMS = {

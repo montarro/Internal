@@ -80,9 +80,9 @@ const SOURCE_FEEDS = {
   ],
   ar: [
     { url: 'https://feeds.bbci.co.uk/arabic/rss.xml', source: 'BBC عربي' },
-    { url: googleNews('site:aljazeera.net', 'ar'), source: 'الجزيرة' },
+    { url: 'https://www.aljazeera.net/feed', source: 'الجزيرة' },
     { url: googleNews('site:alarabiya.net', 'ar'), source: 'العربية' },
-    { url: googleNews('site:skynewsarabia.com', 'ar'), source: 'سكاي نيوز عربية' },
+    { url: 'https://www.skynewsarabia.com/rss', source: 'سكاي نيوز عربية' },
   ],
 };
 
@@ -100,11 +100,16 @@ const CHANNELS = {
 // When a single channel is picked we read its OWN RSS feed (real article URLs +
 // images) instead of a Google News search, so photos come through. Al Jazeera's
 // feed omits thumbnails, so those get an og:image fetch (see getNews).
+// Al Arabiya's own site (both editions) returns 403 to datacenter requests, and
+// Google News redirect links resolve to a JS interstitial (not a real 302), so
+// there is no way to fetch a real Al Arabiya article server-side — that channel
+// stays on the Google News search below and never gets a photo. Confirmed by
+// direct probing; not a bug to chase further.
 const CHANNEL_FEEDS = {
   aljazeera: {
     en: ['https://www.aljazeera.com/xml/rss/all.xml'],
     fr: ['https://www.aljazeera.com/xml/rss/all.xml'],
-    ar: [googleNews('site:aljazeera.net', 'ar')],
+    ar: ['https://www.aljazeera.net/feed'],
   },
   bbc: {
     en: ['https://feeds.bbci.co.uk/news/world/rss.xml'],
@@ -114,7 +119,12 @@ const CHANNEL_FEEDS = {
   sky: {
     en: ['https://feeds.skynews.com/feeds/rss/world.xml'],
     fr: ['https://feeds.skynews.com/feeds/rss/world.xml'],
-    ar: ['https://feeds.skynews.com/feeds/rss/world.xml'],
+    ar: ['https://www.skynewsarabia.com/rss'],
+  },
+  alarabiya: {
+    en: [googleNews('site:english.alarabiya.net', 'en')],
+    fr: [googleNews('site:english.alarabiya.net', 'en')],
+    ar: [googleNews('site:alarabiya.net', 'ar')],
   },
   france24: {
     en: ['https://www.france24.com/en/rss'],
