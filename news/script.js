@@ -2,67 +2,68 @@
 
 /*
  * Aymen's News frontend.
- * Talks to /api/news, renders article cards, manages topic chips, keyword
- * filter and the EN/FR/AR language switch. State (topics + keyword + language)
- * lives in the URL hash so a view is bookmarkable.
+ * Talks to /api/news, renders article cards, and manages topic chips, keyword
+ * filter, the EN/FR/AR language switch and liked/saved articles (stored in the
+ * browser so they persist and act as recommendations next time).
  */
 
 const API = '/api/news';
 const LANGS = ['en', 'fr', 'ar'];
+const LIKES_KEY = 'aymen_likes_v1';
 
 // UI translations. The language-switch buttons themselves stay Latin (EN/FR/AR)
 // so the reader can always find their way back to English.
 const I18N = {
   en: {
     tagline: "What's happening today",
-    subtitle: 'Pick the subjects you care about and pull matching headlines from across the web.',
     placeholder: 'Add a keyword (e.g. election, football, energy)…',
-    refresh: 'Refresh',
-    loading: 'Loading…',
-    footer: 'Headlines link out to their original publishers, gathered from across the web via Google News.',
+    refresh: 'Refresh', loading: 'Loading…', saved: 'Saved',
     noMatchTitle: 'No matching headlines',
     noMatchKeyword: (k) => `Nothing found for “${k}”. Try a broader keyword or add more topics.`,
     noTopic: 'Select at least one topic above to build your feed.',
     errTitle: 'Could not load the news',
     errHint: "The news service didn't respond. Give it a moment and press Refresh.",
+    savedEmptyTitle: 'No saved articles yet',
+    savedEmptyHint: 'Tap the ♥ on any headline to save it here for next time.',
     headline: (n) => `${n} headline${n === 1 ? '' : 's'}`,
+    savedCount: (n) => `${n} saved`,
     updated: 'updated',
   },
   fr: {
     tagline: "L'actualité du jour",
-    subtitle: 'Choisissez les sujets qui vous intéressent et recevez les titres correspondants de tout le web.',
     placeholder: 'Ajouter un mot-clé (ex. élection, football, énergie)…',
-    refresh: 'Actualiser',
-    loading: 'Chargement…',
-    footer: "Les titres renvoient vers leurs éditeurs d'origine, rassemblés depuis tout le web via Google News.",
+    refresh: 'Actualiser', loading: 'Chargement…', saved: 'Enregistrés',
     noMatchTitle: 'Aucun titre correspondant',
     noMatchKeyword: (k) => `Rien trouvé pour « ${k} ». Essayez un mot-clé plus large ou ajoutez des sujets.`,
     noTopic: 'Sélectionnez au moins un sujet ci-dessus.',
     errTitle: 'Impossible de charger les actualités',
     errHint: "Le service n'a pas répondu. Patientez un instant puis appuyez sur Actualiser.",
+    savedEmptyTitle: 'Aucun article enregistré',
+    savedEmptyHint: 'Touchez le ♥ sur un titre pour l’enregistrer ici.',
     headline: (n) => `${n} titre${n === 1 ? '' : 's'}`,
+    savedCount: (n) => `${n} enregistré${n === 1 ? '' : 's'}`,
     updated: 'mis à jour',
   },
   ar: {
     tagline: 'أخبار اليوم',
-    subtitle: 'اختر المواضيع التي تهمّك واحصل على العناوين المطابقة من مختلف مواقع الويب.',
     placeholder: 'أضف كلمة مفتاحية (مثال: انتخابات، كرة القدم، طاقة)…',
-    refresh: 'تحديث',
-    loading: 'جارٍ التحميل…',
-    footer: 'تحيل العناوين إلى مصادرها الأصلية، مجمّعة من مختلف مواقع الويب عبر Google News.',
+    refresh: 'تحديث', loading: 'جارٍ التحميل…', saved: 'المحفوظة',
     noMatchTitle: 'لا توجد عناوين مطابقة',
     noMatchKeyword: (k) => `لا نتائج عن «${k}». جرّب كلمة أعمّ أو أضف مواضيع.`,
     noTopic: 'اختر موضوعًا واحدًا على الأقل بالأعلى.',
     errTitle: 'تعذّر تحميل الأخبار',
     errHint: 'لم يستجب الخادم. انتظر لحظة ثم اضغط تحديث.',
+    savedEmptyTitle: 'لا مقالات محفوظة بعد',
+    savedEmptyHint: 'اضغط على ♥ في أي عنوان لحفظه هنا للمرة القادمة.',
     headline: (n) => `${n} عنوان`,
+    savedCount: (n) => `${n} محفوظ`,
     updated: 'آخر تحديث',
   },
 };
 
 const FALLBACK_CATEGORIES = [
   { key: 'world', label: 'World & Politics' },
-  { key: 'sports', label: 'Sports' },
+  { key: 'sports', label: 'Soccer' },
   { key: 'tunisia', label: 'Tunisia' },
   { key: 'middleeast', label: 'Middle East' },
   { key: 'northafrica', label: 'North Africa / Maghreb' },
@@ -79,13 +80,15 @@ const els = {
   clearBtn: document.getElementById('clearBtn'),
   refreshBtn: document.getElementById('refreshBtn'),
   refreshLabel: document.getElementById('refreshLabel'),
+  savedBtn: document.getElementById('savedBtn'),
+  savedLabel: document.getElementById('savedLabel'),
+  savedCount: document.getElementById('savedCount'),
   meta: document.getElementById('metaLine'),
   stateBox: document.getElementById('stateBox'),
   stateTitle: document.getElementById('stateTitle'),
   stateHint: document.getElementById('stateHint'),
   langSwitch: document.getElementById('langSwitch'),
   tagline: document.getElementById('tagline'),
-  subtitle: document.getElementById('subtitle'),
   footer: document.getElementById('footer'),
 };
 
@@ -94,8 +97,37 @@ let selected = new Set(DEFAULT_SELECTED);
 let keyword = '';
 let lang = 'en';
 let inflight = null;
+let currentArticles = [];
+let savedView = false;
 
 const t = () => I18N[lang] || I18N.en;
+
+// ---------------------------------------------------------------------------
+// Likes (persisted in the browser).
+// ---------------------------------------------------------------------------
+
+function loadLikes() {
+  try { return JSON.parse(localStorage.getItem(LIKES_KEY)) || []; } catch { return []; }
+}
+function saveLikes(arr) {
+  try { localStorage.setItem(LIKES_KEY, JSON.stringify(arr)); } catch { /* private mode */ }
+}
+let likes = loadLikes();
+const isLiked = (link) => likes.some((l) => l.link === link);
+
+function toggleLike(article) {
+  if (isLiked(article.link)) {
+    likes = likes.filter((l) => l.link !== article.link);
+  } else {
+    likes = [{ ...article, likedAt: Date.now() }, ...likes];
+  }
+  saveLikes(likes);
+  updateSavedCount();
+}
+
+function updateSavedCount() {
+  els.savedCount.textContent = likes.length ? `(${likes.length})` : '';
+}
 
 // ---------------------------------------------------------------------------
 // URL state.
@@ -122,16 +154,13 @@ function writeState() {
 // ---------------------------------------------------------------------------
 
 function applyLanguageChrome() {
-  const dir = lang === 'ar' ? 'rtl' : 'ltr';
-  document.documentElement.setAttribute('dir', dir);
+  document.documentElement.setAttribute('dir', lang === 'ar' ? 'rtl' : 'ltr');
   document.documentElement.setAttribute('lang', lang);
-
   els.tagline.textContent = t().tagline;
-  els.subtitle.textContent = t().subtitle;
   els.searchInput.placeholder = t().placeholder;
   els.refreshLabel.textContent = t().refresh;
-  els.footer.textContent = t().footer;
-
+  els.savedLabel.textContent = t().saved;
+  els.footer.textContent = '';
   els.langSwitch.querySelectorAll('.lang').forEach((b) => {
     b.setAttribute('aria-pressed', b.dataset.lang === lang ? 'true' : 'false');
   });
@@ -154,7 +183,7 @@ function renderChips() {
       else selected.add(cat.key);
       btn.setAttribute('aria-pressed', selected.has(cat.key) ? 'true' : 'false');
       writeState();
-      load();
+      if (!savedView) load();
     });
     els.chips.appendChild(btn);
   }
@@ -182,6 +211,22 @@ function escapeHtml(str) {
   return d.innerHTML;
 }
 
+function cardHTML(a) {
+  const time = timeAgo(a.publishedAt);
+  const liked = isLiked(a.link);
+  return (
+    '<article class="card">' +
+    '<div class="card__top">' +
+    `<span class="card__source">${escapeHtml(a.source)}</span>` +
+    (time ? '<span class="card__dot">·</span><span class="card__time">' + escapeHtml(time) + '</span>' : '') +
+    `<button class="like" type="button" data-link="${escapeHtml(a.link)}" aria-pressed="${liked ? 'true' : 'false'}" aria-label="Save">${liked ? '♥' : '♡'}</button>` +
+    '</div>' +
+    `<a class="card__title" href="${encodeURI(a.link)}" target="_blank" rel="noopener noreferrer">${escapeHtml(a.title)}</a>` +
+    (a.snippet ? `<div class="card__snippet">${escapeHtml(a.snippet)}</div>` : '') +
+    '</article>'
+  );
+}
+
 function showSkeletons(n = 6) {
   els.stateBox.hidden = true;
   els.feed.setAttribute('aria-busy', 'true');
@@ -198,32 +243,17 @@ function showSkeletons(n = 6) {
   els.feed.innerHTML = html;
 }
 
-function renderArticles(data) {
+function renderList(list) {
   els.feed.setAttribute('aria-busy', 'false');
-  const articles = (data && data.articles) || [];
-
-  if (!articles.length) {
+  currentArticles = list;
+  if (!list.length) {
     els.feed.innerHTML = '';
-    showState(t().noMatchTitle, keyword ? t().noMatchKeyword(keyword) : t().noTopic);
+    if (savedView) showState(t().savedEmptyTitle, t().savedEmptyHint);
+    else showState(t().noMatchTitle, keyword ? t().noMatchKeyword(keyword) : t().noTopic);
     return;
   }
-
   els.stateBox.hidden = true;
-  els.feed.innerHTML = articles
-    .map((a) => {
-      const time = timeAgo(a.publishedAt);
-      return (
-        `<a class="card" href="${encodeURI(a.link)}" target="_blank" rel="noopener noreferrer">` +
-        '<div class="card__top">' +
-        `<span class="card__source">${escapeHtml(a.source)}</span>` +
-        (time ? '<span class="card__dot">·</span><span class="card__time">' + escapeHtml(time) + '</span>' : '') +
-        '</div>' +
-        `<div class="card__title">${escapeHtml(a.title)}</div>` +
-        (a.snippet ? `<div class="card__snippet">${escapeHtml(a.snippet)}</div>` : '') +
-        '</a>'
-      );
-    })
-    .join('');
+  els.feed.innerHTML = list.map(cardHTML).join('');
 }
 
 function showState(title, hint) {
@@ -244,10 +274,22 @@ function updateMeta(data) {
 }
 
 // ---------------------------------------------------------------------------
-// Data loading.
+// Views.
 // ---------------------------------------------------------------------------
 
+function showSaved() {
+  savedView = true;
+  els.savedBtn.setAttribute('aria-pressed', 'true');
+  if (inflight) inflight.abort();
+  // Saved list ordered newest-liked first (acts as "recommended for next time").
+  const list = likes.slice().sort((a, b) => (b.likedAt || 0) - (a.likedAt || 0));
+  renderList(list);
+  els.meta.textContent = t().savedCount(likes.length);
+}
+
 async function load() {
+  savedView = false;
+  els.savedBtn.setAttribute('aria-pressed', 'false');
   if (inflight) inflight.abort();
   inflight = new AbortController();
 
@@ -263,7 +305,7 @@ async function load() {
     const res = await fetch(`${API}?${params.toString()}`, { signal: inflight.signal });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const data = await res.json();
-    renderArticles(data);
+    renderList((data && data.articles) || []);
     updateMeta(data);
   } catch (err) {
     if (err.name === 'AbortError') return;
@@ -312,7 +354,22 @@ async function setLanguage(next) {
   applyLanguageChrome();
   await loadCategories();
   renderChips();
-  load();
+  if (savedView) showSaved();
+  else load();
+}
+
+function onFeedClick(e) {
+  const btn = e.target.closest('.like');
+  if (!btn) return;
+  const link = btn.dataset.link;
+  const article = currentArticles.find((a) => a.link === link);
+  if (!article) return;
+  toggleLike(article);
+  const nowLiked = isLiked(link);
+  btn.setAttribute('aria-pressed', nowLiked ? 'true' : 'false');
+  btn.textContent = nowLiked ? '♥' : '♡';
+  // If we're viewing the saved list and just un-liked, drop the card.
+  if (savedView && !nowLiked) showSaved();
 }
 
 function wireEvents() {
@@ -335,6 +392,11 @@ function wireEvents() {
     els.refreshBtn.classList.add('is-spinning');
     load();
   });
+  els.savedBtn.addEventListener('click', () => {
+    if (savedView) load();
+    else showSaved();
+  });
+  els.feed.addEventListener('click', onFeedClick);
   els.langSwitch.querySelectorAll('.lang').forEach((b) => {
     b.addEventListener('click', () => setLanguage(b.dataset.lang));
   });
@@ -349,6 +411,7 @@ function wireEvents() {
   applyLanguageChrome();
   els.searchInput.value = keyword;
   els.clearBtn.hidden = !keyword;
+  updateSavedCount();
   wireEvents();
   await loadCategories();
   renderChips();

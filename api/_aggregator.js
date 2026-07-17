@@ -36,8 +36,8 @@ const CATEGORIES = {
     q: { en: 'world politics', fr: 'politique mondiale', ar: 'العالم سياسة' },
   },
   sports: {
-    label: { en: 'Sports', fr: 'Sport', ar: 'رياضة' },
-    q: { en: 'sports', fr: 'sport', ar: 'رياضة' },
+    label: { en: 'Soccer', fr: 'Football', ar: 'كرة القدم' },
+    q: { en: 'soccer football', fr: 'football', ar: 'كرة القدم' },
   },
   tunisia: {
     label: { en: 'Tunisia', fr: 'Tunisie', ar: 'تونس' },
@@ -59,6 +59,26 @@ const CATEGORIES = {
     label: { en: 'France & French Politics', fr: 'France & Politique', ar: 'فرنسا والسياسة' },
     q: { en: 'France politics', fr: 'politique française', ar: 'فرنسا سياسة' },
   },
+};
+
+// Aymen's preferred outlets, in the edition matching each UI language. Added to
+// the broad "World & Politics" view. Best-effort URLs: if any feed is down the
+// request still succeeds on the others (and on the Google News backbone).
+const SOURCE_FEEDS = {
+  en: [
+    { url: 'https://feeds.bbci.co.uk/news/world/rss.xml', source: 'BBC News' },
+    { url: 'https://www.aljazeera.com/xml/rss/all.xml', source: 'Al Jazeera' },
+    { url: 'https://feeds.skynews.com/feeds/rss/world.xml', source: 'Sky News' },
+    { url: 'https://english.alarabiya.net/.mrss/en.xml', source: 'Al Arabiya' },
+  ],
+  fr: [
+    { url: 'https://www.france24.com/fr/rss', source: 'France 24' },
+  ],
+  ar: [
+    { url: 'https://feeds.bbci.co.uk/arabic/rss.xml', source: 'BBC عربي' },
+    { url: 'https://www.aljazeera.net/xml/rss/all.xml', source: 'الجزيرة' },
+    { url: 'https://www.alarabiya.net/.mrss/ar.xml', source: 'العربية' },
+  ],
 };
 
 function normalizeLang(lang) {
@@ -263,6 +283,10 @@ async function getNews({ categories, q, limit, lang } = {}) {
   const usedCategories = selected.length ? selected : ['world', 'tunisia', 'middleeast', 'northafrica', 'france'];
   for (const cat of usedCategories) {
     feeds.push({ url: googleNews(CATEGORIES[cat].q[L], L), source: 'Google News' });
+    // The broad World view also pulls Aymen's preferred outlets directly.
+    if (cat === 'world') {
+      for (const sf of SOURCE_FEEDS[L] || []) feeds.push(sf);
+    }
   }
 
   // A keyword turns into a live Google News search in the chosen language, so
