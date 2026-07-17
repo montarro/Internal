@@ -18,70 +18,57 @@
 // the wider Middle East, North Africa/Maghreb, and French politics.
 // ---------------------------------------------------------------------------
 
+const LANGS = ['en', 'fr', 'ar'];
+
 // Build a Google News RSS search URL for a query in a given language/region.
 function googleNews(query, lang) {
   const q = encodeURIComponent(query);
-  if (lang === 'fr') {
-    return `https://news.google.com/rss/search?q=${q}&hl=fr&gl=FR&ceid=FR:fr`;
-  }
+  if (lang === 'fr') return `https://news.google.com/rss/search?q=${q}&hl=fr&gl=FR&ceid=FR:fr`;
+  if (lang === 'ar') return `https://news.google.com/rss/search?q=${q}&hl=ar&gl=EG&ceid=EG:ar`;
   return `https://news.google.com/rss/search?q=${q}&hl=en-US&gl=US&ceid=US:en`;
 }
 
+// Each category has a localized display label and a localized search query, so
+// the same topic returns news in whichever language the reader picked.
 const CATEGORIES = {
   world: {
-    label: 'World & Politics',
-    feeds: [
-      { url: googleNews('world politics', 'en'), source: 'Google News' },
-      { url: 'https://feeds.bbci.co.uk/news/world/rss.xml', source: 'BBC News' },
-      { url: 'https://www.theguardian.com/world/rss', source: 'The Guardian' },
-      { url: 'https://www.aljazeera.com/xml/rss/all.xml', source: 'Al Jazeera' },
-      { url: 'https://www.france24.com/en/rss', source: 'France 24' },
-    ],
+    label: { en: 'World & Politics', fr: 'Monde & Politique', ar: 'العالم والسياسة' },
+    q: { en: 'world politics', fr: 'politique mondiale', ar: 'العالم سياسة' },
   },
   sports: {
-    label: 'Sports',
-    feeds: [
-      { url: googleNews('sports', 'en'), source: 'Google News' },
-      { url: googleNews('sport', 'fr'), source: 'Google News' },
-      { url: 'https://feeds.bbci.co.uk/sport/rss.xml', source: 'BBC Sport' },
-      { url: 'https://www.espn.com/espn/rss/news', source: 'ESPN' },
-    ],
+    label: { en: 'Sports', fr: 'Sport', ar: 'رياضة' },
+    q: { en: 'sports', fr: 'sport', ar: 'رياضة' },
   },
   tunisia: {
-    label: 'Tunisia',
-    feeds: [
-      { url: googleNews('Tunisia', 'en'), source: 'Google News' },
-      { url: googleNews('Tunisie', 'fr'), source: 'Google News' },
-    ],
+    label: { en: 'Tunisia', fr: 'Tunisie', ar: 'تونس' },
+    q: { en: 'Tunisia', fr: 'Tunisie', ar: 'تونس' },
   },
   middleeast: {
-    label: 'Middle East',
-    feeds: [
-      { url: googleNews('"Middle East"', 'en'), source: 'Google News' },
-      { url: 'https://www.aljazeera.com/xml/rss/all.xml', source: 'Al Jazeera' },
-      { url: 'https://www.middleeasteye.net/rss', source: 'Middle East Eye' },
-    ],
+    label: { en: 'Middle East', fr: 'Moyen-Orient', ar: 'الشرق الأوسط' },
+    q: { en: '"Middle East"', fr: 'Moyen-Orient', ar: 'الشرق الأوسط' },
   },
   northafrica: {
-    label: 'North Africa / Maghreb',
-    feeds: [
-      { url: googleNews('Maghreb OR "North Africa" OR Algeria OR Morocco OR Libya', 'en'), source: 'Google News' },
-      { url: googleNews('Maghreb OR "Afrique du Nord" OR Algérie OR Maroc OR Libye', 'fr'), source: 'Google News' },
-    ],
+    label: { en: 'North Africa / Maghreb', fr: 'Afrique du Nord / Maghreb', ar: 'شمال أفريقيا / المغرب العربي' },
+    q: {
+      en: 'Maghreb OR "North Africa" OR Algeria OR Morocco OR Libya',
+      fr: 'Maghreb OR "Afrique du Nord" OR Algérie OR Maroc OR Libye',
+      ar: 'المغرب العربي OR شمال أفريقيا OR الجزائر OR المغرب OR ليبيا',
+    },
   },
   france: {
-    label: 'France & French Politics',
-    feeds: [
-      { url: googleNews('politique française', 'fr'), source: 'Google News' },
-      { url: 'https://www.lemonde.fr/politique/rss_full.xml', source: 'Le Monde' },
-      { url: 'https://www.france24.com/fr/rss', source: 'France 24' },
-    ],
+    label: { en: 'France & French Politics', fr: 'France & Politique', ar: 'فرنسا والسياسة' },
+    q: { en: 'France politics', fr: 'politique française', ar: 'فرنسا سياسة' },
   },
 };
 
-// Public description of the categories for the frontend.
-function categoryList() {
-  return Object.keys(CATEGORIES).map((key) => ({ key, label: CATEGORIES[key].label }));
+function normalizeLang(lang) {
+  return LANGS.includes(lang) ? lang : 'en';
+}
+
+// Localized category list for the frontend chips.
+function categoryList(lang) {
+  const L = normalizeLang(lang);
+  return Object.keys(CATEGORIES).map((key) => ({ key, label: CATEGORIES[key].label[L] }));
 }
 
 // ---------------------------------------------------------------------------
@@ -259,27 +246,29 @@ function cacheSet(key, value) {
 // Public entry point.
 // ---------------------------------------------------------------------------
 
-async function getNews({ categories, q, limit } = {}) {
+async function getNews({ categories, q, limit, lang } = {}) {
+  const L = normalizeLang(lang);
   const selected =
     Array.isArray(categories) && categories.length
       ? categories.filter((c) => CATEGORIES[c])
       : [];
 
   const query = (q || '').trim();
-  const cacheKey = JSON.stringify({ c: selected.slice().sort(), q: query.toLowerCase() });
+  const cacheKey = JSON.stringify({ c: selected.slice().sort(), q: query.toLowerCase(), l: L });
   const cached = cacheGet(cacheKey);
   if (cached) return { ...cached, cached: true };
 
-  // Assemble the feed set.
+  // Assemble the feed set — each category searched in the chosen language.
   const feeds = [];
   const usedCategories = selected.length ? selected : ['world', 'tunisia', 'middleeast', 'northafrica', 'france'];
-  for (const cat of usedCategories) feeds.push(...CATEGORIES[cat].feeds);
+  for (const cat of usedCategories) {
+    feeds.push({ url: googleNews(CATEGORIES[cat].q[L], L), source: 'Google News' });
+  }
 
-  // A keyword turns into live Google News searches (EN + FR) so results are
-  // drawn from across the web, not just the categories above.
+  // A keyword turns into a live Google News search in the chosen language, so
+  // results are drawn from across the web, not just the categories above.
   if (query) {
-    feeds.push({ url: googleNews(query, 'en'), source: 'Google News' });
-    feeds.push({ url: googleNews(query, 'fr'), source: 'Google News' });
+    feeds.push({ url: googleNews(query, L), source: 'Google News' });
   }
 
   // De-duplicate identical feed URLs.
@@ -327,6 +316,7 @@ async function getNews({ categories, q, limit } = {}) {
     meta: {
       total: capped.length,
       categories: usedCategories,
+      lang: L,
       query: query || null,
       feedsQueried: uniqueFeeds.length,
       feedsOk: sources.filter((s) => !s.error).length,

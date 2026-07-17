@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="color-scheme" content="dark" />
+  <meta name="color-scheme" content="light" />
   <title>Aymen's News</title>
   <meta name="description" content="A personal, filtered news feed — world & politics, sports, Tunisia, the Middle East, North Africa and France, pulled from across the web." />
   <link rel="stylesheet" href="style.css" />
@@ -12,12 +12,20 @@
   <main class="app" aria-label="News Brief">
 
     <header class="app__header">
-      <div class="brand">
-        <span class="brand__mark" aria-hidden="true"></span>
-        <span class="brand__name">Aymen's&nbsp;News</span>
+      <div class="app__topbar">
+        <div class="brand">
+          <span class="brand__mark" aria-hidden="true"></span>
+          <span class="brand__name">Aymen's&nbsp;News</span>
+        </div>
+        <!-- Language switch: labels stay in Latin so you can always get back -->
+        <div class="langswitch" id="langSwitch" dir="ltr" role="group" aria-label="Language">
+          <button class="lang" type="button" data-lang="en">EN</button>
+          <button class="lang" type="button" data-lang="fr">FR</button>
+          <button class="lang" type="button" data-lang="ar">AR</button>
+        </div>
       </div>
-      <h1 class="app__title">What's happening today</h1>
-      <p class="app__subtitle">
+      <h1 class="app__title" id="tagline">What's happening today</h1>
+      <p class="app__subtitle" id="subtitle">
         Pick the subjects you care about and pull matching headlines from across
         the web &mdash; world &amp; politics, sports, Tunisia, the Middle East,
         North Africa and France.
@@ -46,7 +54,7 @@
       <div class="controls__foot">
         <span class="meta" id="metaLine" aria-live="polite">Loading your brief…</span>
         <button class="refresh" id="refreshBtn" type="button">
-          <span class="refresh__icon" aria-hidden="true">&#8635;</span> Refresh
+          <span class="refresh__icon" aria-hidden="true">&#8635;</span> <span id="refreshLabel">Refresh</span>
         </button>
       </div>
     </section>
@@ -62,9 +70,9 @@
       <p class="state__hint" id="stateHint"></p>
     </div>
 
-    <footer class="legal">
-      Headlines link out to their original publishers. Sources include Google
-      News, BBC, The Guardian, Al Jazeera, Le Monde, France 24 and more.
+    <footer class="legal" id="footer">
+      Headlines link out to their original publishers, gathered from across the
+      web via Google News.
     </footer>
   </main>
 

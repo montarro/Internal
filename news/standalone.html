@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<meta name="color-scheme" content="dark" />
+<meta name="color-scheme" content="light" />
 <title>Aymen's News</title>
 <style>
   :root{
@@ -21,9 +21,14 @@
     radial-gradient(900px 500px at 100% -10%,rgba(135,206,250,.22),transparent 60%),
     radial-gradient(700px 420px at -10% 110%,rgba(135,206,250,.14),transparent 55%),var(--bg)}
   .app{width:100%;max-width:780px;margin:0 auto;display:flex;flex-direction:column;gap:20px}
-  .brand{display:inline-flex;align-items:center;gap:9px;margin-bottom:14px}
+  .app__topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}
+  .brand{display:inline-flex;align-items:center;gap:9px}
   .brand__mark{width:22px;height:22px;border-radius:7px;background:linear-gradient(135deg,var(--emerald-bright),var(--emerald));box-shadow:0 0 0 4px rgba(135,206,250,.28)}
   .brand__name{font-weight:700;letter-spacing:.02em;font-size:.95rem;color:var(--mint-soft)}
+  .langswitch{display:inline-flex;gap:2px;background:var(--card-2);border:1px solid var(--border);border-radius:999px;padding:3px}
+  .lang{border:none;background:transparent;color:var(--text-muted);font-family:inherit;font-weight:700;font-size:.78rem;letter-spacing:.03em;padding:5px 11px;border-radius:999px;cursor:pointer;transition:all .14s}
+  .lang:hover{color:var(--text)}
+  .lang[aria-pressed="true"]{background:linear-gradient(135deg,var(--emerald-bright),var(--emerald));color:#fff}
   .app__title{font-size:1.72rem;line-height:1.15;font-weight:800;letter-spacing:-.01em;margin-bottom:8px}
   .app__subtitle{color:var(--text-muted);font-size:.96rem;line-height:1.5;max-width:60ch}
   .controls{background:var(--bg-2);border:1px solid var(--border);border-radius:var(--radius);padding:16px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:14px}
@@ -62,27 +67,38 @@
   .state__title{font-weight:700;font-size:1.05rem;margin-bottom:6px}
   .state__hint{color:var(--text-muted);font-size:.9rem;line-height:1.5}
   .legal{text-align:center;color:var(--text-faint);font-size:.76rem;line-height:1.5;padding:4px 0 8px}
-  @media(max-width:560px){body{padding:16px}.app__title{font-size:1.44rem}.card__title{font-size:.99rem}}
+  [dir="rtl"] .app__header{text-align:right}
+  [dir="rtl"] .app__subtitle{margin-left:auto}
+  [dir="rtl"] .card__title,[dir="rtl"] .card__snippet{text-align:right}
+  @media(max-width:560px){body{padding:16px}.app__title{font-size:1.44rem}.card__title{font-size:.99rem}.app__topbar{flex-wrap:wrap}}
 </style>
 </head>
 <body>
 <main class="app">
-  <header>
-    <div class="brand"><span class="brand__mark"></span><span class="brand__name">Aymen's&nbsp;News</span></div>
-    <h1 class="app__title">What's happening today</h1>
-    <p class="app__subtitle">Pick the subjects you care about and pull matching headlines from across the web &mdash; world &amp; politics, sports, Tunisia, the Middle East, North Africa and France.</p>
+  <header class="app__header">
+    <div class="app__topbar">
+      <div class="brand"><span class="brand__mark"></span><span class="brand__name">Aymen's&nbsp;News</span></div>
+      <!-- Language switch: labels stay Latin so you can always get back -->
+      <div class="langswitch" id="langSwitch" dir="ltr" role="group" aria-label="Language">
+        <button class="lang" type="button" data-lang="en">EN</button>
+        <button class="lang" type="button" data-lang="fr">FR</button>
+        <button class="lang" type="button" data-lang="ar">AR</button>
+      </div>
+    </div>
+    <h1 class="app__title" id="tagline">What's happening today</h1>
+    <p class="app__subtitle" id="subtitle"></p>
   </header>
 
   <section class="controls">
     <form class="search" id="searchForm" role="search">
       <span class="search__icon">&#9906;</span>
-      <input class="search__input" id="searchInput" type="search" placeholder="Add a keyword (e.g. election, football, energy)…" autocomplete="off" aria-label="Keyword filter" />
+      <input class="search__input" id="searchInput" type="search" autocomplete="off" aria-label="Keyword filter" />
       <button class="search__clear" id="clearBtn" type="button" aria-label="Clear keyword" hidden>&times;</button>
     </form>
     <div class="chips" id="chips" role="group" aria-label="Topics"></div>
     <div class="controls__foot">
-      <span class="meta" id="metaLine">Loading your brief…</span>
-      <button class="refresh" id="refreshBtn" type="button"><span class="refresh__icon">&#8635;</span> Refresh</button>
+      <span class="meta" id="metaLine"></span>
+      <button class="refresh" id="refreshBtn" type="button"><span class="refresh__icon">&#8635;</span> <span id="refreshLabel">Refresh</span></button>
     </div>
   </section>
 
@@ -93,32 +109,56 @@
     <p class="state__hint" id="stateHint"></p>
   </div>
 
-  <footer class="legal">Headlines link out to their original publishers. Live news is fetched in your browser via a public reader proxy. Sources include Google News, BBC, Al Jazeera, Le Monde and more.</footer>
+  <footer class="legal" id="footer"></footer>
 </main>
 
 <script>
 "use strict";
 
-/* ---- Topic catalog (tuned to the reader) ---------------------------------- */
+var LANGS = ["en","fr","ar"];
+
 function gnews(query, lang){
   var q = encodeURIComponent(query);
-  return lang === "fr"
-    ? "https://news.google.com/rss/search?q="+q+"&hl=fr&gl=FR&ceid=FR:fr"
-    : "https://news.google.com/rss/search?q="+q+"&hl=en-US&gl=US&ceid=US:en";
+  if(lang==="fr") return "https://news.google.com/rss/search?q="+q+"&hl=fr&gl=FR&ceid=FR:fr";
+  if(lang==="ar") return "https://news.google.com/rss/search?q="+q+"&hl=ar&gl=EG&ceid=EG:ar";
+  return "https://news.google.com/rss/search?q="+q+"&hl=en-US&gl=US&ceid=US:en";
 }
+
+// Localized labels + search queries per topic.
 var CATEGORIES = [
-  {key:"world",       label:"World & Politics",        feeds:[gnews("world politics","en"),"https://feeds.bbci.co.uk/news/world/rss.xml"]},
-  {key:"sports",      label:"Sports",                  feeds:[gnews("sports","en"),gnews("sport","fr")]},
-  {key:"tunisia",     label:"Tunisia",                 feeds:[gnews("Tunisia","en"),gnews("Tunisie","fr")]},
-  {key:"middleeast",  label:"Middle East",             feeds:[gnews('"Middle East"',"en"),"https://www.aljazeera.com/xml/rss/all.xml"]},
-  {key:"northafrica", label:"North Africa / Maghreb",  feeds:[gnews('Maghreb OR "North Africa" OR Algeria OR Morocco OR Libya',"en"),gnews('Maghreb OR "Afrique du Nord" OR Algérie OR Maroc OR Libye',"fr")]},
-  {key:"france",      label:"France & French Politics",feeds:[gnews("politique française","fr"),"https://www.lemonde.fr/politique/rss_full.xml"]}
+  {key:"world",       label:{en:"World & Politics",fr:"Monde & Politique",ar:"العالم والسياسة"},           q:{en:"world politics",fr:"politique mondiale",ar:"العالم سياسة"}},
+  {key:"sports",      label:{en:"Sports",fr:"Sport",ar:"رياضة"},                                          q:{en:"sports",fr:"sport",ar:"رياضة"}},
+  {key:"tunisia",     label:{en:"Tunisia",fr:"Tunisie",ar:"تونس"},                                        q:{en:"Tunisia",fr:"Tunisie",ar:"تونس"}},
+  {key:"middleeast",  label:{en:"Middle East",fr:"Moyen-Orient",ar:"الشرق الأوسط"},                       q:{en:'"Middle East"',fr:"Moyen-Orient",ar:"الشرق الأوسط"}},
+  {key:"northafrica", label:{en:"North Africa / Maghreb",fr:"Afrique du Nord / Maghreb",ar:"شمال أفريقيا / المغرب العربي"}, q:{en:'Maghreb OR "North Africa" OR Algeria OR Morocco OR Libya',fr:'Maghreb OR "Afrique du Nord" OR Algérie OR Maroc OR Libye',ar:"المغرب العربي OR شمال أفريقيا OR الجزائر OR المغرب OR ليبيا"}},
+  {key:"france",      label:{en:"France & French Politics",fr:"France & Politique",ar:"فرنسا والسياسة"},   q:{en:"France politics",fr:"politique française",ar:"فرنسا سياسة"}}
 ];
 var DEFAULT_SELECTED = ["world","tunisia","middleeast","northafrica","france"];
 
-/* ---- CORS proxies (tried in order so a static file can fetch feeds) -------
-   These allow requests from a local file:// page. Free public services, so
-   they can be slow or rate-limited; the deployed Vercel app needs none of them. */
+var I18N = {
+  en:{subtitle:"Pick the subjects you care about and pull matching headlines from across the web.",
+    placeholder:"Add a keyword (e.g. election, football, energy)…",tagline:"What's happening today",
+    refresh:"Refresh",loading:"Loading…",footer:"Headlines link out to their original publishers. Live news is fetched in your browser via a public reader proxy.",
+    noMatchTitle:"No matching headlines",noMatchKeyword:function(k){return "Nothing found for “"+k+"”. Try a broader keyword or add more topics.";},
+    noTopic:"Select at least one topic above.",offTitle:"Couldn't reach the news service",
+    offHint:"The free public reader proxy didn't respond (it can be slow or rate-limited). Wait a moment and press Refresh. The online version doesn't rely on this proxy.",
+    headline:function(n){return n+" headline"+(n===1?"":"s");},updated:"updated"},
+  fr:{subtitle:"Choisissez les sujets qui vous intéressent et recevez les titres correspondants de tout le web.",
+    placeholder:"Ajouter un mot-clé (ex. élection, football, énergie)…",tagline:"L'actualité du jour",
+    refresh:"Actualiser",loading:"Chargement…",footer:"Les titres renvoient vers leurs éditeurs d'origine. Les actualités sont récupérées dans votre navigateur via un relais public.",
+    noMatchTitle:"Aucun titre correspondant",noMatchKeyword:function(k){return "Rien trouvé pour « "+k+" ». Essayez un mot-clé plus large ou ajoutez des sujets.";},
+    noTopic:"Sélectionnez au moins un sujet ci-dessus.",offTitle:"Impossible de joindre le service",
+    offHint:"Le relais public gratuit n'a pas répondu (il peut être lent ou limité). Patientez puis appuyez sur Actualiser. La version en ligne ne dépend pas de ce relais.",
+    headline:function(n){return n+" titre"+(n===1?"":"s");},updated:"mis à jour"},
+  ar:{subtitle:"اختر المواضيع التي تهمّك واحصل على العناوين المطابقة من مختلف مواقع الويب.",
+    placeholder:"أضف كلمة مفتاحية (مثال: انتخابات، كرة القدم، طاقة)…",tagline:"أخبار اليوم",
+    refresh:"تحديث",loading:"جارٍ التحميل…",footer:"تحيل العناوين إلى مصادرها الأصلية. تُجلب الأخبار في متصفحك عبر وسيط قراءة عام.",
+    noMatchTitle:"لا توجد عناوين مطابقة",noMatchKeyword:function(k){return "لا نتائج عن «"+k+"». جرّب كلمة أعمّ أو أضف مواضيع.";},
+    noTopic:"اختر موضوعًا واحدًا على الأقل بالأعلى.",offTitle:"تعذّر الوصول إلى خدمة الأخبار",
+    offHint:"لم يستجب وسيط القراءة العام المجاني (قد يكون بطيئًا أو محدودًا). انتظر لحظة ثم اضغط تحديث. النسخة على الإنترنت لا تعتمد على هذا الوسيط.",
+    headline:function(n){return n+" عنوان";},updated:"آخر تحديث"}
+};
+
 var PROXIES = [
   {url:function(u){return "https://api.codetabs.com/v1/proxy/?quest="+encodeURIComponent(u);}, json:false},
   {url:function(u){return "https://api.allorigins.win/raw?url="+encodeURIComponent(u);}, json:false},
@@ -126,36 +166,45 @@ var PROXIES = [
   {url:function(u){return "https://thingproxy.freeboard.io/fetch/"+u;}, json:false}
 ];
 
-var els = {
-  chips:q("#chips"), feed:q("#feed"), searchForm:q("#searchForm"), searchInput:q("#searchInput"),
-  clearBtn:q("#clearBtn"), refreshBtn:q("#refreshBtn"), meta:q("#metaLine"),
-  stateBox:q("#stateBox"), stateTitle:q("#stateTitle"), stateHint:q("#stateHint")
-};
 function q(s){return document.querySelector(s);}
+var els = {chips:q("#chips"),feed:q("#feed"),searchForm:q("#searchForm"),searchInput:q("#searchInput"),
+  clearBtn:q("#clearBtn"),refreshBtn:q("#refreshBtn"),refreshLabel:q("#refreshLabel"),meta:q("#metaLine"),
+  stateBox:q("#stateBox"),stateTitle:q("#stateTitle"),stateHint:q("#stateHint"),langSwitch:q("#langSwitch"),
+  tagline:q("#tagline"),subtitle:q("#subtitle"),footer:q("#footer")};
 
-var selected = new Set(DEFAULT_SELECTED);
-var keyword = "";
-var reqId = 0;
+var selected = new Set(DEFAULT_SELECTED), keyword = "", lang = "en", reqId = 0;
+function t(){return I18N[lang]||I18N.en;}
 
-/* ---- URL state (bookmarkable) --------------------------------------------- */
 function readState(){
   var p = new URLSearchParams(location.hash.slice(1));
   if(p.get("c")!==null) selected = new Set(p.get("c").split(",").filter(Boolean));
   keyword = p.get("q") || "";
+  lang = LANGS.indexOf(p.get("l"))!==-1 ? p.get("l") : "en";
 }
 function writeState(){
   var p = new URLSearchParams();
   p.set("c",[...selected].join(","));
   if(keyword) p.set("q",keyword);
+  p.set("l",lang);
   history.replaceState(null,"","#"+p.toString());
 }
 
-/* ---- Fetch + parse -------------------------------------------------------- */
+function applyLanguageChrome(){
+  document.documentElement.setAttribute("dir", lang==="ar"?"rtl":"ltr");
+  document.documentElement.setAttribute("lang", lang);
+  els.tagline.textContent = t().tagline;
+  els.subtitle.textContent = t().subtitle;
+  els.searchInput.placeholder = t().placeholder;
+  els.refreshLabel.textContent = t().refresh;
+  els.footer.textContent = t().footer;
+  els.langSwitch.querySelectorAll(".lang").forEach(function(b){
+    b.setAttribute("aria-pressed", b.dataset.lang===lang?"true":"false");
+  });
+}
+
 async function fetchWithTimeout(u, ms){
-  var ctrl = new AbortController();
-  var t = setTimeout(function(){ ctrl.abort(); }, ms);
-  try{ return await fetch(u, {cache:"no-store", signal:ctrl.signal}); }
-  finally{ clearTimeout(t); }
+  var ctrl = new AbortController(); var to = setTimeout(function(){ctrl.abort();}, ms);
+  try{ return await fetch(u,{cache:"no-store",signal:ctrl.signal}); } finally{ clearTimeout(to); }
 }
 async function fetchFeed(url){
   for(var i=0;i<PROXIES.length;i++){
@@ -163,159 +212,118 @@ async function fetchFeed(url){
       var res = await fetchWithTimeout(PROXIES[i].url(url), 9000);
       if(!res.ok) continue;
       var text = await res.text();
-      if(PROXIES[i].json){
-        try{ text = JSON.parse(text).contents || ""; }catch(e){ continue; }
-      }
+      if(PROXIES[i].json){ try{ text = JSON.parse(text).contents || ""; }catch(e){ continue; } }
       if(text && /<(rss|feed|item|entry)[\s>]/i.test(text)){
         var arts = parseFeed(text);
         if(arts.length) return arts;
       }
-    }catch(e){/* try next proxy */}
+    }catch(e){}
   }
   return [];
 }
 
 function txt(node,sel){ var el=node.querySelector(sel); return el?el.textContent.trim():""; }
-
 function parseFeed(xml){
-  var out=[];
-  var doc;
+  var out=[], doc;
   try{ doc = new DOMParser().parseFromString(xml,"application/xml"); }catch(e){ return out; }
-  var items = doc.querySelectorAll("item, entry");
-  items.forEach(function(item){
+  doc.querySelectorAll("item, entry").forEach(function(item){
     var title = txt(item,"title");
-    // link: RSS <link>text</link> ; Atom <link href="..."/>
-    var link="";
-    var linkEl = item.querySelector("link");
-    if(linkEl){ link = (linkEl.textContent||"").trim() || linkEl.getAttribute("href") || ""; }
-    if(!title || !link) return;
-    var srcEl = item.querySelector("source");
-    var source = srcEl ? srcEl.textContent.trim() : hostOf(link);
-    var date = txt(item,"pubDate") || txt(item,"published") || txt(item,"updated");
-    var desc = txt(item,"description") || txt(item,"summary") || "";
-    out.push({
-      title: stripTags(title),
-      link: link,
-      source: source,
-      publishedAt: date ? new Date(date) : null,
-      snippet: stripTags(desc).slice(0,280)
-    });
+    var link="", linkEl=item.querySelector("link");
+    if(linkEl){ link=(linkEl.textContent||"").trim()||linkEl.getAttribute("href")||""; }
+    if(!title||!link) return;
+    var srcEl=item.querySelector("source");
+    var source = srcEl?srcEl.textContent.trim():hostOf(link);
+    var date = txt(item,"pubDate")||txt(item,"published")||txt(item,"updated");
+    var desc = txt(item,"description")||txt(item,"summary")||"";
+    out.push({title:stripTags(title),link:link,source:source,publishedAt:date?new Date(date):null,snippet:stripTags(desc).slice(0,280)});
   });
   return out;
 }
-
 function hostOf(u){ try{ return new URL(u).hostname.replace(/^www\./,""); }catch(e){ return "News"; } }
 function stripTags(s){ var d=document.createElement("div"); d.innerHTML=s||""; return (d.textContent||"").replace(/\s+/g," ").trim(); }
-
 function dedupe(list){
   var seen=new Set(), out=[];
-  list.forEach(function(a){
-    var k=a.title.toLowerCase().replace(/[^a-z0-9]+/g," ").trim();
-    if(seen.has(k)) return; seen.add(k); out.push(a);
-  });
+  list.forEach(function(a){ var k=a.title.toLowerCase().replace(/[^a-z0-9]+/g," ").trim(); if(k && seen.has(k)) return; if(k) seen.add(k); out.push(a); });
   return out;
 }
 
-/* ---- Load ----------------------------------------------------------------- */
 async function load(){
   var mine = ++reqId;
   skeletons();
-  els.meta.textContent = "Loading your brief…";
-
+  els.meta.textContent = t().loading;
   var cats = [...selected];
   if(!cats.length && !keyword) cats = DEFAULT_SELECTED.slice();
-
   var urls = new Set();
-  CATEGORIES.forEach(function(c){ if(cats.indexOf(c.key)!==-1) c.feeds.forEach(function(f){urls.add(f);}); });
-  if(keyword){ urls.add(gnews(keyword,"en")); urls.add(gnews(keyword,"fr")); }
+  CATEGORIES.forEach(function(c){ if(cats.indexOf(c.key)!==-1) urls.add(gnews(c.q[lang], lang)); });
+  if(keyword) urls.add(gnews(keyword, lang));
 
   var lists = await Promise.all([...urls].map(fetchFeed));
-  if(mine !== reqId) return; // a newer request superseded this one
-
-  var reachable = lists.some(function(l){ return l.length>0; });
+  if(mine !== reqId) return;
+  var reachable = lists.some(function(l){return l.length>0;});
   var articles = dedupe([].concat.apply([],lists));
 
   if(keyword){
     var phrase = keyword.toLowerCase();
-    var toks = phrase.split(/\s+/).filter(function(t){return t.length>1;});
+    var toks = phrase.split(/\s+/).filter(function(x){return x.length>1;});
     articles = articles.filter(function(a){
-      var hay = (a.title+" "+a.snippet).toLowerCase();
-      return hay.indexOf(phrase)!==-1 || toks.every(function(t){return hay.indexOf(t)!==-1;});
+      var hay=(a.title+" "+a.snippet).toLowerCase();
+      return hay.indexOf(phrase)!==-1 || toks.every(function(x){return hay.indexOf(x)!==-1;});
     });
   }
-
-  articles.sort(function(a,b){
-    return (b.publishedAt?b.publishedAt.getTime():0)-(a.publishedAt?a.publishedAt.getTime():0);
-  });
+  articles.sort(function(a,b){ return (b.publishedAt?b.publishedAt.getTime():0)-(a.publishedAt?a.publishedAt.getTime():0); });
   articles = articles.slice(0,120);
 
   if(articles.length){
     render(articles);
-    els.meta.textContent = articles.length+" headline"+(articles.length===1?"":"s")+" · updated "+new Date().toLocaleTimeString([], {hour:"2-digit",minute:"2-digit"});
+    var loc = lang==="ar"?"ar":lang==="fr"?"fr":undefined;
+    els.meta.textContent = t().headline(articles.length)+" · "+t().updated+" "+new Date().toLocaleTimeString(loc,{hour:"2-digit",minute:"2-digit"});
   } else {
     showEmpty(reachable);
-    els.meta.textContent = reachable ? "No results" : "Couldn't reach the news service";
-  }
-}
-function showEmpty(reachable){
-  els.feed.innerHTML="";
-  els.stateBox.hidden=false;
-  if(!reachable){
-    els.stateTitle.textContent="Couldn't reach the news service";
-    els.stateHint.textContent="The free public reader proxy didn't respond (it can be slow or rate-limited). Wait a few seconds and press Refresh. The deployed online version doesn't rely on this proxy.";
-  }else if(keyword){
-    els.stateTitle.textContent="No matching headlines";
-    els.stateHint.textContent="Nothing found for “"+keyword+"”. Try a broader keyword or add more topics.";
-  }else{
-    els.stateTitle.textContent="No headlines yet";
-    els.stateHint.textContent="Select at least one topic above, then press Refresh.";
+    els.meta.textContent = reachable ? t().noMatchTitle : t().offTitle;
   }
 }
 
-/* ---- Render --------------------------------------------------------------- */
 function skeletons(){
-  els.stateBox.hidden = true;
+  els.stateBox.hidden=true;
   var h="";
   for(var i=0;i<6;i++) h+='<div class="skeleton"><div class="skeleton__line short"></div><div class="skeleton__line title"></div><div class="skeleton__line body"></div><div class="skeleton__line body b2"></div></div>';
   els.feed.innerHTML=h;
 }
 function timeAgo(d){
   if(!d) return "";
-  var s=Math.max(1,Math.floor((Date.now()-d.getTime())/1000)), m=Math.floor(s/60), h=Math.floor(m/60), dy=Math.floor(h/24);
-  if(s<60) return "just now";
-  if(m<60) return m+" min ago";
-  if(h<24) return h+" hr"+(h>1?"s":"")+" ago";
-  if(dy<7) return dy+" day"+(dy>1?"s":"")+" ago";
-  return d.toLocaleDateString(undefined,{month:"short",day:"numeric"});
+  var s=Math.max(1,Math.floor((Date.now()-d.getTime())/1000)),m=Math.floor(s/60),h=Math.floor(m/60),dy=Math.floor(h/24);
+  var loc = lang==="ar"?"ar":lang==="fr"?"fr":undefined;
+  if(s<60) return t().updated;
+  if(m<60) return m+"m";
+  if(h<24) return h+"h";
+  if(dy<7) return dy+"d";
+  return d.toLocaleDateString(loc,{month:"short",day:"numeric"});
 }
 function esc(s){ var d=document.createElement("div"); d.textContent=s==null?"":String(s); return d.innerHTML; }
 function render(list){
-  if(!list.length){
-    els.feed.innerHTML="";
-    els.stateBox.hidden=false;
-    els.stateTitle.textContent="No matching headlines";
-    els.stateHint.textContent = keyword
-      ? "Nothing found for “"+keyword+"”. Try a broader keyword or add more topics."
-      : "Select at least one topic above to build your brief.";
-    return;
-  }
   els.stateBox.hidden=true;
   els.feed.innerHTML = list.map(function(a){
-    var t=timeAgo(a.publishedAt);
+    var tm=timeAgo(a.publishedAt);
     return '<a class="card" href="'+encodeURI(a.link)+'" target="_blank" rel="noopener noreferrer">'
       +'<div class="card__top"><span class="card__source">'+esc(a.source)+'</span>'
-      +(t?'<span>·</span><span class="card__time">'+esc(t)+'</span>':'')+'</div>'
+      +(tm?'<span>·</span><span class="card__time">'+esc(tm)+'</span>':'')+'</div>'
       +'<div class="card__title">'+esc(a.title)+'</div>'
       +(a.snippet?'<div class="card__snippet">'+esc(a.snippet)+'</div>':'')+'</a>';
   }).join("");
 }
+function showEmpty(reachable){
+  els.feed.innerHTML="";
+  els.stateBox.hidden=false;
+  if(!reachable){ els.stateTitle.textContent=t().offTitle; els.stateHint.textContent=t().offHint; }
+  else if(keyword){ els.stateTitle.textContent=t().noMatchTitle; els.stateHint.textContent=t().noMatchKeyword(keyword); }
+  else { els.stateTitle.textContent=t().noMatchTitle; els.stateHint.textContent=t().noTopic; }
+}
 
-/* ---- Chips + events ------------------------------------------------------- */
 function renderChips(){
   els.chips.innerHTML="";
   CATEGORIES.forEach(function(c){
     var b=document.createElement("button");
-    b.type="button"; b.className="chip"; b.textContent=c.label;
+    b.type="button"; b.className="chip"; b.textContent=c.label[lang];
     b.setAttribute("aria-pressed", selected.has(c.key)?"true":"false");
     b.addEventListener("click",function(){
       if(selected.has(c.key)) selected.delete(c.key); else selected.add(c.key);
@@ -325,26 +333,24 @@ function renderChips(){
     els.chips.appendChild(b);
   });
 }
+
+function setLanguage(next){
+  if(LANGS.indexOf(next)===-1 || next===lang) return;
+  lang = next; writeState(); applyLanguageChrome(); renderChips(); load();
+}
+
 var searchTimer=null;
 els.searchInput.addEventListener("input",function(){
-  var v=els.searchInput.value.trim();
-  els.clearBtn.hidden=!v;
-  clearTimeout(searchTimer);
-  searchTimer=setTimeout(function(){ keyword=v; writeState(); load(); },400);
+  var v=els.searchInput.value.trim(); els.clearBtn.hidden=!v;
+  clearTimeout(searchTimer); searchTimer=setTimeout(function(){ keyword=v; writeState(); load(); },400);
 });
-els.searchForm.addEventListener("submit",function(e){
-  e.preventDefault(); clearTimeout(searchTimer); keyword=els.searchInput.value.trim(); writeState(); load();
-});
-els.clearBtn.addEventListener("click",function(){
-  els.searchInput.value=""; els.clearBtn.hidden=true; keyword=""; writeState(); load();
-});
-els.refreshBtn.addEventListener("click",function(){
-  els.refreshBtn.classList.add("is-spinning");
-  load().finally(function(){ els.refreshBtn.classList.remove("is-spinning"); });
-});
+els.searchForm.addEventListener("submit",function(e){ e.preventDefault(); clearTimeout(searchTimer); keyword=els.searchInput.value.trim(); writeState(); load(); });
+els.clearBtn.addEventListener("click",function(){ els.searchInput.value=""; els.clearBtn.hidden=true; keyword=""; writeState(); load(); });
+els.refreshBtn.addEventListener("click",function(){ els.refreshBtn.classList.add("is-spinning"); load().finally(function(){ els.refreshBtn.classList.remove("is-spinning"); }); });
+els.langSwitch.querySelectorAll(".lang").forEach(function(b){ b.addEventListener("click",function(){ setLanguage(b.dataset.lang); }); });
 
-/* ---- Init ----------------------------------------------------------------- */
 readState();
+applyLanguageChrome();
 els.searchInput.value=keyword;
 els.clearBtn.hidden=!keyword;
 renderChips();

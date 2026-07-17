@@ -20,9 +20,11 @@ module.exports = async function handler(req, res) {
   try {
     const url = new URL(req.url, `http://${req.headers.host || 'localhost'}`);
 
+    const lang = url.searchParams.get('lang') || 'en';
+
     if (url.searchParams.get('meta') === 'categories') {
       res.statusCode = 200;
-      res.end(JSON.stringify({ categories: categoryList() }));
+      res.end(JSON.stringify({ categories: categoryList(lang) }));
       return;
     }
 
@@ -33,7 +35,7 @@ module.exports = async function handler(req, res) {
     const q = url.searchParams.get('q') || '';
     const limit = Math.min(parseInt(url.searchParams.get('limit') || '120', 10) || 120, 200);
 
-    const data = await getNews({ categories, q, limit });
+    const data = await getNews({ categories, q, limit, lang });
     res.statusCode = 200;
     res.end(JSON.stringify(data));
   } catch (err) {
