@@ -97,6 +97,50 @@ const CHANNELS = {
   france24: { label: { en: 'France 24', fr: 'France 24', ar: 'فرانس 24' }, domain: { en: 'france24.com', fr: 'france24.com', ar: 'france24.com' } },
 };
 
+// When a single channel is picked we read its OWN RSS feed (real article URLs +
+// images) instead of a Google News search, so photos come through. Al Jazeera's
+// feed omits thumbnails, so those get an og:image fetch (see getNews).
+const CHANNEL_FEEDS = {
+  aljazeera: {
+    en: ['https://www.aljazeera.com/xml/rss/all.xml'],
+    fr: ['https://www.aljazeera.com/xml/rss/all.xml'],
+    ar: [googleNews('site:aljazeera.net', 'ar')],
+  },
+  bbc: {
+    en: ['https://feeds.bbci.co.uk/news/world/rss.xml'],
+    fr: ['https://feeds.bbci.co.uk/news/world/rss.xml'],
+    ar: ['https://feeds.bbci.co.uk/arabic/rss.xml'],
+  },
+  sky: {
+    en: ['https://feeds.skynews.com/feeds/rss/world.xml'],
+    fr: ['https://feeds.skynews.com/feeds/rss/world.xml'],
+    ar: ['https://feeds.skynews.com/feeds/rss/world.xml'],
+  },
+  france24: {
+    en: ['https://www.france24.com/en/rss'],
+    fr: ['https://www.france24.com/fr/rss'],
+    ar: ['https://www.france24.com/ar/rss'],
+  },
+};
+
+// Loose topic matchers for narrowing a single channel's feed by chip. World is
+// intentionally broad (matches everything).
+const CAT_TERMS = {
+  world: null,
+  sports: ['soccer', 'football', 'كرة القدم'],
+  tunisia: ['tunisia', 'tunisie', 'tunis', 'تونس'],
+  middleeast: ['middle east', 'moyen-orient', 'الشرق الأوسط', 'gaza', 'israel', 'iran', 'syria', 'lebanon', 'palestin'],
+  northafrica: ['maghreb', 'north africa', 'afrique du nord', 'algeria', 'morocco', 'libya', 'algérie', 'maroc', 'libye', 'المغرب', 'الجزائر', 'ليبيا', 'شمال أفريقيا'],
+  france: ['france', 'french', 'française', 'français', 'فرنسا', 'macron', 'paris'],
+};
+
+function articleMatchesCategory(a, cat) {
+  const terms = CAT_TERMS[cat];
+  if (!terms) return true;
+  const hay = `${a.title} ${a.snippet}`.toLowerCase();
+  return terms.some((tm) => hay.includes(tm.toLowerCase()));
+}
+
 function normalizeLang(lang) {
   return LANGS.includes(lang) ? lang : 'en';
 }
@@ -250,6 +294,26 @@ async function fetchFeed(feed, timeoutMs) {
   }
 }
 
+// Fetch a page's preview image (og:image / twitter:image). Used to fill in
+// thumbnails for channels whose RSS omits them (e.g. Al Jazeera). Only called
+// for real publisher URLs, never Google News redirect links.
+async function fetchOgImage(url) {
+  try {
+    const res = await fetch(url, {
+      headers: { 'User-Agent': 'Mozilla/5.0 (compatible; AymensNews/1.0)', Range: 'bytes=0-90000' },
+      signal: AbortSignal.timeout(4500),
+    });
+    if (!res.ok && res.status !== 206) return null;
+    const html = await res.text();
+    const m =
+      html.match(/<meta[^>]+(?:property|name)=["'](?:og:image(?::url)?|twitter:image)["'][^>]+content=["']([^"']+)["']/i) ||
+      html.match(/<meta[^>]+content=["']([^"']+)["'][^>]+(?:property|name)=["'](?:og:image(?::url)?|twitter:image)["']/i);
+    return m ? normalizeImg(decodeEntities(m[1])) : null;
+  } catch {
+    return null;
+  }
+}
+
 // ---------------------------------------------------------------------------
 // De-dup, filter, sort.
 // ---------------------------------------------------------------------------
@@ -327,19 +391,13 @@ async function getNews({ categories, q, limit, lang, source } = {}) {
   const usedCategories = selected.length ? selected : ['world', 'tunisia', 'middleeast', 'northafrica', 'france'];
 
   if (channelKey !== 'all') {
-    // A single channel is picked: scope every search to that outlet's domain
-    // (in the right-language edition), optionally narrowed by the topics.
+    // A single channel is picked: read its own RSS feed so real photos come
+    // through. Topic narrowing happens after fetch (see below).
     const ch = CHANNELS[channelKey];
-    const domain = ch.domain[L] || ch.domain.en;
     const label = ch.label[L] || ch.label.en;
-    if (selected.length) {
-      for (const cat of selected) {
-        feeds.push({ url: googleNews(`site:${domain} ${CATEGORIES[cat].q[L]}`, L), source: label });
-      }
-    } else {
-      feeds.push({ url: googleNews(`site:${domain}`, L), source: label });
-    }
-    if (query) feeds.push({ url: googleNews(`site:${domain} ${query}`, L), source: label });
+    const cf = CHANNEL_FEEDS[channelKey] || {};
+    const urls = cf[L] || cf.en || [];
+    for (const u of urls) feeds.push({ url: u, source: label });
   } else {
     for (const cat of usedCategories) {
       feeds.push({ url: googleNews(CATEGORIES[cat].q[L], L), source: 'Google News' });
@@ -404,7 +462,26 @@ async function getNews({ categories, q, limit, lang, source } = {}) {
     articles = articles.filter((a) => matchesQuery(a, tokens, phrase));
   }
 
+  // In single-channel mode, narrow the outlet's feed to the picked topics —
+  // but never to empty (fall back to the full feed so photos still show).
+  if (channelKey !== 'all' && selected.length) {
+    const narrowed = articles.filter((a) => selected.some((cat) => articleMatchesCategory(a, cat)));
+    if (narrowed.length) articles = narrowed;
+  }
+
   const capped = articles.slice(0, limit || 120);
+
+  // Fill in missing thumbnails for a picked channel by reading each article's
+  // og:image (real publisher URLs only — Google News links can't be scraped).
+  if (channelKey !== 'all') {
+    const need = capped
+      .filter((a) => !a.image && /^https?:\/\//i.test(a.link) && !a.link.includes('news.google.com'))
+      .slice(0, 10);
+    await Promise.all(need.map(async (a) => {
+      const img = await fetchOgImage(a.link);
+      if (img) a.image = img;
+    }));
+  }
 
   const value = {
     articles: capped,

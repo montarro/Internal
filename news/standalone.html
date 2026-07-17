@@ -171,6 +171,22 @@ var CHANNELS = [
 ];
 function channelByKey(k){ for(var i=0;i<CHANNELS.length;i++) if(CHANNELS[i].key===k) return CHANNELS[i]; return null; }
 
+// A picked channel reads its own RSS feed so real photos come through.
+var CHANNEL_FEEDS = {
+  aljazeera:{ en:["https://www.aljazeera.com/xml/rss/all.xml"], fr:["https://www.aljazeera.com/xml/rss/all.xml"], ar:[] },
+  bbc:{ en:["https://feeds.bbci.co.uk/news/world/rss.xml"], fr:["https://feeds.bbci.co.uk/news/world/rss.xml"], ar:["https://feeds.bbci.co.uk/arabic/rss.xml"] },
+  sky:{ en:["https://feeds.skynews.com/feeds/rss/world.xml"], fr:["https://feeds.skynews.com/feeds/rss/world.xml"], ar:["https://feeds.skynews.com/feeds/rss/world.xml"] },
+  france24:{ en:["https://www.france24.com/en/rss"], fr:["https://www.france24.com/fr/rss"], ar:["https://www.france24.com/ar/rss"] }
+};
+var CAT_TERMS = {
+  world:null, sports:["soccer","football","كرة القدم"],
+  tunisia:["tunisia","tunisie","tunis","تونس"],
+  middleeast:["middle east","moyen-orient","الشرق الأوسط","gaza","israel","iran","syria","lebanon","palestin"],
+  northafrica:["maghreb","north africa","afrique du nord","algeria","morocco","libya","algérie","maroc","libye","المغرب","الجزائر","ليبيا","شمال أفريقيا"],
+  france:["france","french","française","français","فرنسا","macron","paris"]
+};
+function catMatch(a,cat){ var terms=CAT_TERMS[cat]; if(!terms) return true; var hay=(a.title+" "+a.snippet).toLowerCase(); return terms.some(function(tm){return hay.indexOf(tm.toLowerCase())!==-1;}); }
+
 var I18N = {
   en:{subtitle:"Pick the subjects you care about and pull matching headlines from across the web.",
     placeholder:"Add a keyword (e.g. election, football, energy)…",tagline:"What's happening today",
@@ -333,14 +349,10 @@ async function load(){
   var urls = new Set();
   var ch = source!=="all" ? channelByKey(source) : null;
   if(ch){
-    // Single channel: scope every search to that outlet's domain.
-    var domain = ch.domain[lang] || ch.domain.en;
-    if(selected.size){
-      CATEGORIES.forEach(function(c){ if(cats.indexOf(c.key)!==-1) urls.add(gnews("site:"+domain+" "+c.q[lang], lang)); });
-    } else {
-      urls.add(gnews("site:"+domain, lang));
-    }
-    if(keyword) urls.add(gnews("site:"+domain+" "+keyword, lang));
+    // Single channel: read its own RSS feed so photos come through.
+    var cf = (CHANNEL_FEEDS[source] && (CHANNEL_FEEDS[source][lang]||CHANNEL_FEEDS[source].en)) || [];
+    cf.forEach(function(u){ urls.add(u); });
+    if(!cf.length) urls.add(gnews("site:"+(ch.domain[lang]||ch.domain.en), lang)); // AJ Arabic fallback (no images)
   } else {
     CATEGORIES.forEach(function(c){
       if(cats.indexOf(c.key)!==-1){
@@ -372,6 +384,11 @@ async function load(){
       var hay=(a.title+" "+a.snippet).toLowerCase();
       return hay.indexOf(phrase)!==-1 || toks.every(function(x){return hay.indexOf(x)!==-1;});
     });
+  }
+  // Single-channel: narrow to picked topics, but never to empty.
+  if(ch && selected.size){
+    var narrowed = articles.filter(function(a){ return cats.some(function(k){ return catMatch(a,k); }); });
+    if(narrowed.length) articles = narrowed;
   }
   articles = articles.slice(0,120);
 
