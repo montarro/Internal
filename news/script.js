@@ -18,6 +18,7 @@ const I18N = {
     tagline: "What's happening today",
     placeholder: 'Add a keyword (e.g. election, football, energy)…',
     refresh: 'Refresh', loading: 'Loading…', saved: 'Saved',
+    channel: 'Channel', allChannels: 'All channels',
     noMatchTitle: 'No matching headlines',
     noMatchKeyword: (k) => `Nothing found for “${k}”. Try a broader keyword or add more topics.`,
     noTopic: 'Select at least one topic above to build your feed.',
@@ -33,6 +34,7 @@ const I18N = {
     tagline: "L'actualité du jour",
     placeholder: 'Ajouter un mot-clé (ex. élection, football, énergie)…',
     refresh: 'Actualiser', loading: 'Chargement…', saved: 'Enregistrés',
+    channel: 'Chaîne', allChannels: 'Toutes les chaînes',
     noMatchTitle: 'Aucun titre correspondant',
     noMatchKeyword: (k) => `Rien trouvé pour « ${k} ». Essayez un mot-clé plus large ou ajoutez des sujets.`,
     noTopic: 'Sélectionnez au moins un sujet ci-dessus.',
@@ -48,6 +50,7 @@ const I18N = {
     tagline: 'أخبار اليوم',
     placeholder: 'أضف كلمة مفتاحية (مثال: انتخابات، كرة القدم، طاقة)…',
     refresh: 'تحديث', loading: 'جارٍ التحميل…', saved: 'المحفوظة',
+    channel: 'القناة', allChannels: 'كل القنوات',
     noMatchTitle: 'لا توجد عناوين مطابقة',
     noMatchKeyword: (k) => `لا نتائج عن «${k}». جرّب كلمة أعمّ أو أضف مواضيع.`,
     noTopic: 'اختر موضوعًا واحدًا على الأقل بالأعلى.',
@@ -90,12 +93,16 @@ const els = {
   langSwitch: document.getElementById('langSwitch'),
   tagline: document.getElementById('tagline'),
   footer: document.getElementById('footer'),
+  sourceSelect: document.getElementById('sourceSelect'),
+  channelLabel: document.getElementById('channelLabel'),
 };
 
 let categories = FALLBACK_CATEGORIES;
+let channels = [];
 let selected = new Set(DEFAULT_SELECTED);
 let keyword = '';
 let lang = 'en';
+let source = 'all';
 let inflight = null;
 let currentArticles = [];
 let savedView = false;
@@ -139,6 +146,7 @@ function readState() {
   if (cats !== null) selected = new Set(cats.split(',').filter(Boolean));
   keyword = params.get('q') || '';
   lang = LANGS.includes(params.get('l')) ? params.get('l') : 'en';
+  source = params.get('s') || 'all';
 }
 
 function writeState() {
@@ -146,6 +154,7 @@ function writeState() {
   params.set('c', [...selected].join(','));
   if (keyword) params.set('q', keyword);
   params.set('l', lang);
+  if (source && source !== 'all') params.set('s', source);
   history.replaceState(null, '', '#' + params.toString());
 }
 
@@ -160,10 +169,41 @@ function applyLanguageChrome() {
   els.searchInput.placeholder = t().placeholder;
   els.refreshLabel.textContent = t().refresh;
   els.savedLabel.textContent = t().saved;
+  els.channelLabel.textContent = t().channel;
   els.footer.textContent = '';
   els.langSwitch.querySelectorAll('.lang').forEach((b) => {
     b.setAttribute('aria-pressed', b.dataset.lang === lang ? 'true' : 'false');
   });
+}
+
+function buildChannelSelect() {
+  const sel = els.sourceSelect;
+  sel.innerHTML = '';
+  const all = document.createElement('option');
+  all.value = 'all';
+  all.textContent = t().allChannels;
+  sel.appendChild(all);
+  for (const ch of channels) {
+    const opt = document.createElement('option');
+    opt.value = ch.key;
+    opt.textContent = ch.label;
+    sel.appendChild(opt);
+  }
+  sel.value = source;
+  if (sel.value !== source) { source = 'all'; sel.value = 'all'; } // guard invalid
+}
+
+async function loadChannels() {
+  try {
+    const res = await fetch(`${API}?meta=channels&lang=${lang}`);
+    if (res.ok) {
+      const data = await res.json();
+      if (data && Array.isArray(data.channels)) channels = data.channels;
+    }
+  } catch {
+    /* leave channels empty; only "All channels" shows */
+  }
+  buildChannelSelect();
 }
 
 // ---------------------------------------------------------------------------
@@ -300,6 +340,7 @@ async function load() {
   params.set('categories', [...selected].join(','));
   if (keyword) params.set('q', keyword);
   params.set('lang', lang);
+  params.set('source', source);
 
   try {
     const res = await fetch(`${API}?${params.toString()}`, { signal: inflight.signal });
@@ -352,7 +393,7 @@ async function setLanguage(next) {
   lang = next;
   writeState();
   applyLanguageChrome();
-  await loadCategories();
+  await Promise.all([loadCategories(), loadChannels()]);
   renderChips();
   if (savedView) showSaved();
   else load();
@@ -397,6 +438,11 @@ function wireEvents() {
     else showSaved();
   });
   els.feed.addEventListener('click', onFeedClick);
+  els.sourceSelect.addEventListener('change', () => {
+    source = els.sourceSelect.value || 'all';
+    writeState();
+    load();
+  });
   els.langSwitch.querySelectorAll('.lang').forEach((b) => {
     b.addEventListener('click', () => setLanguage(b.dataset.lang));
   });
@@ -413,7 +459,7 @@ function wireEvents() {
   els.clearBtn.hidden = !keyword;
   updateSavedCount();
   wireEvents();
-  await loadCategories();
+  await Promise.all([loadCategories(), loadChannels()]);
   renderChips();
   load();
 })();

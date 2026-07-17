@@ -8,7 +8,7 @@
 // Also serves the category catalog at /api/news?meta=categories so the
 // frontend never has to hard-code the list.
 
-const { getNews, categoryList } = require('./_aggregator');
+const { getNews, categoryList, channelList } = require('./_aggregator');
 
 module.exports = async function handler(req, res) {
   res.setHeader('Content-Type', 'application/json; charset=utf-8');
@@ -22,9 +22,15 @@ module.exports = async function handler(req, res) {
 
     const lang = url.searchParams.get('lang') || 'en';
 
-    if (url.searchParams.get('meta') === 'categories') {
+    const meta = url.searchParams.get('meta');
+    if (meta === 'categories') {
       res.statusCode = 200;
       res.end(JSON.stringify({ categories: categoryList(lang) }));
+      return;
+    }
+    if (meta === 'channels') {
+      res.statusCode = 200;
+      res.end(JSON.stringify({ channels: channelList(lang) }));
       return;
     }
 
@@ -33,9 +39,10 @@ module.exports = async function handler(req, res) {
       .map((s) => s.trim())
       .filter(Boolean);
     const q = url.searchParams.get('q') || '';
+    const source = url.searchParams.get('source') || 'all';
     const limit = Math.min(parseInt(url.searchParams.get('limit') || '120', 10) || 120, 200);
 
-    const data = await getNews({ categories, q, limit, lang });
+    const data = await getNews({ categories, q, limit, lang, source });
     res.statusCode = 200;
     res.end(JSON.stringify(data));
   } catch (err) {

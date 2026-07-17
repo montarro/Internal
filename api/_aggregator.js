@@ -86,6 +86,17 @@ const SOURCE_FEEDS = {
   ],
 };
 
+// Individually pickable channels. Each has a per-language domain so the search
+// lands on the right edition (aljazeera.com in English, aljazeera.net in
+// Arabic). Selecting one restricts the whole feed to that outlet.
+const CHANNELS = {
+  aljazeera: { label: { en: 'Al Jazeera', fr: 'Al Jazeera', ar: 'الجزيرة' }, domain: { en: 'aljazeera.com', fr: 'aljazeera.com', ar: 'aljazeera.net' } },
+  bbc: { label: { en: 'BBC', fr: 'BBC', ar: 'BBC عربي' }, domain: { en: 'bbc.com', fr: 'bbc.com', ar: 'bbc.com/arabic' } },
+  sky: { label: { en: 'Sky News', fr: 'Sky News', ar: 'سكاي نيوز عربية' }, domain: { en: 'news.sky.com', fr: 'news.sky.com', ar: 'skynewsarabia.com' } },
+  alarabiya: { label: { en: 'Al Arabiya', fr: 'Al Arabiya', ar: 'العربية' }, domain: { en: 'english.alarabiya.net', fr: 'english.alarabiya.net', ar: 'alarabiya.net' } },
+  france24: { label: { en: 'France 24', fr: 'France 24', ar: 'فرانس 24' }, domain: { en: 'france24.com', fr: 'france24.com', ar: 'france24.com' } },
+};
+
 function normalizeLang(lang) {
   return LANGS.includes(lang) ? lang : 'en';
 }
@@ -94,6 +105,12 @@ function normalizeLang(lang) {
 function categoryList(lang) {
   const L = normalizeLang(lang);
   return Object.keys(CATEGORIES).map((key) => ({ key, label: CATEGORIES[key].label[L] }));
+}
+
+// Localized channel list for the source picker.
+function channelList(lang) {
+  const L = normalizeLang(lang);
+  return Object.keys(CHANNELS).map((key) => ({ key, label: CHANNELS[key].label[L] }));
 }
 
 // ---------------------------------------------------------------------------
@@ -271,7 +288,7 @@ function cacheSet(key, value) {
 // Public entry point.
 // ---------------------------------------------------------------------------
 
-async function getNews({ categories, q, limit, lang } = {}) {
+async function getNews({ categories, q, limit, lang, source } = {}) {
   const L = normalizeLang(lang);
   const selected =
     Array.isArray(categories) && categories.length
@@ -279,25 +296,42 @@ async function getNews({ categories, q, limit, lang } = {}) {
       : [];
 
   const query = (q || '').trim();
-  const cacheKey = JSON.stringify({ c: selected.slice().sort(), q: query.toLowerCase(), l: L });
+  const channelKey = CHANNELS[source] ? source : 'all';
+  const cacheKey = JSON.stringify({ c: selected.slice().sort(), q: query.toLowerCase(), l: L, s: channelKey });
   const cached = cacheGet(cacheKey);
   if (cached) return { ...cached, cached: true };
 
   // Assemble the feed set — each category searched in the chosen language.
   const feeds = [];
   const usedCategories = selected.length ? selected : ['world', 'tunisia', 'middleeast', 'northafrica', 'france'];
-  for (const cat of usedCategories) {
-    feeds.push({ url: googleNews(CATEGORIES[cat].q[L], L), source: 'Google News' });
-    // The broad World view also pulls Aymen's preferred outlets directly.
-    if (cat === 'world') {
-      for (const sf of SOURCE_FEEDS[L] || []) feeds.push(sf);
-    }
-  }
 
-  // A keyword turns into a live Google News search in the chosen language, so
-  // results are drawn from across the web, not just the categories above.
-  if (query) {
-    feeds.push({ url: googleNews(query, L), source: 'Google News' });
+  if (channelKey !== 'all') {
+    // A single channel is picked: scope every search to that outlet's domain
+    // (in the right-language edition), optionally narrowed by the topics.
+    const ch = CHANNELS[channelKey];
+    const domain = ch.domain[L] || ch.domain.en;
+    const label = ch.label[L] || ch.label.en;
+    if (selected.length) {
+      for (const cat of selected) {
+        feeds.push({ url: googleNews(`site:${domain} ${CATEGORIES[cat].q[L]}`, L), source: label });
+      }
+    } else {
+      feeds.push({ url: googleNews(`site:${domain}`, L), source: label });
+    }
+    if (query) feeds.push({ url: googleNews(`site:${domain} ${query}`, L), source: label });
+  } else {
+    for (const cat of usedCategories) {
+      feeds.push({ url: googleNews(CATEGORIES[cat].q[L], L), source: 'Google News' });
+      // The broad World view also pulls Aymen's preferred outlets directly.
+      if (cat === 'world') {
+        for (const sf of SOURCE_FEEDS[L] || []) feeds.push(sf);
+      }
+    }
+
+    // A keyword turns into a live Google News search in the chosen language.
+    if (query) {
+      feeds.push({ url: googleNews(query, L), source: 'Google News' });
+    }
   }
 
   // De-duplicate identical feed URLs.
@@ -346,6 +380,7 @@ async function getNews({ categories, q, limit, lang } = {}) {
       total: capped.length,
       categories: usedCategories,
       lang: L,
+      source: channelKey,
       query: query || null,
       feedsQueried: uniqueFeeds.length,
       feedsOk: sources.filter((s) => !s.error).length,
@@ -359,4 +394,4 @@ async function getNews({ categories, q, limit, lang } = {}) {
   return value;
 }
 
-module.exports = { getNews, categoryList, parseFeed, dedupe, CATEGORIES };
+module.exports = { getNews, categoryList, channelList, parseFeed, dedupe, CATEGORIES };

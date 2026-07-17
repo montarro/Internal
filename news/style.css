@@ -178,6 +178,33 @@ body {
 }
 .search__clear:hover { color: var(--text); }
 
+/* Channel picker */
+.sourcebar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.sourcebar__label {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+.sourceselect {
+  flex: 1;
+  max-width: 260px;
+  background: var(--card);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 9px 12px;
+  font-size: 0.9rem;
+  font-family: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+.sourceselect:focus { outline: none; border-color: var(--emerald); box-shadow: var(--ring); }
+
 /* Chips */
 .chips {
   display: flex;
