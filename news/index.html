@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="color-scheme" content="dark" />
+  <title>News Brief</title>
+  <meta name="description" content="A personal, filtered news feed — world & politics, sports, Tunisia, the Middle East, North Africa and France, pulled from across the web." />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="app" aria-label="News Brief">
+
+    <header class="app__header">
+      <div class="brand">
+        <span class="brand__mark" aria-hidden="true"></span>
+        <span class="brand__name">News&nbsp;Brief</span>
+      </div>
+      <h1 class="app__title">Your news, filtered</h1>
+      <p class="app__subtitle">
+        Pick the subjects you care about and pull matching headlines from across
+        the web &mdash; world &amp; politics, sports, Tunisia, the Middle East,
+        North Africa and France.
+      </p>
+    </header>
+
+    <!-- Controls -->
+    <section class="controls" aria-label="Filters">
+      <form class="search" id="searchForm" role="search">
+        <span class="search__icon" aria-hidden="true">&#9906;</span>
+        <input
+          class="search__input"
+          id="searchInput"
+          type="search"
+          placeholder="Add a keyword (e.g. election, football, energy)…"
+          autocomplete="off"
+          aria-label="Keyword filter"
+        />
+        <button class="search__clear" id="clearBtn" type="button" aria-label="Clear keyword" hidden>&times;</button>
+      </form>
+
+      <div class="chips" id="chips" role="group" aria-label="Topics">
+        <!-- category chips injected by script.js -->
+      </div>
+
+      <div class="controls__foot">
+        <span class="meta" id="metaLine" aria-live="polite">Loading your brief…</span>
+        <button class="refresh" id="refreshBtn" type="button">
+          <span class="refresh__icon" aria-hidden="true">&#8635;</span> Refresh
+        </button>
+      </div>
+    </section>
+
+    <!-- Feed -->
+    <section class="feed" id="feed" aria-live="polite" aria-busy="true">
+      <!-- article cards injected by script.js -->
+    </section>
+
+    <!-- Empty / error states -->
+    <div class="state" id="stateBox" hidden>
+      <p class="state__title" id="stateTitle"></p>
+      <p class="state__hint" id="stateHint"></p>
+    </div>
+
+    <footer class="legal">
+      Headlines link out to their original publishers. Sources include Google
+      News, BBC, The Guardian, Al Jazeera, Le Monde, France 24 and more.
+    </footer>
+  </main>
+
+  <script src="script.js" defer></script>
+</body>
+</html>
