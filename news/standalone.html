@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="color-scheme" content="dark" />
+<title>News Brief</title>
+<style>
+  :root{
+    --bg:#11151a;--bg-2:#161b22;--card:#1a2129;--card-2:#1f2730;
+    --border:#2a333d;--border-soft:#232c35;
+    --emerald:#10b981;--emerald-bright:#34d399;--mint:#a7f3d0;--mint-soft:#d1fae5;
+    --text:#e8eef2;--text-muted:#97a4b1;--text-faint:#687581;
+    --radius:16px;--radius-sm:11px;--shadow:0 18px 40px -18px rgba(0,0,0,.7);
+    --ring:0 0 0 1px rgba(52,211,153,.35);
+    --font:"Inter","Segoe UI",system-ui,-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:var(--bg);color:var(--text);font-family:var(--font);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+  body{min-height:100vh;padding:22px;background:
+    radial-gradient(900px 500px at 100% -10%,rgba(16,185,129,.10),transparent 60%),
+    radial-gradient(700px 420px at -10% 110%,rgba(52,211,153,.07),transparent 55%),var(--bg)}
+  .app{width:100%;max-width:780px;margin:0 auto;display:flex;flex-direction:column;gap:20px}
+  .brand{display:inline-flex;align-items:center;gap:9px;margin-bottom:14px}
+  .brand__mark{width:22px;height:22px;border-radius:7px;background:linear-gradient(135deg,var(--emerald-bright),var(--emerald));box-shadow:0 0 0 4px rgba(16,185,129,.12)}
+  .brand__name{font-weight:700;letter-spacing:.02em;font-size:.95rem;color:var(--mint-soft)}
+  .app__title{font-size:1.72rem;line-height:1.15;font-weight:800;letter-spacing:-.01em;margin-bottom:8px}
+  .app__subtitle{color:var(--text-muted);font-size:.96rem;line-height:1.5;max-width:60ch}
+  .controls{background:var(--bg-2);border:1px solid var(--border);border-radius:var(--radius);padding:16px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:14px}
+  .search{display:flex;align-items:center;gap:10px;background:var(--card);border:1px solid var(--border);border-radius:var(--radius-sm);padding:11px 13px;transition:box-shadow .15s,border-color .15s}
+  .search:focus-within{border-color:var(--emerald);box-shadow:var(--ring)}
+  .search__icon{color:var(--text-faint);font-size:1.05rem}
+  .search__input{flex:1;background:transparent;border:none;outline:none;color:var(--text);font-size:.98rem;font-family:inherit}
+  .search__input::placeholder{color:var(--text-faint)}
+  .search__clear{background:transparent;border:none;color:var(--text-muted);font-size:1.3rem;line-height:1;cursor:pointer;padding:0 4px}
+  .search__clear:hover{color:var(--text)}
+  .chips{display:flex;flex-wrap:wrap;gap:8px}
+  .chip{border:1px solid var(--border);background:var(--card);color:var(--text-muted);border-radius:999px;padding:7px 14px;font-size:.86rem;font-weight:600;font-family:inherit;cursor:pointer;transition:all .14s;white-space:nowrap}
+  .chip:hover{border-color:var(--emerald);color:var(--text)}
+  .chip[aria-pressed="true"]{background:linear-gradient(135deg,rgba(52,211,153,.22),rgba(16,185,129,.16));border-color:var(--emerald);color:var(--mint-soft)}
+  .controls__foot{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+  .meta{font-size:.82rem;color:var(--text-faint)}
+  .refresh{display:inline-flex;align-items:center;gap:6px;background:var(--card-2);border:1px solid var(--border);color:var(--text-muted);border-radius:var(--radius-sm);padding:7px 13px;font-size:.84rem;font-weight:600;font-family:inherit;cursor:pointer;transition:all .14s}
+  .refresh:hover{border-color:var(--emerald);color:var(--text)}
+  .refresh__icon{font-size:1rem}
+  .refresh.is-spinning .refresh__icon{display:inline-block;animation:spin .8s linear infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .feed{display:flex;flex-direction:column;gap:12px}
+  .card{display:block;text-decoration:none;color:inherit;background:var(--card);border:1px solid var(--border-soft);border-radius:var(--radius);padding:16px 18px;transition:transform .14s,border-color .14s,background .14s}
+  .card:hover{transform:translateY(-2px);border-color:var(--emerald);background:var(--card-2)}
+  .card__top{display:flex;align-items:center;gap:8px;margin-bottom:8px;font-size:.76rem;color:var(--text-faint)}
+  .card__source{color:var(--emerald-bright);font-weight:700;letter-spacing:.01em}
+  .card__title{font-size:1.04rem;line-height:1.35;font-weight:700;color:var(--text);margin-bottom:6px}
+  .card:hover .card__title{color:var(--mint-soft)}
+  .card__snippet{font-size:.9rem;line-height:1.5;color:var(--text-muted);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  .skeleton{background:var(--card);border:1px solid var(--border-soft);border-radius:var(--radius);padding:16px 18px}
+  .skeleton__line{height:12px;border-radius:6px;background:linear-gradient(90deg,var(--card-2) 25%,#26313b 50%,var(--card-2) 75%);background-size:200% 100%;animation:shimmer 1.3s ease-in-out infinite;margin-bottom:10px}
+  .skeleton__line.short{width:40%}.skeleton__line.title{width:85%;height:16px}
+  .skeleton__line.body{width:100%}.skeleton__line.body.b2{width:70%;margin-bottom:0}
+  @keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+  .state{text-align:center;padding:40px 20px;background:var(--bg-2);border:1px dashed var(--border);border-radius:var(--radius)}
+  .state__title{font-weight:700;font-size:1.05rem;margin-bottom:6px}
+  .state__hint{color:var(--text-muted);font-size:.9rem;line-height:1.5}
+  .legal{text-align:center;color:var(--text-faint);font-size:.76rem;line-height:1.5;padding:4px 0 8px}
+  @media(max-width:560px){body{padding:16px}.app__title{font-size:1.44rem}.card__title{font-size:.99rem}}
+</style>
+</head>
+<body>
+<main class="app">
+  <header>
+    <div class="brand"><span class="brand__mark"></span><span class="brand__name">News&nbsp;Brief</span></div>
+    <h1 class="app__title">Your news, filtered</h1>
+    <p class="app__subtitle">Pick the subjects you care about and pull matching headlines from across the web &mdash; world &amp; politics, sports, Tunisia, the Middle East, North Africa and France.</p>
+  </header>
+
+  <section class="controls">
+    <form class="search" id="searchForm" role="search">
+      <span class="search__icon">&#9906;</span>
+      <input class="search__input" id="searchInput" type="search" placeholder="Add a keyword (e.g. election, football, energy)…" autocomplete="off" aria-label="Keyword filter" />
+      <button class="search__clear" id="clearBtn" type="button" aria-label="Clear keyword" hidden>&times;</button>
+    </form>
+    <div class="chips" id="chips" role="group" aria-label="Topics"></div>
+    <div class="controls__foot">
+      <span class="meta" id="metaLine">Loading your brief…</span>
+      <button class="refresh" id="refreshBtn" type="button"><span class="refresh__icon">&#8635;</span> Refresh</button>
+    </div>
+  </section>
+
+  <section class="feed" id="feed" aria-live="polite"></section>
+
+  <div class="state" id="stateBox" hidden>
+    <p class="state__title" id="stateTitle"></p>
+    <p class="state__hint" id="stateHint"></p>
+  </div>
+
+  <footer class="legal">Headlines link out to their original publishers. Live news is fetched in your browser via a public reader proxy. Sources include Google News, BBC, Al Jazeera, Le Monde and more.</footer>
+</main>
+
+<script>
+"use strict";
+
+/* ---- Topic catalog (tuned to the reader) ---------------------------------- */
+function gnews(query, lang){
+  var q = encodeURIComponent(query);
+  return lang === "fr"
+    ? "https://news.google.com/rss/search?q="+q+"&hl=fr&gl=FR&ceid=FR:fr"
+    : "https://news.google.com/rss/search?q="+q+"&hl=en-US&gl=US&ceid=US:en";
+}
+var CATEGORIES = [
+  {key:"world",       label:"World & Politics",        feeds:[gnews("world politics","en"),"https://feeds.bbci.co.uk/news/world/rss.xml"]},
+  {key:"sports",      label:"Sports",                  feeds:[gnews("sports","en"),gnews("sport","fr")]},
+  {key:"tunisia",     label:"Tunisia",                 feeds:[gnews("Tunisia","en"),gnews("Tunisie","fr")]},
+  {key:"middleeast",  label:"Middle East",             feeds:[gnews('"Middle East"',"en"),"https://www.aljazeera.com/xml/rss/all.xml"]},
+  {key:"northafrica", label:"North Africa / Maghreb",  feeds:[gnews('Maghreb OR "North Africa" OR Algeria OR Morocco OR Libya',"en"),gnews('Maghreb OR "Afrique du Nord" OR Algérie OR Maroc OR Libye',"fr")]},
+  {key:"france",      label:"France & French Politics",feeds:[gnews("politique française","fr"),"https://www.lemonde.fr/politique/rss_full.xml"]}
+];
+var DEFAULT_SELECTED = ["world","tunisia","middleeast","northafrica","france"];
+
+/* ---- CORS proxies (tried in order so a static file can fetch feeds) ------- */
+var PROXIES = [
+  function(u){return "https://api.allorigins.win/raw?url="+encodeURIComponent(u);},
+  function(u){return "https://corsproxy.io/?url="+encodeURIComponent(u);}
+];
+
+var els = {
+  chips:q("#chips"), feed:q("#feed"), searchForm:q("#searchForm"), searchInput:q("#searchInput"),
+  clearBtn:q("#clearBtn"), refreshBtn:q("#refreshBtn"), meta:q("#metaLine"),
+  stateBox:q("#stateBox"), stateTitle:q("#stateTitle"), stateHint:q("#stateHint")
+};
+function q(s){return document.querySelector(s);}
+
+var selected = new Set(DEFAULT_SELECTED);
+var keyword = "";
+var reqId = 0;
+
+/* ---- URL state (bookmarkable) --------------------------------------------- */
+function readState(){
+  var p = new URLSearchParams(location.hash.slice(1));
+  if(p.get("c")!==null) selected = new Set(p.get("c").split(",").filter(Boolean));
+  keyword = p.get("q") || "";
+}
+function writeState(){
+  var p = new URLSearchParams();
+  p.set("c",[...selected].join(","));
+  if(keyword) p.set("q",keyword);
+  history.replaceState(null,"","#"+p.toString());
+}
+
+/* ---- Fetch + parse -------------------------------------------------------- */
+async function fetchFeed(url){
+  for(var i=0;i<PROXIES.length;i++){
+    try{
+      var res = await fetch(PROXIES[i](url), {cache:"no-store"});
+      if(!res.ok) continue;
+      var text = await res.text();
+      if(text && text.indexOf("<")!==-1) return parseFeed(text);
+    }catch(e){/* try next proxy */}
+  }
+  return [];
+}
+
+function txt(node,sel){ var el=node.querySelector(sel); return el?el.textContent.trim():""; }
+
+function parseFeed(xml){
+  var out=[];
+  var doc;
+  try{ doc = new DOMParser().parseFromString(xml,"application/xml"); }catch(e){ return out; }
+  var items = doc.querySelectorAll("item, entry");
+  items.forEach(function(item){
+    var title = txt(item,"title");
+    // link: RSS <link>text</link> ; Atom <link href="..."/>
+    var link="";
+    var linkEl = item.querySelector("link");
+    if(linkEl){ link = (linkEl.textContent||"").trim() || linkEl.getAttribute("href") || ""; }
+    if(!title || !link) return;
+    var srcEl = item.querySelector("source");
+    var source = srcEl ? srcEl.textContent.trim() : hostOf(link);
+    var date = txt(item,"pubDate") || txt(item,"published") || txt(item,"updated");
+    var desc = txt(item,"description") || txt(item,"summary") || "";
+    out.push({
+      title: stripTags(title),
+      link: link,
+      source: source,
+      publishedAt: date ? new Date(date) : null,
+      snippet: stripTags(desc).slice(0,280)
+    });
+  });
+  return out;
+}
+
+function hostOf(u){ try{ return new URL(u).hostname.replace(/^www\./,""); }catch(e){ return "News"; } }
+function stripTags(s){ var d=document.createElement("div"); d.innerHTML=s||""; return (d.textContent||"").replace(/\s+/g," ").trim(); }
+
+function dedupe(list){
+  var seen=new Set(), out=[];
+  list.forEach(function(a){
+    var k=a.title.toLowerCase().replace(/[^a-z0-9]+/g," ").trim();
+    if(seen.has(k)) return; seen.add(k); out.push(a);
+  });
+  return out;
+}
+
+/* ---- Load ----------------------------------------------------------------- */
+async function load(){
+  var mine = ++reqId;
+  skeletons();
+  els.meta.textContent = "Loading your brief…";
+
+  var cats = [...selected];
+  if(!cats.length && !keyword) cats = DEFAULT_SELECTED.slice();
+
+  var urls = new Set();
+  CATEGORIES.forEach(function(c){ if(cats.indexOf(c.key)!==-1) c.feeds.forEach(function(f){urls.add(f);}); });
+  if(keyword){ urls.add(gnews(keyword,"en")); urls.add(gnews(keyword,"fr")); }
+
+  var lists = await Promise.all([...urls].map(fetchFeed));
+  if(mine !== reqId) return; // a newer request superseded this one
+
+  var articles = dedupe([].concat.apply([],lists));
+
+  if(keyword){
+    var phrase = keyword.toLowerCase();
+    var toks = phrase.split(/\s+/).filter(function(t){return t.length>1;});
+    articles = articles.filter(function(a){
+      var hay = (a.title+" "+a.snippet).toLowerCase();
+      return hay.indexOf(phrase)!==-1 || toks.every(function(t){return hay.indexOf(t)!==-1;});
+    });
+  }
+
+  articles.sort(function(a,b){
+    return (b.publishedAt?b.publishedAt.getTime():0)-(a.publishedAt?a.publishedAt.getTime():0);
+  });
+  articles = articles.slice(0,120);
+
+  render(articles);
+  els.meta.textContent = articles.length
+    ? articles.length+" headline"+(articles.length===1?"":"s")+" · updated "+new Date().toLocaleTimeString([], {hour:"2-digit",minute:"2-digit"})
+    : "No results";
+}
+
+/* ---- Render --------------------------------------------------------------- */
+function skeletons(){
+  els.stateBox.hidden = true;
+  var h="";
+  for(var i=0;i<6;i++) h+='<div class="skeleton"><div class="skeleton__line short"></div><div class="skeleton__line title"></div><div class="skeleton__line body"></div><div class="skeleton__line body b2"></div></div>';
+  els.feed.innerHTML=h;
+}
+function timeAgo(d){
+  if(!d) return "";
+  var s=Math.max(1,Math.floor((Date.now()-d.getTime())/1000)), m=Math.floor(s/60), h=Math.floor(m/60), dy=Math.floor(h/24);
+  if(s<60) return "just now";
+  if(m<60) return m+" min ago";
+  if(h<24) return h+" hr"+(h>1?"s":"")+" ago";
+  if(dy<7) return dy+" day"+(dy>1?"s":"")+" ago";
+  return d.toLocaleDateString(undefined,{month:"short",day:"numeric"});
+}
+function esc(s){ var d=document.createElement("div"); d.textContent=s==null?"":String(s); return d.innerHTML; }
+function render(list){
+  if(!list.length){
+    els.feed.innerHTML="";
+    els.stateBox.hidden=false;
+    els.stateTitle.textContent="No matching headlines";
+    els.stateHint.textContent = keyword
+      ? "Nothing found for “"+keyword+"”. Try a broader keyword or add more topics."
+      : "Select at least one topic above to build your brief.";
+    return;
+  }
+  els.stateBox.hidden=true;
+  els.feed.innerHTML = list.map(function(a){
+    var t=timeAgo(a.publishedAt);
+    return '<a class="card" href="'+encodeURI(a.link)+'" target="_blank" rel="noopener noreferrer">'
+      +'<div class="card__top"><span class="card__source">'+esc(a.source)+'</span>'
+      +(t?'<span>·</span><span class="card__time">'+esc(t)+'</span>':'')+'</div>'
+      +'<div class="card__title">'+esc(a.title)+'</div>'
+      +(a.snippet?'<div class="card__snippet">'+esc(a.snippet)+'</div>':'')+'</a>';
+  }).join("");
+}
+
+/* ---- Chips + events ------------------------------------------------------- */
+function renderChips(){
+  els.chips.innerHTML="";
+  CATEGORIES.forEach(function(c){
+    var b=document.createElement("button");
+    b.type="button"; b.className="chip"; b.textContent=c.label;
+    b.setAttribute("aria-pressed", selected.has(c.key)?"true":"false");
+    b.addEventListener("click",function(){
+      if(selected.has(c.key)) selected.delete(c.key); else selected.add(c.key);
+      b.setAttribute("aria-pressed", selected.has(c.key)?"true":"false");
+      writeState(); load();
+    });
+    els.chips.appendChild(b);
+  });
+}
+var searchTimer=null;
+els.searchInput.addEventListener("input",function(){
+  var v=els.searchInput.value.trim();
+  els.clearBtn.hidden=!v;
+  clearTimeout(searchTimer);
+  searchTimer=setTimeout(function(){ keyword=v; writeState(); load(); },400);
+});
+els.searchForm.addEventListener("submit",function(e){
+  e.preventDefault(); clearTimeout(searchTimer); keyword=els.searchInput.value.trim(); writeState(); load();
+});
+els.clearBtn.addEventListener("click",function(){
+  els.searchInput.value=""; els.clearBtn.hidden=true; keyword=""; writeState(); load();
+});
+els.refreshBtn.addEventListener("click",function(){
+  els.refreshBtn.classList.add("is-spinning");
+  load().finally(function(){ els.refreshBtn.classList.remove("is-spinning"); });
+});
+
+/* ---- Init ----------------------------------------------------------------- */
+readState();
+els.searchInput.value=keyword;
+els.clearBtn.hidden=!keyword;
+renderChips();
+load();
+</script>
+</body>
+</html>
