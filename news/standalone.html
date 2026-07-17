@@ -39,6 +39,10 @@
   .search__input::placeholder{color:var(--text-faint)}
   .search__clear{background:transparent;border:none;color:var(--text-muted);font-size:1.3rem;line-height:1;cursor:pointer;padding:0 4px}
   .search__clear:hover{color:var(--text)}
+  .sourcebar{display:flex;align-items:center;gap:10px}
+  .sourcebar__label{font-size:.82rem;font-weight:600;color:var(--text-muted)}
+  .sourceselect{flex:1;max-width:260px;background:var(--card);color:var(--text);border:1px solid var(--border);border-radius:var(--radius-sm);padding:9px 12px;font-size:.9rem;font-family:inherit;font-weight:600;cursor:pointer}
+  .sourceselect:focus{outline:none;border-color:var(--emerald);box-shadow:var(--ring)}
   .chips{display:flex;flex-wrap:wrap;gap:8px}
   .chip{border:1px solid var(--border);background:var(--card);color:var(--text-muted);border-radius:999px;padding:7px 14px;font-size:.86rem;font-weight:600;font-family:inherit;cursor:pointer;transition:all .14s;white-space:nowrap}
   .chip:hover{border-color:var(--emerald);color:var(--text)}
@@ -100,6 +104,10 @@
       <input class="search__input" id="searchInput" type="search" autocomplete="off" aria-label="Keyword filter" />
       <button class="search__clear" id="clearBtn" type="button" aria-label="Clear keyword" hidden>&times;</button>
     </form>
+    <div class="sourcebar">
+      <label class="sourcebar__label" id="channelLabel" for="sourceSelect">Channel</label>
+      <select class="sourceselect" id="sourceSelect" aria-label="Channel"></select>
+    </div>
     <div class="chips" id="chips" role="group" aria-label="Topics"></div>
     <div class="controls__foot">
       <span class="meta" id="metaLine"></span>
@@ -152,24 +160,34 @@ var SOURCE_SITES = {
   ar:["aljazeera.net","alarabiya.net","skynewsarabia.com","bbc.com/arabic"]
 };
 
+// Individually pickable channels (label + per-language domain).
+var CHANNELS = [
+  {key:"aljazeera", label:{en:"Al Jazeera",fr:"Al Jazeera",ar:"الجزيرة"},        domain:{en:"aljazeera.com",fr:"aljazeera.com",ar:"aljazeera.net"}},
+  {key:"bbc",       label:{en:"BBC",fr:"BBC",ar:"BBC عربي"},                     domain:{en:"bbc.com",fr:"bbc.com",ar:"bbc.com/arabic"}},
+  {key:"sky",       label:{en:"Sky News",fr:"Sky News",ar:"سكاي نيوز عربية"},    domain:{en:"news.sky.com",fr:"news.sky.com",ar:"skynewsarabia.com"}},
+  {key:"alarabiya", label:{en:"Al Arabiya",fr:"Al Arabiya",ar:"العربية"},        domain:{en:"english.alarabiya.net",fr:"english.alarabiya.net",ar:"alarabiya.net"}},
+  {key:"france24",  label:{en:"France 24",fr:"France 24",ar:"فرانس 24"},         domain:{en:"france24.com",fr:"france24.com",ar:"france24.com"}}
+];
+function channelByKey(k){ for(var i=0;i<CHANNELS.length;i++) if(CHANNELS[i].key===k) return CHANNELS[i]; return null; }
+
 var I18N = {
   en:{subtitle:"Pick the subjects you care about and pull matching headlines from across the web.",
     placeholder:"Add a keyword (e.g. election, football, energy)…",tagline:"What's happening today",
-    refresh:"Refresh",loading:"Loading…",saved:"Saved",savedEmptyTitle:"No saved articles yet",savedEmptyHint:"Tap the ♥ on any headline to save it here for next time.",savedCount:function(n){return n+" saved";},footer:"Headlines link out to their original publishers. Live news is fetched in your browser via a public reader proxy.",
+    refresh:"Refresh",loading:"Loading…",saved:"Saved",channel:"Channel",allChannels:"All channels",savedEmptyTitle:"No saved articles yet",savedEmptyHint:"Tap the ♥ on any headline to save it here for next time.",savedCount:function(n){return n+" saved";},footer:"Headlines link out to their original publishers. Live news is fetched in your browser via a public reader proxy.",
     noMatchTitle:"No matching headlines",noMatchKeyword:function(k){return "Nothing found for “"+k+"”. Try a broader keyword or add more topics.";},
     noTopic:"Select at least one topic above.",offTitle:"Couldn't reach the news service",
     offHint:"The free public reader proxy didn't respond (it can be slow or rate-limited). Wait a moment and press Refresh. The online version doesn't rely on this proxy.",
     headline:function(n){return n+" headline"+(n===1?"":"s");},updated:"updated"},
   fr:{subtitle:"Choisissez les sujets qui vous intéressent et recevez les titres correspondants de tout le web.",
     placeholder:"Ajouter un mot-clé (ex. élection, football, énergie)…",tagline:"L'actualité du jour",
-    refresh:"Actualiser",loading:"Chargement…",saved:"Enregistrés",savedEmptyTitle:"Aucun article enregistré",savedEmptyHint:"Touchez le ♥ sur un titre pour l’enregistrer ici.",savedCount:function(n){return n+" enregistré"+(n===1?"":"s");},footer:"Les titres renvoient vers leurs éditeurs d'origine. Les actualités sont récupérées dans votre navigateur via un relais public.",
+    refresh:"Actualiser",loading:"Chargement…",saved:"Enregistrés",channel:"Chaîne",allChannels:"Toutes les chaînes",savedEmptyTitle:"Aucun article enregistré",savedEmptyHint:"Touchez le ♥ sur un titre pour l’enregistrer ici.",savedCount:function(n){return n+" enregistré"+(n===1?"":"s");},footer:"Les titres renvoient vers leurs éditeurs d'origine. Les actualités sont récupérées dans votre navigateur via un relais public.",
     noMatchTitle:"Aucun titre correspondant",noMatchKeyword:function(k){return "Rien trouvé pour « "+k+" ». Essayez un mot-clé plus large ou ajoutez des sujets.";},
     noTopic:"Sélectionnez au moins un sujet ci-dessus.",offTitle:"Impossible de joindre le service",
     offHint:"Le relais public gratuit n'a pas répondu (il peut être lent ou limité). Patientez puis appuyez sur Actualiser. La version en ligne ne dépend pas de ce relais.",
     headline:function(n){return n+" titre"+(n===1?"":"s");},updated:"mis à jour"},
   ar:{subtitle:"اختر المواضيع التي تهمّك واحصل على العناوين المطابقة من مختلف مواقع الويب.",
     placeholder:"أضف كلمة مفتاحية (مثال: انتخابات، كرة القدم، طاقة)…",tagline:"أخبار اليوم",
-    refresh:"تحديث",loading:"جارٍ التحميل…",saved:"المحفوظة",savedEmptyTitle:"لا مقالات محفوظة بعد",savedEmptyHint:"اضغط على ♥ في أي عنوان لحفظه هنا.",savedCount:function(n){return n+" محفوظ";},footer:"تحيل العناوين إلى مصادرها الأصلية. تُجلب الأخبار في متصفحك عبر وسيط قراءة عام.",
+    refresh:"تحديث",loading:"جارٍ التحميل…",saved:"المحفوظة",channel:"القناة",allChannels:"كل القنوات",savedEmptyTitle:"لا مقالات محفوظة بعد",savedEmptyHint:"اضغط على ♥ في أي عنوان لحفظه هنا.",savedCount:function(n){return n+" محفوظ";},footer:"تحيل العناوين إلى مصادرها الأصلية. تُجلب الأخبار في متصفحك عبر وسيط قراءة عام.",
     noMatchTitle:"لا توجد عناوين مطابقة",noMatchKeyword:function(k){return "لا نتائج عن «"+k+"». جرّب كلمة أعمّ أو أضف مواضيع.";},
     noTopic:"اختر موضوعًا واحدًا على الأقل بالأعلى.",offTitle:"تعذّر الوصول إلى خدمة الأخبار",
     offHint:"لم يستجب وسيط القراءة العام المجاني (قد يكون بطيئًا أو محدودًا). انتظر لحظة ثم اضغط تحديث. النسخة على الإنترنت لا تعتمد على هذا الوسيط.",
@@ -188,9 +206,9 @@ var els = {chips:q("#chips"),feed:q("#feed"),searchForm:q("#searchForm"),searchI
   clearBtn:q("#clearBtn"),refreshBtn:q("#refreshBtn"),refreshLabel:q("#refreshLabel"),
   savedBtn:q("#savedBtn"),savedLabel:q("#savedLabel"),savedCount:q("#savedCount"),meta:q("#metaLine"),
   stateBox:q("#stateBox"),stateTitle:q("#stateTitle"),stateHint:q("#stateHint"),langSwitch:q("#langSwitch"),
-  tagline:q("#tagline"),footer:q("#footer")};
+  tagline:q("#tagline"),footer:q("#footer"),sourceSelect:q("#sourceSelect"),channelLabel:q("#channelLabel")};
 
-var selected = new Set(DEFAULT_SELECTED), keyword = "", lang = "en", reqId = 0;
+var selected = new Set(DEFAULT_SELECTED), keyword = "", lang = "en", source = "all", reqId = 0;
 var currentArticles = [], savedView = false;
 function t(){return I18N[lang]||I18N.en;}
 
@@ -211,13 +229,27 @@ function readState(){
   if(p.get("c")!==null) selected = new Set(p.get("c").split(",").filter(Boolean));
   keyword = p.get("q") || "";
   lang = LANGS.indexOf(p.get("l"))!==-1 ? p.get("l") : "en";
+  source = p.get("s") || "all";
 }
 function writeState(){
   var p = new URLSearchParams();
   p.set("c",[...selected].join(","));
   if(keyword) p.set("q",keyword);
   p.set("l",lang);
+  if(source && source!=="all") p.set("s",source);
   history.replaceState(null,"","#"+p.toString());
+}
+function buildChannelSelect(){
+  var sel = els.sourceSelect;
+  sel.innerHTML = "";
+  var all = document.createElement("option");
+  all.value = "all"; all.textContent = t().allChannels; sel.appendChild(all);
+  CHANNELS.forEach(function(c){
+    var o = document.createElement("option");
+    o.value = c.key; o.textContent = c.label[lang]; sel.appendChild(o);
+  });
+  sel.value = source;
+  if(sel.value !== source){ source = "all"; sel.value = "all"; }
 }
 
 function applyLanguageChrome(){
@@ -227,6 +259,7 @@ function applyLanguageChrome(){
   els.searchInput.placeholder = t().placeholder;
   els.refreshLabel.textContent = t().refresh;
   els.savedLabel.textContent = t().saved;
+  els.channelLabel.textContent = t().channel;
   els.footer.textContent = t().footer;
   els.langSwitch.querySelectorAll(".lang").forEach(function(b){
     b.setAttribute("aria-pressed", b.dataset.lang===lang?"true":"false");
@@ -287,13 +320,25 @@ async function load(){
   var cats = [...selected];
   if(!cats.length && !keyword) cats = DEFAULT_SELECTED.slice();
   var urls = new Set();
-  CATEGORIES.forEach(function(c){
-    if(cats.indexOf(c.key)!==-1){
-      urls.add(gnews(c.q[lang], lang));
-      if(c.key==="world") (SOURCE_SITES[lang]||[]).forEach(function(s){ urls.add(gnews("site:"+s, lang)); });
+  var ch = source!=="all" ? channelByKey(source) : null;
+  if(ch){
+    // Single channel: scope every search to that outlet's domain.
+    var domain = ch.domain[lang] || ch.domain.en;
+    if(selected.size){
+      CATEGORIES.forEach(function(c){ if(cats.indexOf(c.key)!==-1) urls.add(gnews("site:"+domain+" "+c.q[lang], lang)); });
+    } else {
+      urls.add(gnews("site:"+domain, lang));
     }
-  });
-  if(keyword) urls.add(gnews(keyword, lang));
+    if(keyword) urls.add(gnews("site:"+domain+" "+keyword, lang));
+  } else {
+    CATEGORIES.forEach(function(c){
+      if(cats.indexOf(c.key)!==-1){
+        urls.add(gnews(c.q[lang], lang));
+        if(c.key==="world") (SOURCE_SITES[lang]||[]).forEach(function(s){ urls.add(gnews("site:"+s, lang)); });
+      }
+    });
+    if(keyword) urls.add(gnews(keyword, lang));
+  }
 
   var lists = await Promise.all([...urls].map(fetchFeed));
   if(mine !== reqId) return;
@@ -387,7 +432,7 @@ function renderChips(){
 
 function setLanguage(next){
   if(LANGS.indexOf(next)===-1 || next===lang) return;
-  lang = next; writeState(); applyLanguageChrome(); renderChips();
+  lang = next; writeState(); applyLanguageChrome(); buildChannelSelect(); renderChips();
   if(savedView) showSaved(); else load();
 }
 function onFeedClick(e){
@@ -414,9 +459,11 @@ els.refreshBtn.addEventListener("click",function(){ els.refreshBtn.classList.add
 els.langSwitch.querySelectorAll(".lang").forEach(function(b){ b.addEventListener("click",function(){ setLanguage(b.dataset.lang); }); });
 els.savedBtn.addEventListener("click",function(){ if(savedView) load(); else showSaved(); });
 els.feed.addEventListener("click", onFeedClick);
+els.sourceSelect.addEventListener("change",function(){ source = els.sourceSelect.value || "all"; writeState(); load(); });
 
 readState();
 applyLanguageChrome();
+buildChannelSelect();
 els.searchInput.value=keyword;
 els.clearBtn.hidden=!keyword;
 updateSavedCount();
