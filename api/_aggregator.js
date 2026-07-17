@@ -64,20 +64,25 @@ const CATEGORIES = {
 // Aymen's preferred outlets, in the edition matching each UI language. Added to
 // the broad "World & Politics" view. Best-effort URLs: if any feed is down the
 // request still succeeds on the others (and on the Google News backbone).
+// Sources per UI language. Where an outlet's own feed works we use it directly;
+// where it blocks datacenters (Al Jazeera Arabic, Al Arabiya) we pull that
+// outlet's articles through Google News scoped to its domain (site:…), which
+// returns the outlet's real stories in the chosen language.
 const SOURCE_FEEDS = {
   en: [
     { url: 'https://feeds.bbci.co.uk/news/world/rss.xml', source: 'BBC News' },
     { url: 'https://www.aljazeera.com/xml/rss/all.xml', source: 'Al Jazeera' },
     { url: 'https://feeds.skynews.com/feeds/rss/world.xml', source: 'Sky News' },
-    { url: 'https://english.alarabiya.net/.mrss/en.xml', source: 'Al Arabiya' },
+    { url: googleNews('site:english.alarabiya.net', 'en'), source: 'Al Arabiya' },
   ],
   fr: [
     { url: 'https://www.france24.com/fr/rss', source: 'France 24' },
   ],
   ar: [
     { url: 'https://feeds.bbci.co.uk/arabic/rss.xml', source: 'BBC عربي' },
-    { url: 'https://www.aljazeera.net/xml/rss/all.xml', source: 'الجزيرة' },
-    { url: 'https://www.alarabiya.net/.mrss/ar.xml', source: 'العربية' },
+    { url: googleNews('site:aljazeera.net', 'ar'), source: 'الجزيرة' },
+    { url: googleNews('site:alarabiya.net', 'ar'), source: 'العربية' },
+    { url: googleNews('site:skynewsarabia.com', 'ar'), source: 'سكاي نيوز عربية' },
   ],
 };
 

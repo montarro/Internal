@@ -143,6 +143,15 @@ var CATEGORIES = [
 ];
 var DEFAULT_SELECTED = ["world","tunisia","middleeast","northafrica","france"];
 
+// Aymen's preferred outlets, pulled via Google News scoped to each outlet's
+// domain so we get the real source in the chosen language (e.g. aljazeera.net
+// = Al Jazeera Arabic). Added to the broad "World" view.
+var SOURCE_SITES = {
+  en:["bbc.com","aljazeera.com","news.sky.com","english.alarabiya.net"],
+  fr:["france24.com","aljazeera.com"],
+  ar:["aljazeera.net","alarabiya.net","skynewsarabia.com","bbc.com/arabic"]
+};
+
 var I18N = {
   en:{subtitle:"Pick the subjects you care about and pull matching headlines from across the web.",
     placeholder:"Add a keyword (e.g. election, football, energy)…",tagline:"What's happening today",
@@ -278,7 +287,12 @@ async function load(){
   var cats = [...selected];
   if(!cats.length && !keyword) cats = DEFAULT_SELECTED.slice();
   var urls = new Set();
-  CATEGORIES.forEach(function(c){ if(cats.indexOf(c.key)!==-1) urls.add(gnews(c.q[lang], lang)); });
+  CATEGORIES.forEach(function(c){
+    if(cats.indexOf(c.key)!==-1){
+      urls.add(gnews(c.q[lang], lang));
+      if(c.key==="world") (SOURCE_SITES[lang]||[]).forEach(function(s){ urls.add(gnews("site:"+s, lang)); });
+    }
+  });
   if(keyword) urls.add(gnews(keyword, lang));
 
   var lists = await Promise.all([...urls].map(fetchFeed));
