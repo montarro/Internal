@@ -227,7 +227,7 @@ h1{
   font-size:11px;
   font-style:italic;
 }
-.entry .edel{
+.entry .edel, .entry .eedit{
   background:none;
   border:none;
   color:var(--muted);
@@ -237,6 +237,41 @@ h1{
   flex-shrink:0;
 }
 .entry .edel:hover{color:var(--coral);}
+.entry .eedit:hover{color:var(--gold);}
+
+/* inline edit form */
+.entry.editing{padding:8px 10px;}
+.editform{
+  display:grid;
+  grid-template-columns:70px 1fr 90px auto auto;
+  gap:6px;
+  width:100%;
+  align-items:center;
+}
+.editform select, .editform input{
+  background:var(--surface-2);
+  border:1px solid var(--line);
+  color:var(--text);
+  border-radius:7px;
+  padding:7px 8px;
+  font-family:'Inter',sans-serif;
+  font-size:13px;
+  width:100%;
+}
+.editform input.einAmt{font-family:'IBM Plex Mono',monospace;}
+.editform select:focus, .editform input:focus{outline:none;border-color:var(--gold);}
+.editform .esave, .editform .ecancel{
+  border:none;
+  border-radius:7px;
+  cursor:pointer;
+  font-size:14px;
+  padding:7px 10px;
+  font-weight:600;
+}
+.editform .esave{background:var(--teal);color:#0E1216;}
+.editform .esave:hover{filter:brightness(1.1);}
+.editform .ecancel{background:var(--surface-2);color:var(--muted);border:1px solid var(--line);}
+.editform .ecancel:hover{color:var(--text);border-color:var(--coral);}
 .entry .ehouse{
   font-family:'Inter',sans-serif;
   font-size:10px;
@@ -388,6 +423,7 @@ const THIS_WEEK_START = toISO(sundayOf(TODAY));
 
 let currentWeekStart = THIS_WEEK_START;
 let selectedDay = null; // null = show all
+let editingId = null;   // id of the entry currently being edited
 let weekData = { budget: null, entries: [] };
 
 const WEEK_SEEDS = {
@@ -451,6 +487,7 @@ function isHouseEntry(e){ return e.desc.trim().toLowerCase().includes('house'); 
 async function loadWeek(weekStart){
   currentWeekStart = weekStart;
   selectedDay = null;
+  editingId = null;
   let stored = null;
   try{
     const res = await storage.get('ledger:' + weekStart, false);
@@ -525,20 +562,84 @@ function render(){
     shown.forEach(e => {
       const row = document.createElement('div');
       row.className = 'entry';
+
+      if(editingId === e.id){
+        // ---- edit mode ----
+        row.classList.add('editing');
+        const form = document.createElement('div');
+        form.className = 'editform';
+
+        const daySel = document.createElement('select');
+        daySel.innerHTML = DAY_NAMES.map((n,i)=>`<option value="${i}">${n}</option>`).join('');
+        daySel.value = e.day;
+
+        const descIn = document.createElement('input');
+        descIn.type = 'text';
+        descIn.value = e.desc;              // set via property — safe with quotes/apostrophes
+
+        const amtIn = document.createElement('input');
+        amtIn.type = 'number';
+        amtIn.step = '0.01';
+        amtIn.className = 'einAmt';
+        amtIn.value = e.amount;
+
+        const saveBtn = document.createElement('button');
+        saveBtn.className = 'esave';
+        saveBtn.title = 'Save';
+        saveBtn.textContent = '✓';
+
+        const cancelBtn = document.createElement('button');
+        cancelBtn.className = 'ecancel';
+        cancelBtn.title = 'Cancel';
+        cancelBtn.textContent = '✕';
+
+        const commit = () => {
+          const nd = descIn.value.trim();
+          const na = parseFloat(amtIn.value);
+          if(!nd || isNaN(na)) return;
+          e.desc = nd;
+          e.amount = na;
+          e.day = Number(daySel.value);
+          editingId = null;
+          saveWeek(); render();
+        };
+        const cancel = () => { editingId = null; render(); };
+
+        saveBtn.onclick = commit;
+        cancelBtn.onclick = cancel;
+        [descIn, amtIn].forEach(inp => inp.addEventListener('keydown', ev => {
+          if(ev.key === 'Enter') commit();
+          if(ev.key === 'Escape') cancel();
+        }));
+
+        form.append(daySel, descIn, amtIn, saveBtn, cancelBtn);
+        row.appendChild(form);
+        list.appendChild(row);
+        setTimeout(() => descIn.focus(), 0);
+        return;
+      }
+
+      // ---- display mode ----
       row.innerHTML = `
         <div class="edesc">
           ${selectedDay===null ? `<span class="eday">${DAY_NAMES[e.day]}</span>` : ''}
           <span>${e.desc}</span>
           ${e.flag ? `<span class="eflag">${e.flag}</span>` : ''}
         </div>
-        <div style="display:flex;align-items:center;gap:8px;">
+        <div style="display:flex;align-items:center;gap:6px;">
           ${isHouseEntry(e) ? '<span class="ehouse">House</span>' : ''}
           <span class="eamt">${fmt(Number(e.amount))}</span>
+          <button class="eedit" title="Edit">✎</button>
           <button class="edel" title="Remove">✕</button>
         </div>
       `;
+      row.querySelector('.eedit').onclick = () => {
+        editingId = e.id;
+        render();
+      };
       row.querySelector('.edel').onclick = () => {
         weekData.entries = weekData.entries.filter(x => x.id !== e.id);
+        if(editingId === e.id) editingId = null;
         saveWeek(); render();
       };
       list.appendChild(row);
