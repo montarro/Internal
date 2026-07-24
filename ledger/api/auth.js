@@ -24,7 +24,10 @@ function normalizeEmail(e) {
   return String(e || '').trim().toLowerCase();
 }
 function validEmail(e) {
-  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e);
+  if (typeof e !== 'string' || e.length < 5 || e.indexOf(' ') !== -1) return false;
+  const at = e.indexOf('@');
+  const dot = e.lastIndexOf('.');
+  return at > 0 && dot > at + 1 && dot < e.length - 1;
 }
 
 module.exports = async (req, res) => {

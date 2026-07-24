@@ -709,6 +709,12 @@ document.getElementById('signOut').onclick = async () => {
 };
 
 // ---- import expenses saved in this browser (from the old localStorage app) --
+function isWeekStr(w){
+  if(typeof w !== 'string' || w.length !== 10) return false;
+  if(w[4] !== '-' || w[7] !== '-') return false;
+  for(let i=0;i<10;i++){ if(i===4||i===7) continue; if(w[i]<'0'||w[i]>'9') return false; }
+  return true;
+}
 function localLedgerKeys(){
   const keys = [];
   try{
@@ -736,7 +742,7 @@ document.getElementById('importGo').onclick = async () => {
   const keys = localLedgerKeys();
   for(const k of keys){
     const week = k.slice('ledger:'.length);
-    if(!/^\d{4}-\d{2}-\d{2}$/.test(week)) continue;
+    if(!isWeekStr(week)) continue;
     try{
       const data = JSON.parse(localStorage.getItem(k));
       await fetch('/api/ledger', {

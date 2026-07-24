@@ -5,7 +5,14 @@
 const { getSession, readBody } = require('./_lib');
 
 function validWeek(w) {
-  return /^\d{4}-\d{2}-\d{2}$/.test(String(w || ''));
+  w = String(w || '');
+  if (w.length !== 10) return false;
+  if (w[4] !== '-' || w[7] !== '-') return false;
+  for (let i = 0; i < 10; i++) {
+    if (i === 4 || i === 7) continue;
+    if (w[i] < '0' || w[i] > '9') return false;
+  }
+  return true;
 }
 
 // Keep only the fields we expect, so a client can't stuff arbitrary junk in.
