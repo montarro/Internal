@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="dark">
+<title>Weekly Ledger · Sign in</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+:root{
+  --bg:#14171C; --surface:#1D2129; --surface-2:#252A33; --line:#2A2F38;
+  --text:#E9E7E2; --muted:#8B93A0; --teal:#4FB8AA; --coral:#E2624B; --gold:#D9A94E;
+}
+*{box-sizing:border-box;}
+body{
+  margin:0; min-height:100vh; background:var(--bg); color:var(--text);
+  font-family:'Inter',sans-serif; -webkit-font-smoothing:antialiased;
+  display:flex; align-items:center; justify-content:center; padding:20px;
+}
+.card{
+  width:100%; max-width:380px; background:var(--surface);
+  border:1px solid var(--line); border-radius:16px; padding:28px 24px;
+}
+h1{
+  font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:24px;
+  margin:0 0 4px; letter-spacing:-0.02em;
+}
+.sub{ color:var(--muted); font-size:13px; margin:0 0 22px; }
+label{ display:block; font-size:12px; color:var(--muted); margin:14px 0 6px; }
+input{
+  width:100%; background:var(--surface-2); border:1px solid var(--line);
+  color:var(--text); border-radius:9px; padding:11px 12px;
+  font-family:'Inter',sans-serif; font-size:14px;
+}
+input:focus{ outline:none; border-color:var(--gold); }
+button.primary{
+  width:100%; margin-top:20px; background:var(--teal); color:#0E1216;
+  border:none; border-radius:9px; padding:12px; font-weight:600; font-size:15px;
+  cursor:pointer; transition:filter .15s;
+}
+button.primary:hover{ filter:brightness(1.08); }
+button.primary:disabled{ opacity:.6; cursor:default; }
+.toggle{
+  margin-top:18px; text-align:center; font-size:13px; color:var(--muted);
+}
+.toggle a{ color:var(--gold); cursor:pointer; text-decoration:none; }
+.toggle a:hover{ text-decoration:underline; }
+.msg{
+  margin-top:16px; font-size:13px; padding:10px 12px; border-radius:9px;
+  display:none;
+}
+.msg.err{ display:block; background:rgba(226,98,75,.12); color:var(--coral); border:1px solid rgba(226,98,75,.3); }
+.brand{
+  font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--muted);
+  letter-spacing:.08em; text-transform:uppercase; margin-bottom:18px;
+}
+</style>
+</head>
+<body>
+  <div class="card">
+    <div class="brand">Weekly Ledger</div>
+    <h1 id="title">Sign in</h1>
+    <p class="sub" id="subtitle">Your ledger is private to your account.</p>
+
+    <form id="form">
+      <label for="email">Email</label>
+      <input type="email" id="email" autocomplete="email" required>
+      <label for="password">Password</label>
+      <input type="password" id="password" autocomplete="current-password" required>
+      <button type="submit" class="primary" id="submitBtn">Sign in</button>
+    </form>
+
+    <div class="msg" id="msg"></div>
+
+    <div class="toggle" id="toggle">
+      New here? <a id="toggleLink">Create an account</a>
+    </div>
+  </div>
+
+<script>
+let mode = 'login'; // or 'signup'
+const $ = (id) => document.getElementById(id);
+
+function setMode(m){
+  mode = m;
+  if(m === 'login'){
+    $('title').textContent = 'Sign in';
+    $('subtitle').textContent = 'Your ledger is private to your account.';
+    $('submitBtn').textContent = 'Sign in';
+    $('password').autocomplete = 'current-password';
+    $('toggle').innerHTML = 'New here? <a id="toggleLink">Create an account</a>';
+  } else {
+    $('title').textContent = 'Create account';
+    $('subtitle').textContent = 'Pick a password (6+ characters). Only you will see your data.';
+    $('submitBtn').textContent = 'Create account';
+    $('password').autocomplete = 'new-password';
+    $('toggle').innerHTML = 'Already have an account? <a id="toggleLink">Sign in</a>';
+  }
+  $('toggleLink').onclick = () => setMode(mode === 'login' ? 'signup' : 'login');
+  hideMsg();
+}
+function showErr(t){ const m=$('msg'); m.textContent=t; m.className='msg err'; }
+function hideMsg(){ $('msg').className='msg'; }
+
+$('form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  hideMsg();
+  const email = $('email').value.trim();
+  const password = $('password').value;
+  $('submitBtn').disabled = true;
+  try{
+    const r = await fetch('/api/auth', {
+      method:'POST',
+      headers:{'content-type':'application/json'},
+      body: JSON.stringify({ action: mode, email, password })
+    });
+    const data = await r.json().catch(()=>({}));
+    if(r.ok){
+      location.href = '/';
+      return;
+    }
+    showErr(data.error || 'Something went wrong.');
+  }catch(err){
+    showErr('Network error — please try again.');
+  }finally{
+    $('submitBtn').disabled = false;
+  }
+});
+
+// If already signed in, skip straight to the app.
+(async () => {
+  try{
+    const r = await fetch('/api/auth');
+    if(r.ok){ location.href = '/'; }
+  }catch(e){}
+})();
+
+setMode('login');
+</script>
+</body>
+</html>

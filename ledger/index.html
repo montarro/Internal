@@ -34,6 +34,55 @@ body{
   padding:28px 20px 60px;
 }
 
+/* account bar */
+.acct{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  margin-bottom:18px;
+  font-size:12px;
+  color:var(--muted);
+  font-family:'IBM Plex Mono',monospace;
+}
+.acct .who{ overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.acct button{
+  background:var(--surface);
+  border:1px solid var(--line);
+  color:var(--muted);
+  border-radius:8px;
+  padding:6px 12px;
+  font-family:'Inter',sans-serif;
+  font-size:12px;
+  cursor:pointer;
+  transition:border-color .15s,color .15s;
+  flex-shrink:0;
+}
+.acct button:hover{ border-color:var(--coral); color:var(--text); }
+
+/* import banner */
+.import{
+  display:none;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  background:rgba(217,169,78,.10);
+  border:1px solid rgba(217,169,78,.35);
+  border-radius:10px;
+  padding:10px 14px;
+  margin-bottom:18px;
+  font-size:13px;
+}
+.import.show{ display:flex; }
+.import .itxt{ color:var(--text); }
+.import .iact{ display:flex; gap:8px; flex-shrink:0; }
+.import button{
+  border:none; border-radius:8px; padding:7px 12px; font-size:12px;
+  font-weight:600; cursor:pointer;
+}
+.import .igo{ background:var(--gold); color:#0E1216; }
+.import .idismiss{ background:transparent; color:var(--muted); border:1px solid var(--line); }
+
 /* header */
 .top{
   display:flex;
@@ -325,15 +374,26 @@ h1{
 .srow.house .v{color:var(--gold);}
 .srow.house .l{font-style:italic;}
 
-.stamp{
-  position:absolute;
-  top:-8px;right:-8px;
-  width:0;height:0;
+.loading{
+  text-align:center; color:var(--muted); font-size:14px; padding:60px 0;
 }
 </style>
 </head>
 <body>
 <div class="wrap">
+
+  <div class="acct">
+    <div class="who" id="acctWho">…</div>
+    <button id="signOut">Sign out</button>
+  </div>
+
+  <div class="import" id="importBanner">
+    <div class="itxt" id="importText">Found expenses saved on this device. Import them into your account?</div>
+    <div class="iact">
+      <button class="igo" id="importGo">Import</button>
+      <button class="idismiss" id="importDismiss">Dismiss</button>
+    </div>
+  </div>
 
   <div class="top">
     <div>
@@ -385,21 +445,28 @@ h1{
 
 <script>
 /*
-  Storage: each visitor keeps their OWN private copy in their browser
-  (localStorage). The seeded weeks below show up for everyone on first
-  visit, but any edits stay local to that person's device/session —
-  nobody else sees them.
+  Storage now lives in your account on the server (via /api/ledger), so your
+  data is private to you and follows you across devices. Each entry/budget
+  change is saved to the server. Other people who open the link get their own
+  empty account — they can't see your data.
 */
 const storage = {
   async get(key){
-    try{
-      const value = localStorage.getItem(key);
-      return value === null ? null : { value };
-    }catch(e){ return null; }
+    const week = key.split(':')[1];
+    const r = await fetch('/api/ledger?week=' + encodeURIComponent(week));
+    if(r.status === 401){ location.href = '/login.html'; return null; }
+    if(!r.ok) return null;
+    const data = await r.json();
+    return { value: JSON.stringify(data) };
   },
   async set(key, value){
-    try{ localStorage.setItem(key, value); }
-    catch(e){ console.error('storage save failed', e); }
+    const week = key.split(':')[1];
+    const r = await fetch('/api/ledger', {
+      method:'POST',
+      headers:{'content-type':'application/json'},
+      body: JSON.stringify({ week, data: JSON.parse(value) })
+    });
+    if(r.status === 401){ location.href = '/login.html'; }
   }
 };
 
@@ -417,7 +484,6 @@ function sundayOf(date){
   return d;
 }
 
-// figure out "this week" (Sun-Sat) relative to today
 const TODAY = new Date();
 const THIS_WEEK_START = toISO(sundayOf(TODAY));
 
@@ -425,60 +491,6 @@ let currentWeekStart = THIS_WEEK_START;
 let selectedDay = null; // null = show all
 let editingId = null;   // id of the entry currently being edited
 let weekData = { budget: null, entries: [] };
-
-const WEEK_SEEDS = {
-  '2026-07-19': { entries: [
-    {day:0, desc:'Apple iCloud', amount:14.99},
-    {day:0, desc:'Coles', amount:16.30},
-    {day:0, desc:'Just Ripe', amount:9.99},
-    {day:1, desc:'House', amount:1300},
-    {day:1, desc:'Aldi', amount:27.10},
-    {day:1, desc:'Linkt', amount:20},
-    {day:1, desc:'Bodero', amount:1, flag:'confirm amount'},
-    {day:2, desc:'Kmart', amount:18},
-    {day:2, desc:'Kmart', amount:17},
-    {day:2, desc:'Coles', amount:30},
-    {day:2, desc:'El Jannah', amount:37.90},
-    {day:2, desc:'Lawyer consult', amount:318},
-    {day:2, desc:'Barber', amount:70},
-    {day:2, desc:'Sent', amount:20},
-    {day:2, desc:'Petrol', amount:95},
-  ]},
-  '2026-07-12': { entries: [
-    {day:0, desc:'EG Group', amount:8},
-    {day:0, desc:'House', amount:2700},
-    {day:0, desc:'Laundromat', amount:5},
-    {day:0, desc:'Sent', amount:30},
-    {day:1, desc:'Coffee for client', amount:13.20},
-    {day:1, desc:'Coinspot deposit', amount:1500},
-    {day:1, desc:'Petrol', amount:86},
-    {day:1, desc:'Coles', amount:35},
-    {day:1, desc:'Zambrero', amount:44},
-    {day:1, desc:'Atomic', amount:15.95},
-    {day:1, desc:"Grill'd", amount:11.90},
-    {day:1, desc:'Skool', amount:12.99},
-    {day:1, desc:"Wendy's", amount:15},
-    {day:2, desc:'Business name', amount:47},
-    {day:2, desc:'Woolworths', amount:18},
-    {day:2, desc:'Subway', amount:9.70},
-    {day:2, desc:'MRI', amount:300},
-    {day:2, desc:'Equifax', amount:14.95},
-    {day:3, desc:'Petrol', amount:60},
-    {day:3, desc:'Withdraw', amount:100},
-    {day:3, desc:'Apple', amount:20.49},
-    {day:3, desc:'Claude', amount:170},
-    {day:3, desc:'Gym', amount:25.90},
-    {day:3, desc:'Amazon', amount:2.99},
-    {day:5, desc:'Coffee for client', amount:13.20},
-    {day:5, desc:'Bowling for client', amount:10},
-    {day:5, desc:'Sent', amount:30},
-    {day:5, desc:'Gym', amount:13.95},
-    {day:5, desc:'Gym', amount:15.95, flag:'duplicate charge — check for refund'},
-    {day:6, desc:"McDonald's", amount:5.30},
-    {day:6, desc:'Spotify', amount:22.99},
-    {day:6, desc:'Sent', amount:30},
-  ]},
-};
 
 let idCounter = 1;
 function nextId(){ return idCounter++; }
@@ -490,26 +502,21 @@ async function loadWeek(weekStart){
   editingId = null;
   let stored = null;
   try{
-    const res = await storage.get('ledger:' + weekStart, false);
+    const res = await storage.get('ledger:' + weekStart);
     if(res) stored = JSON.parse(res.value);
   }catch(e){ stored = null; }
 
-  if(stored){
-    weekData = stored;
-  } else if(WEEK_SEEDS[weekStart]){
-    weekData = {
-      budget: null,
-      entries: WEEK_SEEDS[weekStart].entries.map(e => ({...e, id: nextId()}))
-    };
-    await saveWeek();
-  } else {
-    weekData = { budget: null, entries: [] };
-  }
+  weekData = (stored && Array.isArray(stored.entries))
+    ? { budget: stored.budget ?? null, entries: stored.entries }
+    : { budget: null, entries: [] };
+
+  // make sure every entry has a stable local id for edit/delete
+  weekData.entries = weekData.entries.map(e => (e && e.id != null) ? e : { ...e, id: nextId() });
   render();
 }
 
 async function saveWeek(){
-  await storage.set('ledger:' + currentWeekStart, JSON.stringify(weekData), false);
+  await storage.set('ledger:' + currentWeekStart, JSON.stringify(weekData));
 }
 
 function render(){
@@ -518,12 +525,10 @@ function render(){
   document.getElementById('weekRange').textContent =
     fmtDate(start) + ' – ' + fmtDate(end) + (currentWeekStart===THIS_WEEK_START ? '  ·  this week' : '');
 
-  // day subtotals (anything named "house" is tracked separately, excluded here)
   const subtotals = [0,0,0,0,0,0,0];
   weekData.entries.forEach(e => { if(!isHouseEntry(e)) subtotals[e.day] += Number(e.amount||0); });
   const maxSub = Math.max(...subtotals, 1);
 
-  // strip
   const strip = document.getElementById('strip');
   strip.innerHTML = '';
   for(let i=0;i<7;i++){
@@ -541,13 +546,11 @@ function render(){
     strip.appendChild(el);
   }
 
-  // day select in add form
   const inDay = document.getElementById('inDay');
   const prevVal = inDay.value;
   inDay.innerHTML = DAY_NAMES.map((n,i)=>`<option value="${i}">${n}</option>`).join('');
   inDay.value = selectedDay!==null ? selectedDay : (prevVal || new Date().getUTCDay());
 
-  // entries list
   document.getElementById('entriesLabel').textContent =
     selectedDay!==null ? DAY_NAMES[selectedDay] + ' entries' : 'All entries';
   const list = document.getElementById('entries');
@@ -575,7 +578,7 @@ function render(){
 
         const descIn = document.createElement('input');
         descIn.type = 'text';
-        descIn.value = e.desc;              // set via property — safe with quotes/apostrophes
+        descIn.value = e.desc;
 
         const amtIn = document.createElement('input');
         amtIn.type = 'number';
@@ -646,7 +649,6 @@ function render(){
     });
   }
 
-  // summary
   const total = weekData.entries.filter(e=>!isHouseEntry(e)).reduce((s,e)=>s+Number(e.amount||0),0);
   const houseTotal = weekData.entries.filter(e=>isHouseEntry(e)).reduce((s,e)=>s+Number(e.amount||0),0);
   document.getElementById('sumSpent').textContent = fmt(total);
@@ -699,7 +701,70 @@ document.getElementById('nextWeek').onclick = () => {
 };
 document.getElementById('todayBtn').onclick = () => loadWeek(THIS_WEEK_START);
 
-loadWeek(THIS_WEEK_START);
+// ---- sign out --------------------------------------------------------------
+document.getElementById('signOut').onclick = async () => {
+  try{ await fetch('/api/auth', { method:'POST', headers:{'content-type':'application/json'}, body: JSON.stringify({ action:'logout' }) }); }
+  catch(e){}
+  location.href = '/login.html';
+};
+
+// ---- import expenses saved in this browser (from the old localStorage app) --
+function localLedgerKeys(){
+  const keys = [];
+  try{
+    for(let i=0;i<localStorage.length;i++){
+      const k = localStorage.key(i);
+      if(k && k.indexOf('ledger:') === 0) keys.push(k);
+    }
+  }catch(e){}
+  return keys;
+}
+function maybeShowImport(){
+  const keys = localLedgerKeys();
+  if(keys.length){
+    document.getElementById('importText').textContent =
+      `Found ${keys.length} week${keys.length>1?'s':''} of expenses saved on this device. Import into your account?`;
+    document.getElementById('importBanner').classList.add('show');
+  }
+}
+document.getElementById('importDismiss').onclick = () => {
+  document.getElementById('importBanner').classList.remove('show');
+};
+document.getElementById('importGo').onclick = async () => {
+  const btn = document.getElementById('importGo');
+  btn.disabled = true; btn.textContent = 'Importing…';
+  const keys = localLedgerKeys();
+  for(const k of keys){
+    const week = k.slice('ledger:'.length);
+    if(!/^\d{4}-\d{2}-\d{2}$/.test(week)) continue;
+    try{
+      const data = JSON.parse(localStorage.getItem(k));
+      await fetch('/api/ledger', {
+        method:'POST', headers:{'content-type':'application/json'},
+        body: JSON.stringify({ week, data })
+      });
+    }catch(e){}
+  }
+  // clear the device copy now that it's safely in the account
+  keys.forEach(k => { try{ localStorage.removeItem(k); }catch(e){} });
+  document.getElementById('importBanner').classList.remove('show');
+  loadWeek(currentWeekStart);
+};
+
+// ---- boot ------------------------------------------------------------------
+(async () => {
+  try{
+    const r = await fetch('/api/auth');
+    if(!r.ok){ location.href = '/login.html'; return; }
+    const me = await r.json();
+    document.getElementById('acctWho').textContent = me.email || 'Signed in';
+  }catch(e){
+    location.href = '/login.html';
+    return;
+  }
+  maybeShowImport();
+  loadWeek(THIS_WEEK_START);
+})();
 </script>
 </body>
 </html>
