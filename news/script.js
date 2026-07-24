@@ -354,7 +354,9 @@ function renderList(list) {
     return;
   }
   els.stateBox.hidden = true;
-  els.feed.innerHTML = list.map(cardHTML).join('');
+  // Photo articles first (stable order within each group), text-only below.
+  const ordered = list.filter((a) => a.image).concat(list.filter((a) => !a.image));
+  els.feed.innerHTML = ordered.map(cardHTML).join('');
 }
 
 function showState(title, hint, isError) {
