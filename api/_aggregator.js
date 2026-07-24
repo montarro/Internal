@@ -95,6 +95,18 @@ const CHANNELS = {
   sky: { label: { en: 'Sky News', fr: 'Sky News', ar: 'سكاي نيوز عربية' }, domain: { en: 'news.sky.com', fr: 'news.sky.com', ar: 'skynewsarabia.com' } },
   alarabiya: { label: { en: 'Al Arabiya', fr: 'Al Arabiya', ar: 'العربية' }, domain: { en: 'english.alarabiya.net', fr: 'english.alarabiya.net', ar: 'alarabiya.net' } },
   france24: { label: { en: 'France 24', fr: 'France 24', ar: 'فرانس 24' }, domain: { en: 'france24.com', fr: 'france24.com', ar: 'france24.com' } },
+  // Always shows Al Jazeera's Arabic edition regardless of the UI language
+  // (the existing "aljazeera" channel already does this when UI language = AR;
+  // this entry is for picking it while browsing the site in English/French).
+  aljazeera_ar: { label: { en: 'Al Jazeera Arabic', fr: 'Al Jazeera Arabe', ar: 'الجزيرة (عربي)' }, domain: { en: 'aljazeera.net', fr: 'aljazeera.net', ar: 'aljazeera.net' } },
+  bfmtv: { label: { en: 'BFM TV', fr: 'BFM TV', ar: 'بي إف إم تي في' }, domain: { en: 'bfmtv.com', fr: 'bfmtv.com', ar: 'bfmtv.com' } },
+  tf1: { label: { en: 'TF1 Info', fr: 'TF1 Info', ar: 'تي إف 1' }, domain: { en: 'tf1info.fr', fr: 'tf1info.fr', ar: 'tf1info.fr' } },
+  franceinfo: { label: { en: 'France Info', fr: 'France Info', ar: 'فرانس أنفو' }, domain: { en: 'franceinfo.fr', fr: 'franceinfo.fr', ar: 'franceinfo.fr' } },
+  tv5monde: { label: { en: 'TV5 Monde', fr: 'TV5 Monde', ar: 'تي في 5 موند' }, domain: { en: 'tv5monde.com', fr: 'tv5monde.com', ar: 'tv5monde.com' } },
+  skyau: { label: { en: 'Sky News Australia', fr: 'Sky News Australie', ar: 'سكاي نيوز أستراليا' }, domain: { en: 'skynews.com.au', fr: 'skynews.com.au', ar: 'skynews.com.au' } },
+  abcau: { label: { en: 'ABC Australia', fr: 'ABC Australie', ar: 'إيه بي سي أستراليا' }, domain: { en: 'abc.net.au', fr: 'abc.net.au', ar: 'abc.net.au' } },
+  rtarabic: { label: { en: 'RT Arabic', fr: 'RT Arabic', ar: 'آر تي بالعربية' }, domain: { en: 'arabic.rt.com', fr: 'arabic.rt.com', ar: 'arabic.rt.com' } },
+  asharq: { label: { en: 'Asharq Al-Awsat', fr: 'Asharq Al-Awsat', ar: 'الشرق الأوسط (صحيفة)' }, domain: { en: 'aawsat.com', fr: 'aawsat.com', ar: 'aawsat.com' } },
 };
 
 // When a single channel is picked we read its OWN RSS feed (real article URLs +
@@ -131,6 +143,24 @@ const CHANNEL_FEEDS = {
     fr: ['https://www.france24.com/fr/rss'],
     ar: ['https://www.france24.com/ar/rss'],
   },
+  // The following are single-language outlets: the same feed is used no matter
+  // which UI language is selected, so the channel always shows its real,
+  // native-language content.
+  aljazeera_ar: { en: ['https://www.aljazeera.net/feed'], fr: ['https://www.aljazeera.net/feed'], ar: ['https://www.aljazeera.net/feed'] },
+  franceinfo: { en: ['https://www.franceinfo.fr/titres.rss'], fr: ['https://www.franceinfo.fr/titres.rss'], ar: ['https://www.franceinfo.fr/titres.rss'] },
+  tv5monde: { en: ['https://information.tv5monde.com/rss.xml'], fr: ['https://information.tv5monde.com/rss.xml'], ar: ['https://information.tv5monde.com/rss.xml'] },
+  abcau: { en: ['https://www.abc.net.au/news/feed/51120/rss.xml'], fr: ['https://www.abc.net.au/news/feed/51120/rss.xml'], ar: ['https://www.abc.net.au/news/feed/51120/rss.xml'] },
+  rtarabic: { en: ['https://arabic.rt.com/rss/'], fr: ['https://arabic.rt.com/rss/'], ar: ['https://arabic.rt.com/rss/'] },
+  asharq: { en: ['https://aawsat.com/feed'], fr: ['https://aawsat.com/feed'], ar: ['https://aawsat.com/feed'] },
+  // No working direct RSS found after probing several real candidate paths on
+  // each site (all returned 404/empty, or the modern JS-rendered site has no
+  // feed left). These fall back to a Google News site: search, which works but
+  // — like Al Arabiya — carries no photos, since Google News links can't be
+  // scraped for og:image (see fetchOgImage's exclusion). Confirmed by direct
+  // probing, not a guess.
+  bfmtv: { en: [googleNews('site:bfmtv.com', 'fr')], fr: [googleNews('site:bfmtv.com', 'fr')], ar: [googleNews('site:bfmtv.com', 'fr')] },
+  tf1: { en: [googleNews('site:tf1info.fr', 'fr')], fr: [googleNews('site:tf1info.fr', 'fr')], ar: [googleNews('site:tf1info.fr', 'fr')] },
+  skyau: { en: [googleNews('site:skynews.com.au', 'en')], fr: [googleNews('site:skynews.com.au', 'en')], ar: [googleNews('site:skynews.com.au', 'en')] },
 };
 
 // Loose topic matchers for narrowing a single channel's feed by chip. World is

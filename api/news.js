@@ -33,7 +33,6 @@ module.exports = async function handler(req, res) {
       res.end(JSON.stringify({ channels: channelList(lang) }));
       return;
     }
-
     const categories = (url.searchParams.get('categories') || '')
       .split(',')
       .map((s) => s.trim())

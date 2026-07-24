@@ -167,7 +167,16 @@ var CHANNELS = [
   {key:"bbc",       label:{en:"BBC",fr:"BBC",ar:"BBC عربي"},                     domain:{en:"bbc.com",fr:"bbc.com",ar:"bbc.com/arabic"}},
   {key:"sky",       label:{en:"Sky News",fr:"Sky News",ar:"سكاي نيوز عربية"},    domain:{en:"news.sky.com",fr:"news.sky.com",ar:"skynewsarabia.com"}},
   {key:"alarabiya", label:{en:"Al Arabiya",fr:"Al Arabiya",ar:"العربية"},        domain:{en:"english.alarabiya.net",fr:"english.alarabiya.net",ar:"alarabiya.net"}},
-  {key:"france24",  label:{en:"France 24",fr:"France 24",ar:"فرانس 24"},         domain:{en:"france24.com",fr:"france24.com",ar:"france24.com"}}
+  {key:"france24",  label:{en:"France 24",fr:"France 24",ar:"فرانس 24"},         domain:{en:"france24.com",fr:"france24.com",ar:"france24.com"}},
+  {key:"aljazeera_ar", label:{en:"Al Jazeera Arabic",fr:"Al Jazeera Arabe",ar:"الجزيرة (عربي)"}, domain:{en:"aljazeera.net",fr:"aljazeera.net",ar:"aljazeera.net"}},
+  {key:"franceinfo",   label:{en:"France Info",fr:"France Info",ar:"فرانس أنفو"},                domain:{en:"franceinfo.fr",fr:"franceinfo.fr",ar:"franceinfo.fr"}},
+  {key:"tv5monde",     label:{en:"TV5 Monde",fr:"TV5 Monde",ar:"تي في 5 موند"},                  domain:{en:"tv5monde.com",fr:"tv5monde.com",ar:"tv5monde.com"}},
+  {key:"abcau",        label:{en:"ABC Australia",fr:"ABC Australie",ar:"إيه بي سي أستراليا"},     domain:{en:"abc.net.au",fr:"abc.net.au",ar:"abc.net.au"}},
+  {key:"rtarabic",     label:{en:"RT Arabic",fr:"RT Arabic",ar:"آر تي بالعربية"},                 domain:{en:"arabic.rt.com",fr:"arabic.rt.com",ar:"arabic.rt.com"}},
+  {key:"asharq",       label:{en:"Asharq Al-Awsat",fr:"Asharq Al-Awsat",ar:"الشرق الأوسط (صحيفة)"},domain:{en:"aawsat.com",fr:"aawsat.com",ar:"aawsat.com"}},
+  {key:"bfmtv",        label:{en:"BFM TV",fr:"BFM TV",ar:"بي إف إم تي في"},                       domain:{en:"bfmtv.com",fr:"bfmtv.com",ar:"bfmtv.com"}},
+  {key:"tf1",          label:{en:"TF1 Info",fr:"TF1 Info",ar:"تي إف 1"},                          domain:{en:"tf1info.fr",fr:"tf1info.fr",ar:"tf1info.fr"}},
+  {key:"skyau",        label:{en:"Sky News Australia",fr:"Sky News Australie",ar:"سكاي نيوز أستراليا"}, domain:{en:"skynews.com.au",fr:"skynews.com.au",ar:"skynews.com.au"}}
 ];
 function channelByKey(k){ for(var i=0;i<CHANNELS.length;i++) if(CHANNELS[i].key===k) return CHANNELS[i]; return null; }
 
@@ -177,8 +186,24 @@ var CHANNEL_FEEDS = {
   bbc:{ en:["https://feeds.bbci.co.uk/news/world/rss.xml"], fr:["https://feeds.bbci.co.uk/news/world/rss.xml"], ar:["https://feeds.bbci.co.uk/arabic/rss.xml"] },
   sky:{ en:["https://feeds.skynews.com/feeds/rss/world.xml"], fr:["https://feeds.skynews.com/feeds/rss/world.xml"], ar:["https://www.skynewsarabia.com/rss"] },
   alarabiya:{ en:[], fr:[], ar:[] },
-  france24:{ en:["https://www.france24.com/en/rss"], fr:["https://www.france24.com/fr/rss"], ar:["https://www.france24.com/ar/rss"] }
+  france24:{ en:["https://www.france24.com/en/rss"], fr:["https://www.france24.com/fr/rss"], ar:["https://www.france24.com/ar/rss"] },
+  aljazeera_ar:{ en:["https://www.aljazeera.net/feed"], fr:["https://www.aljazeera.net/feed"], ar:["https://www.aljazeera.net/feed"] },
+  franceinfo:{ en:["https://www.franceinfo.fr/titres.rss"], fr:["https://www.franceinfo.fr/titres.rss"], ar:["https://www.franceinfo.fr/titres.rss"] },
+  tv5monde:{ en:["https://information.tv5monde.com/rss.xml"], fr:["https://information.tv5monde.com/rss.xml"], ar:["https://information.tv5monde.com/rss.xml"] },
+  abcau:{ en:["https://www.abc.net.au/news/feed/51120/rss.xml"], fr:["https://www.abc.net.au/news/feed/51120/rss.xml"], ar:["https://www.abc.net.au/news/feed/51120/rss.xml"] },
+  rtarabic:{ en:["https://arabic.rt.com/rss/"], fr:["https://arabic.rt.com/rss/"], ar:["https://arabic.rt.com/rss/"] },
+  asharq:{ en:["https://aawsat.com/feed"], fr:["https://aawsat.com/feed"], ar:["https://aawsat.com/feed"] },
+  // No working direct RSS found for these after probing; falls back to the
+  // Google News site: search (functional, but no photos — Google News links
+  // can't be scraped for og:image, same limitation as Al Arabiya).
+  bfmtv:{ en:[], fr:[], ar:[] },
+  tf1:{ en:[], fr:[], ar:[] },
+  skyau:{ en:[], fr:[], ar:[] }
 };
+// Fallback search language for single-language channels with no direct feed —
+// always their own native language, regardless of UI language selected.
+// (Al Arabiya is bilingual, so it correctly keeps adapting to the UI language.)
+var CHANNEL_FALLBACK_LANG = { bfmtv:"fr", tf1:"fr", skyau:"en" };
 var CAT_TERMS = {
   world:null, sports:["soccer","football","كرة القدم"],
   tunisia:["tunisia","tunisie","tunis","تونس"],
@@ -353,7 +378,10 @@ async function load(){
     // Single channel: read its own RSS feed so photos come through.
     var cf = (CHANNEL_FEEDS[source] && (CHANNEL_FEEDS[source][lang]||CHANNEL_FEEDS[source].en)) || [];
     cf.forEach(function(u){ urls.add(u); });
-    if(!cf.length) urls.add(gnews("site:"+(ch.domain[lang]||ch.domain.en), lang)); // AJ Arabic fallback (no images)
+    if(!cf.length){
+      var fbLang = CHANNEL_FALLBACK_LANG[source] || lang;
+      urls.add(gnews("site:"+(ch.domain[fbLang]||ch.domain.en), fbLang)); // no images for this outlet (see CHANNEL_FEEDS comment)
+    }
   } else {
     CATEGORIES.forEach(function(c){
       if(cats.indexOf(c.key)!==-1){
