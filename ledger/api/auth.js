@@ -93,7 +93,7 @@ module.exports = async (req, res) => {
     return res.status(400).json({ error: 'unknown action' });
   } catch (err) {
     if (err && err.message === 'NO_DB') {
-      return res.status(503).json({ error: 'The database isn’t connected yet. (Owner: connect a KV store in Vercel.)' });
+      return res.status(503).json({ error: 'The database is not connected yet. (Owner: connect a KV store in Vercel.)' });
     }
     console.error('auth error', err);
     return res.status(500).json({ error: 'Something went wrong. Please try again.' });
