@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="color-scheme" content="dark">
-<title>Weekly Ledger · Sign in</title>
+<title>Weekly Ledger - Sign in</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
 :root{
@@ -121,7 +121,7 @@ $('form').addEventListener('submit', async (e) => {
     }
     showErr(data.error || 'Something went wrong.');
   }catch(err){
-    showErr('Network error — please try again.');
+    showErr('Network error - please try again.');
   }finally{
     $('submitBtn').disabled = false;
   }
