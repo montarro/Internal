@@ -3,117 +3,153 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Kombat Arena — Fighting Game Prototype</title>
+<title>Plushie Kombat — Dalmatian Fighting Game</title>
 <style>
-  :root {
-    --bg: #0d0b1a;
-    --p1: #ff4d4d;
-    --p2: #4da6ff;
-    --gold: #ffcc33;
-  }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  html, body {
-    height: 100%;
-    background: radial-gradient(circle at 50% 30%, #241a3a, var(--bg));
-    color: #eee;
-    font-family: "Trebuchet MS", "Segoe UI", system-ui, sans-serif;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
+  :root { --bg:#0d0b1a; --p1:#22c39a; --p2:#ff5ba8; --gold:#ffcc33; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  html,body {
+    height:100%;
+    background:radial-gradient(circle at 50% 25%, #2a2140, var(--bg));
+    color:#eee; font-family:"Trebuchet MS","Segoe UI",system-ui,sans-serif;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    overflow:hidden;
   }
   h1 {
-    font-size: clamp(20px, 4vw, 34px);
-    letter-spacing: 4px;
-    text-transform: uppercase;
-    margin-bottom: 10px;
-    color: var(--gold);
-    text-shadow: 0 0 12px rgba(255,204,51,.5);
+    font-size:clamp(20px,4vw,32px); letter-spacing:4px; text-transform:uppercase;
+    margin-bottom:8px; color:var(--gold); text-shadow:0 0 12px rgba(255,204,51,.5);
   }
   #stage {
-    position: relative;
-    border: 3px solid #4a3a6a;
-    border-radius: 8px;
-    box-shadow: 0 0 40px rgba(0,0,0,.6);
-    background: #000;
-    max-width: 96vw;
+    position:relative; border:3px solid #4a3a6a; border-radius:10px;
+    box-shadow:0 0 40px rgba(0,0,0,.6); background:#000; max-width:96vw;
   }
-  canvas { display: block; width: 100%; height: auto; image-rendering: auto; }
+  canvas { display:block; width:100%; height:auto; }
   #overlay {
-    position: absolute; inset: 0;
-    display: flex; flex-direction: column;
-    align-items: center; justify-content: center;
-    text-align: center;
-    background: rgba(6,4,16,.82);
-    gap: 14px;
-    padding: 20px;
+    position:absolute; inset:0; display:flex; flex-direction:column;
+    align-items:center; justify-content:center; text-align:center;
+    background:rgba(6,4,16,.85); gap:12px; padding:18px; overflow:auto;
   }
-  #overlay.hidden { display: none; }
-  #overlay h2 { font-size: clamp(28px, 6vw, 52px); color: var(--gold); text-shadow: 0 0 16px rgba(255,204,51,.6); }
-  #overlay p { max-width: 640px; line-height: 1.5; font-size: 15px; color: #cfc8e6; }
+  #overlay.hidden { display:none; }
+  #overlay h2 { font-size:clamp(26px,6vw,48px); color:var(--gold); text-shadow:0 0 16px rgba(255,204,51,.6); }
+  #overlay p { max-width:640px; line-height:1.5; font-size:14px; color:#cfc8e6; }
   .btn {
-    margin-top: 6px;
-    padding: 12px 28px;
-    font-size: 18px;
-    font-family: inherit;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: #1a1030;
-    background: linear-gradient(180deg, #ffe08a, var(--gold));
-    border: none; border-radius: 6px;
-    cursor: pointer;
-    box-shadow: 0 4px 0 #b8860b;
+    padding:12px 26px; font-size:17px; font-family:inherit; letter-spacing:2px;
+    text-transform:uppercase; color:#1a1030;
+    background:linear-gradient(180deg,#ffe08a,var(--gold));
+    border:none; border-radius:6px; cursor:pointer; box-shadow:0 4px 0 #b8860b;
   }
-  .btn:active { transform: translateY(3px); box-shadow: 0 1px 0 #b8860b; }
-  .controls {
-    display: grid; grid-template-columns: 1fr 1fr; gap: 24px;
-    font-size: 13px; color: #b8afd6; margin-top: 4px;
+  .btn:active { transform:translateY(3px); box-shadow:0 1px 0 #b8860b; }
+  .btn.blue { background:linear-gradient(180deg,#a9c8ff,#4da6ff); box-shadow:0 4px 0 #2a6bb8; }
+  .roster { display:flex; gap:26px; flex-wrap:wrap; justify-content:center; margin-top:2px; }
+  .side { background:rgba(255,255,255,.04); border:1px solid #3a2c5a; border-radius:10px; padding:10px 14px; }
+  .side b { display:block; margin-bottom:8px; letter-spacing:2px; font-size:13px; }
+  .picks { display:flex; gap:8px; }
+  .pick {
+    width:64px; padding:6px 4px; border-radius:8px; cursor:pointer; font-size:11px;
+    background:#2c2247; border:2px solid transparent; color:#cfc8e6; text-align:center;
   }
-  .controls div { text-align: left; }
-  .controls b { color: #fff; display: block; margin-bottom: 4px; letter-spacing: 1px; }
-  .controls span.k {
-    display: inline-block; min-width: 20px; padding: 1px 6px; margin: 1px;
-    background: #2c2247; border: 1px solid #4a3a6a; border-radius: 4px;
-    font-family: monospace; color: #fff;
+  .pick canvas { width:48px; height:48px; margin:0 auto 2px; }
+  .pick.sel { border-color:var(--gold); color:#fff; background:#3a2c5a; }
+  .controls { display:grid; grid-template-columns:1fr 1fr; gap:22px; font-size:12px; color:#b8afd6; margin-top:2px; }
+  .controls div { text-align:left; }
+  .controls b { color:#fff; display:block; margin-bottom:3px; letter-spacing:1px; }
+  .k {
+    display:inline-block; min-width:18px; padding:1px 5px; margin:1px;
+    background:#2c2247; border:1px solid #4a3a6a; border-radius:4px; font-family:monospace; color:#fff;
   }
-  #hint { margin-top: 10px; font-size: 12px; color: #7d75a0; }
+  .btnrow { display:flex; gap:12px; flex-wrap:wrap; justify-content:center; }
+  #hint { font-size:11px; color:#7d75a0; }
+
+  #howto {
+    max-width:900px; width:96vw; margin:16px auto 8px; padding:16px 20px;
+    background:rgba(255,255,255,.04); border:1px solid #3a2c5a; border-radius:10px;
+  }
+  #howto h3 { color:var(--gold); letter-spacing:2px; text-transform:uppercase; font-size:16px; margin-bottom:6px; }
+  #howto p { font-size:13px; line-height:1.5; color:#cfc8e6; margin-bottom:12px; }
+  .howcols { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+  .howcard { background:rgba(0,0,0,.25); border-radius:8px; padding:12px 14px; border-left:4px solid #555; }
+  .howcard.p1 { border-left-color:var(--p1); }
+  .howcard.p2 { border-left-color:var(--p2); }
+  .howcard h4 { font-size:14px; margin-bottom:8px; color:#fff; }
+  .howcard .muted { font-size:11px; color:#8a82ab; font-weight:normal; }
+  .howcard ul { list-style:none; display:flex; flex-direction:column; gap:5px; }
+  .howcard li { font-size:13px; color:#cfc8e6; }
+  @media (max-width:560px){ .howcols { grid-template-columns:1fr; } }
 </style>
 </head>
 <body>
-  <h1>Kombat Arena</h1>
+  <h1>Plushie Kombat</h1>
   <div id="stage">
     <canvas id="game" width="900" height="480"></canvas>
     <div id="overlay">
-      <h2 id="ov-title">Kombat Arena</h2>
-      <p id="ov-text">An original 2-player fighting game prototype. First to win 2 rounds takes the match. Land hits, block incoming strikes, and back off to recover.</p>
-      <div class="controls">
-        <div>
-          <b style="color:var(--p1)">Player 1</b>
-          <span class="k">A</span><span class="k">D</span> move · <span class="k">W</span> jump<br>
-          <span class="k">F</span> punch · <span class="k">G</span> kick · <span class="k">S</span> block
-        </div>
-        <div>
-          <b style="color:var(--p2)">Player 2 / AI</b>
-          <span class="k">←</span><span class="k">→</span> move · <span class="k">↑</span> jump<br>
-          <span class="k">K</span> punch · <span class="k">L</span> kick · <span class="k">↓</span> block
-        </div>
+      <h2 id="ov-title">Plushie Kombat</h2>
+      <p id="ov-text">The dalmatian plushies settle it in the ring. Pick your pup, land hits, block incoming paws — first to win 2 rounds takes the match.</p>
+      <div class="roster">
+        <div class="side"><b style="color:var(--p1)">Player 1</b><div class="picks" id="picks1"></div></div>
+        <div class="side"><b style="color:var(--p2)">Player 2 / AI</b><div class="picks" id="picks2"></div></div>
       </div>
-      <button class="btn" id="startBtn">Fight — 1P vs AI</button>
-      <button class="btn" id="start2pBtn" style="background:linear-gradient(180deg,#a9c8ff,#4da6ff);box-shadow:0 4px 0 #2a6bb8;">Fight — 2 Players</button>
-      <div id="hint">Tip: blocking cuts damage but you can't move. Time your strikes.</div>
+      <div class="controls">
+        <div><b style="color:var(--p1)">Player 1</b>
+          <span class="k">A</span><span class="k">D</span> move · <span class="k">W</span> jump<br>
+          <span class="k">F</span> punch · <span class="k">G</span> kick · <span class="k">S</span> block</div>
+        <div><b style="color:var(--p2)">Player 2</b>
+          <span class="k">&larr;</span><span class="k">&rarr;</span> move · <span class="k">&uarr;</span> jump<br>
+          <span class="k">K</span> punch · <span class="k">L</span> kick · <span class="k">&darr;</span> block</div>
+      </div>
+      <div class="btnrow">
+        <button class="btn" id="startBtn">Fight — 1P vs AI</button>
+        <button class="btn blue" id="start2pBtn">Fight — 2 Players</button>
+      </div>
+      <div id="hint">Tip: blocking cuts damage to a fifth. Land 2 rounds to win.</div>
     </div>
   </div>
+
+  <!-- Persistent instructions -->
+  <section id="howto">
+    <h3>How to play</h3>
+    <p>Pick a pup for each player on the start screen, then choose <b>1P vs AI</b> or <b>2 Players</b>. First to win <b>2 rounds</b> takes the match. Getting hit costs health but never stops you — you can keep moving and swinging.</p>
+    <div class="howcols">
+      <div class="howcard p1">
+        <h4>Player 1</h4>
+        <ul>
+          <li><span class="k">A</span> / <span class="k">D</span> — move left / right</li>
+          <li><span class="k">W</span> — jump</li>
+          <li><span class="k">F</span> — punch</li>
+          <li><span class="k">G</span> — kick</li>
+          <li><span class="k">S</span> — block (hold)</li>
+        </ul>
+      </div>
+      <div class="howcard p2">
+        <h4>Player 2 <span class="muted">(the AI in 1P mode)</span></h4>
+        <ul>
+          <li><span class="k">&larr;</span> / <span class="k">&rarr;</span> — move left / right</li>
+          <li><span class="k">&uarr;</span> — jump</li>
+          <li><span class="k">K</span> — punch</li>
+          <li><span class="k">L</span> — kick</li>
+          <li><span class="k">&darr;</span> — block (hold)</li>
+        </ul>
+      </div>
+    </div>
+  </section>
 
 <script>
 (() => {
   const canvas = document.getElementById('game');
   const ctx = canvas.getContext('2d');
   const W = canvas.width, H = canvas.height;
-  const GROUND = H - 70;
+  const GROUND = H - 40;           // feet baseline
   const overlay = document.getElementById('overlay');
   const ovTitle = document.getElementById('ov-title');
-  const ovText = document.getElementById('ov-text');
+  const ovText  = document.getElementById('ov-text');
+  const clamp = (v,a,b) => Math.max(a, Math.min(b, v));
+
+  // ---- Characters (styled after the plushies) ----
+  const CHARS = {
+    spot:    { key:'spot',    name:'Spot',    body:'#ece7db', belly:'#f7f3ea', ear:'#1c1c1c', spot:'#1c1c1c', collar:'#22c39a', patch:true,  nose:'#141414' },
+    dot:     { key:'dot',     name:'Dot',     body:'#eee9dd', belly:'#f8f4ec', ear:'#1c1c1c', spot:'#1c1c1c', collar:'#ff5bd0', patch:true,  nose:'#141414' },
+    biscuit: { key:'biscuit', name:'Biscuit', body:'#f4ecdb', belly:'#fbf6ea', ear:'#e6d7b8', spot:null,      collar:'#3a86ff', patch:false, nose:'#141414' },
+    patch:   { key:'patch',   name:'Patch',   body:'#efeae0', belly:'#f8f4ec', ear:'#1c1c1c', spot:'#1c1c1c', collar:null,      patch:true,  nose:'#141414' },
+  };
+  let sel1 = 'spot', sel2 = 'dot';
 
   // ---- Input ----
   const keys = {};
@@ -123,36 +159,34 @@
   });
   addEventListener('keyup', e => { keys[e.key.toLowerCase()] = false; });
 
-  // ---- Fighter ----
+  // ---- Combat tuning ----
   const GRAVITY = 0.9, JUMP_V = -15, SPEED = 4.2;
-  const PUNCH = { range: 62, reach: 46, dmg: 7, dur: 18, active: [4,10], cool: 10, kb: 5 };
-  const KICK  = { range: 74, reach: 58, dmg: 11, dur: 26, active: [7,15], cool: 18, kb: 9 };
+  const PUNCH = { dmg:7,  dur:18, active:[4,10],  cool:10, kb:6,  range:118 };
+  const KICK  = { dmg:11, dur:26, active:[7,15],  cool:18, kb:11, range:142 };
 
   class Fighter {
-    constructor(x, color, facing, name, isAI) {
-      this.x = x; this.color = color; this.startX = x;
-      this.name = name; this.isAI = isAI;
+    constructor(startX, char, isAI, phase) {
+      this.startX = startX; this.char = char; this.isAI = isAI; this.phase = phase;
+      this.w = 96; this.h = 120;
       this.reset();
     }
     reset() {
       this.x = this.startX; this.y = GROUND; this.vx = 0; this.vy = 0;
-      this.w = 46; this.h = 96;
       this.hp = 100; this.facing = this.startX < W/2 ? 1 : -1;
       this.attack = null; this.attackT = 0; this.cool = 0;
       this.blocking = false; this.hitStun = 0; this.onGround = true;
-      this.flash = 0; this.dead = false;
+      this.flash = 0; this.dead = false; this.hasHit = false;
     }
     get cx() { return this.x + this.w/2; }
     startAttack(type) {
-      if (this.attack || this.cool > 0 || this.hitStun > 0 || this.blocking) return;
+      if (this.attack || this.cool > 0 || this.hitStun > 0 || this.blocking || !this.onGround) return;
       this.attack = type; this.attackT = 0; this.hasHit = false;
     }
-    // control: {left,right,up,punch,kick,block}
     update(ctrl, foe) {
       if (this.dead) return;
       this.blocking = ctrl.block && this.onGround && !this.attack && this.hitStun <= 0;
 
-      if (this.hitStun > 0) { this.hitStun--; }
+      if (this.hitStun > 0) { this.hitStun--; this.vx = 0; }
       else if (!this.attack && !this.blocking) {
         this.vx = 0;
         if (ctrl.left)  this.vx = -SPEED;
@@ -160,30 +194,22 @@
         if (ctrl.up && this.onGround) { this.vy = JUMP_V; this.onGround = false; }
         if (ctrl.punch) this.startAttack('punch');
         if (ctrl.kick)  this.startAttack('kick');
-      } else if (this.attack || this.blocking) {
-        this.vx = 0;
-      }
+      } else { this.vx = 0; }
 
-      // face the foe when grounded & idle
       if (this.onGround && !this.attack) this.facing = foe.cx >= this.cx ? 1 : -1;
 
-      // physics
       this.x += this.vx;
       this.y += this.vy;
       if (!this.onGround) this.vy += GRAVITY;
       if (this.y >= GROUND) { this.y = GROUND; this.vy = 0; this.onGround = true; }
-      this.x = Math.max(10, Math.min(W - this.w - 10, this.x));
+      this.x = clamp(this.x, 6, W - this.w - 6);
 
-      // attack timeline
       if (this.attack) {
         const spec = this.attack === 'punch' ? PUNCH : KICK;
         this.attackT++;
         const [a0, a1] = spec.active;
-        if (!this.hasHit && this.attackT >= a0 && this.attackT <= a1) {
-          if (this.hits(foe, spec)) {
-            foe.takeHit(spec, this.facing);
-            this.hasHit = true;
-          }
+        if (!this.hasHit && this.attackT >= a0 && this.attackT <= a1 && this.hits(foe, spec)) {
+          foe.takeHit(spec, this.facing); this.hasHit = true;
         }
         if (this.attackT >= spec.dur) { this.attack = null; this.cool = spec.cool; }
       }
@@ -191,149 +217,157 @@
       if (this.flash > 0) this.flash--;
     }
     hits(foe, spec) {
-      const fx = this.facing === 1 ? this.cx + spec.reach : this.cx - spec.reach;
-      const dx = Math.abs(fx - foe.cx);
-      const dy = Math.abs(this.y - foe.y);
-      return dx < spec.range/2 + foe.w/2 && dy < 70;
+      const gap = (foe.cx - this.cx) * this.facing;  // >0 when foe is in front
+      const vGap = Math.abs(this.y - foe.y);
+      return gap > 0 && gap < spec.range && vGap < 70;
     }
     takeHit(spec, dir) {
       if (this.dead) return;
       let dmg = spec.dmg;
-      // block reduces damage if facing the attacker
-      const facingAttacker = (dir === 1 && this.facing === -1) || (dir === -1 && this.facing === 1);
+      const facingAttacker = this.facing === -dir;
       if (this.blocking && facingAttacker) { dmg = Math.round(dmg * 0.2); this.flash = 4; }
       else {
-        this.hitStun = Math.round(spec.dur * 0.6);
+        // No hit-stun: getting hit never freezes the fighter. Just a flash
+        // for feedback and a small positional nudge — you keep full control.
         this.flash = 8;
-        this.vx = 0;
-        this.x += dir * spec.kb; // instant knockback nudge
+        this.x = clamp(this.x + dir * spec.kb, 6, W - this.w - 6);
       }
       this.hp = Math.max(0, this.hp - dmg);
       if (this.hp <= 0) this.dead = true;
     }
-    draw() {
-      const bob = this.onGround ? 0 : 0;
-      const bodyColor = this.flash > 0 ? '#ffffff' : this.color;
-      // shadow
-      ctx.fillStyle = 'rgba(0,0,0,.35)';
-      ctx.beginPath();
-      ctx.ellipse(this.cx, GROUND + this.h - 4, this.w*0.7, 8, 0, 0, Math.PI*2);
-      ctx.fill();
 
-      const topY = this.y + (this.h - realHeight(this)) ; // for crouch-ish when block
-      ctx.save();
-      // body
-      ctx.fillStyle = bodyColor;
-      const bx = this.x, by = this.y, bw = this.w, bh = this.h;
-      roundRect(bx, by, bw, bh, 8); ctx.fill();
-      // head
-      ctx.fillStyle = shade(bodyColor, 18);
-      ctx.beginPath();
-      ctx.arc(this.cx, by - 6, 18, 0, Math.PI*2); ctx.fill();
-      // eyes / facing marker
-      ctx.fillStyle = '#111';
-      ctx.beginPath();
-      ctx.arc(this.cx + this.facing*7, by - 8, 3.2, 0, Math.PI*2); ctx.fill();
-
-      // block shield
-      if (this.blocking) {
-        ctx.strokeStyle = 'rgba(255,255,255,.85)';
-        ctx.lineWidth = 3;
-        ctx.beginPath();
-        ctx.arc(this.cx + this.facing*(bw/2+4), by + bh/2, 30, -0.7, 0.7);
-        ctx.stroke();
-      }
-      // attacking limb
-      if (this.attack) {
-        const spec = this.attack === 'punch' ? PUNCH : KICK;
-        const [a0,a1] = spec.active;
-        const extended = this.attackT >= a0 - 2;
-        const len = extended ? spec.reach + 14 : 20;
-        const armY = this.attack === 'punch' ? by + 30 : by + 64;
-        ctx.strokeStyle = this.attack === 'punch' ? '#fff' : '#ffd27f';
-        ctx.lineWidth = this.attack === 'punch' ? 10 : 14;
-        ctx.lineCap = 'round';
-        ctx.beginPath();
-        ctx.moveTo(this.cx, armY);
-        ctx.lineTo(this.cx + this.facing * len, armY + (this.attack==='kick'?6:0));
-        ctx.stroke();
-      }
-      ctx.restore();
+    draw(tick) {
+      drawDog(ctx, this, tick);
     }
   }
-  function realHeight(f){ return f.h; }
 
-  function roundRect(x, y, w, h, r) {
-    ctx.beginPath();
-    ctx.moveTo(x+r, y);
-    ctx.arcTo(x+w, y, x+w, y+h, r);
-    ctx.arcTo(x+w, y+h, x, y+h, r);
-    ctx.arcTo(x, y+h, x, y, r);
-    ctx.arcTo(x, y, x+w, y, r);
-    ctx.closePath();
+  // ---- Plushie renderer ----
+  function limb(x1,y1,x2,y2,wdt,col) {
+    ctx.strokeStyle = col; ctx.lineWidth = wdt; ctx.lineCap = 'round';
+    ctx.beginPath(); ctx.moveTo(x1,y1); ctx.lineTo(x2,y2); ctx.stroke();
   }
-  function shade(hex, amt) {
-    // lighten a hex color by amt%
-    const c = hex.replace('#','');
-    const n = parseInt(c.length===3 ? c.split('').map(x=>x+x).join('') : c, 16);
-    let r = (n>>16)+amt*2.55, g = ((n>>8)&255)+amt*2.55, b = (n&255)+amt*2.55;
-    r=Math.min(255,r|0); g=Math.min(255,g|0); b=Math.min(255,b|0);
-    return `rgb(${r},${g},${b})`;
+  function blob(cx,cy,rx,ry,col,rot) {
+    ctx.save(); ctx.translate(cx,cy); if (rot) ctx.rotate(rot);
+    ctx.fillStyle = col; ctx.beginPath(); ctx.ellipse(0,0,rx,ry,0,0,Math.PI*2); ctx.fill(); ctx.restore();
+  }
+
+  function drawDog(ctx, f, tick) {
+    const c = f.char, dir = f.facing, cx = f.cx, fy = f.y;
+    const flash = f.flash > 0;
+    const body  = flash ? '#ffffff' : c.body;
+    const belly = flash ? '#ffffff' : c.belly;
+    const ear   = flash ? '#ffffff' : c.ear;
+    const breathe = (f.onGround && !f.attack && f.hitStun <= 0) ? Math.sin((tick + f.phase) * 0.09) * 2.4 : 0;
+    const bodyCy = fy - 46 + breathe;
+    const headCy = fy - 92 + breathe;
+    const headCx = cx + dir * 4;
+    const ext = f.attack ? Math.sin(clamp(f.attackT / (f.attack==='punch'?PUNCH.dur:KICK.dur),0,1) * Math.PI) : 0;
+
+    // shadow
+    ctx.fillStyle = 'rgba(0,0,0,.28)';
+    ctx.beginPath(); ctx.ellipse(cx, fy + 8, 42, 9, 0, 0, Math.PI*2); ctx.fill();
+
+    // ---- back limbs ----
+    limb(cx - dir*20, bodyCy - 4, cx - dir*30, bodyCy + 30, 15, body);   // back arm
+    limb(cx - dir*16, fy - 34, cx - dir*20, fy, 17, body);               // back leg
+
+    // ---- body ----
+    blob(cx, bodyCy, 38, 42, body);
+    blob(cx + dir*2, bodyCy + 8, 26, 30, belly);                          // belly
+
+    // ---- spots on body ----
+    if (c.spot) {
+      ctx.fillStyle = c.spot;
+      blob(cx - dir*20, bodyCy - 6, 7, 8, c.spot);
+      blob(cx + dir*16, bodyCy + 14, 6, 7, c.spot);
+      blob(cx + dir*4, bodyCy - 18, 5, 6, c.spot);
+    }
+
+    // ---- front leg (kicks) ----
+    if (f.attack === 'kick') {
+      limb(cx + dir*10, fy - 40, cx + dir*(24 + ext*60), fy - 10 - ext*6, 18, body);
+    } else {
+      limb(cx + dir*14, fy - 34, cx + dir*16, fy, 18, body);
+    }
+
+    // ---- collar (some pups go collarless) ----
+    if (c.collar) {
+      ctx.strokeStyle = c.collar; ctx.lineWidth = 8; ctx.lineCap = 'round';
+      ctx.beginPath(); ctx.ellipse(headCx, fy - 66, 24, 12, 0, 0.15, Math.PI - 0.15); ctx.stroke();
+    }
+
+    // ---- head ----
+    blob(headCx, headCy, 30, 28, body);
+    // ears (floppy)
+    blob(headCx - 22, headCy + 2, 10, 22, ear, -0.5);
+    blob(headCx + 22, headCy + 2, 10, 22, ear,  0.5);
+    // eye patch (dalmatian)
+    if (c.patch) blob(headCx - dir*10, headCy - 3, 12, 13, c.spot);
+    // snout
+    blob(headCx + dir*20, headCy + 8, 17, 13, belly);
+    // eyes
+    ctx.fillStyle = '#141414';
+    ctx.beginPath(); ctx.arc(headCx - dir*8, headCy - 3, 3.4, 0, Math.PI*2); ctx.fill();
+    ctx.beginPath(); ctx.arc(headCx + dir*9, headCy - 2, 3.4, 0, Math.PI*2); ctx.fill();
+    // nose
+    ctx.fillStyle = c.nose;
+    ctx.beginPath(); ctx.ellipse(headCx + dir*34, headCy + 6, 6, 5, 0, 0, Math.PI*2); ctx.fill();
+    // stitched mouth
+    ctx.strokeStyle = '#3a2f28'; ctx.lineWidth = 1.6;
+    ctx.beginPath();
+    ctx.moveTo(headCx + dir*30, headCy + 12);
+    ctx.quadraticCurveTo(headCx + dir*22, headCy + 18, headCx + dir*16, headCy + 13);
+    ctx.stroke();
+
+    // ---- front arm (punch / block) ----
+    if (f.attack === 'punch') {
+      const px = cx + dir*(30 + ext*58), py = bodyCy - 6;
+      limb(cx + dir*18, bodyCy - 8, px, py, 15, body);
+      blob(px, py, 9, 9, body);                                          // paw
+    } else if (f.blocking) {
+      limb(cx + dir*18, bodyCy - 8, cx + dir*26, headCy + 14, 15, body); // paws up
+      limb(cx + dir*24, bodyCy - 6, cx + dir*30, headCy + 20, 14, body);
+      ctx.strokeStyle = 'rgba(255,255,255,.7)'; ctx.lineWidth = 3;
+      ctx.beginPath(); ctx.arc(cx + dir*30, bodyCy, 34, -0.8, 0.8); ctx.stroke();
+    } else {
+      limb(cx + dir*20, bodyCy - 4, cx + dir*30, bodyCy + 28, 15, body);
+      blob(cx + dir*30, bodyCy + 28, 8, 8, body);
+    }
   }
 
   // ---- Game state ----
-  let p1, p2, state = 'menu', roundWins = [0,0], roundNo = 1, roundTimer, msg = '', msgT = 0, aiMode = true;
+  let p1, p2, state = 'menu', roundWins = [0,0], roundNo = 1, roundTimer, msg = '', msgT = 0, aiMode = true, tick = 0;
   const ROUND_TIME = 60;
 
   function newMatch(ai) {
     aiMode = ai;
-    p1 = new Fighter(180, '#ff4d4d', 1, 'P1', false);
-    p2 = new Fighter(W - 180 - 46, '#4da6ff', -1, 'P2', ai);
+    p1 = new Fighter(170, CHARS[sel1], false, 0);
+    p2 = new Fighter(W - 170 - 96, CHARS[sel2], ai, 30);
     roundWins = [0,0]; roundNo = 1;
-    startRound();
-    state = 'fight';
+    startRound(); state = 'fight';
   }
   function startRound() {
     p1.reset(); p2.reset();
-    roundTimer = ROUND_TIME * 60; // frames
+    roundTimer = ROUND_TIME * 60;
     banner('Round ' + roundNo + ' — Fight!', 90);
   }
-  function banner(text, frames) { msg = text; msgT = frames; }
+  function banner(t, frames) { msg = t; msgT = frames; }
 
   function readControls(f, mine) {
     if (f.isAI) return aiControls(f, f === p1 ? p2 : p1);
-    if (mine === 1) return {
-      left: keys['a'], right: keys['d'], up: keys['w'],
-      punch: keys['f'], kick: keys['g'], block: keys['s'],
-    };
-    return {
-      left: keys['arrowleft'], right: keys['arrowright'], up: keys['arrowup'],
-      punch: keys['k'], kick: keys['l'], block: keys['arrowdown'],
-    };
+    if (mine === 1) return { left:keys['a'], right:keys['d'], up:keys['w'], punch:keys['f'], kick:keys['g'], block:keys['s'] };
+    return { left:keys['arrowleft'], right:keys['arrowright'], up:keys['arrowup'], punch:keys['k'], kick:keys['l'], block:keys['arrowdown'] };
   }
 
-  // ---- Simple AI ----
   function aiControls(ai, foe) {
     const c = { left:false, right:false, up:false, punch:false, kick:false, block:false };
     if (ai.dead || foe.dead) return c;
-    const dist = foe.cx - ai.cx;
-    const adist = Math.abs(dist);
-    const dir = dist > 0 ? 1 : -1;
-
-    // block if foe is attacking and close
-    if (foe.attack && adist < 90 && Math.random() < 0.6) { c.block = true; return c; }
-
-    if (adist > 78) {
-      if (dir === 1) c.right = true; else c.left = true;
-      if (Math.random() < 0.01) c.up = true;
-    } else {
-      // in range: strike sometimes
-      if (ai.cool <= 0 && !ai.attack && Math.random() < 0.09) {
-        if (Math.random() < 0.5) c.punch = true; else c.kick = true;
-      } else if (Math.random() < 0.02) {
-        // occasional reposition
-        if (dir === 1) c.left = true; else c.right = true;
-      }
+    const dist = foe.cx - ai.cx, adist = Math.abs(dist), dir = dist > 0 ? 1 : -1;
+    if (foe.attack && adist < 150 && Math.random() < 0.55) { c.block = true; return c; }
+    if (adist > 130) { if (dir === 1) c.right = true; else c.left = true; if (Math.random() < 0.01) c.up = true; }
+    else {
+      if (ai.cool <= 0 && !ai.attack && Math.random() < 0.1) { if (Math.random() < 0.5) c.punch = true; else c.kick = true; }
+      else if (Math.random() < 0.02) { if (dir === 1) c.left = true; else c.right = true; }
     }
     return c;
   }
@@ -341,121 +375,123 @@
   function endRound(winnerIdx) {
     state = 'roundover';
     if (winnerIdx >= 0) roundWins[winnerIdx]++;
-    const label = winnerIdx < 0 ? 'Time — Draw' : (winnerIdx === 0 ? 'P1' : (aiMode ? 'AI' : 'P2')) + ' wins the round';
-    banner(label, 9999);
+    const who = winnerIdx < 0 ? null : (winnerIdx === 0 ? p1 : p2);
+    banner(winnerIdx < 0 ? 'Time — Draw' : who.char.name + ' wins the round!', 9999);
     setTimeout(() => {
       if (roundWins[0] >= 2 || roundWins[1] >= 2) {
-        const champ = roundWins[0] >= 2 ? 'Player 1' : (aiMode ? 'The AI' : 'Player 2');
-        showEnd(champ + ' wins the match!', 'Final score ' + roundWins[0] + '–' + roundWins[1] + '. Rematch?');
-      } else {
-        roundNo++;
-        startRound();
-        state = 'fight';
-      }
-    }, 1800);
+        const champ = roundWins[0] >= 2 ? p1.char.name : p2.char.name;
+        showEnd(champ + ' wins!', 'Final ' + roundWins[0] + '–' + roundWins[1] + '. Pick again and rematch?');
+      } else { roundNo++; startRound(); state = 'fight'; }
+    }, 1700);
   }
 
   function showEnd(title, text) {
     state = 'menu';
-    ovTitle.textContent = title;
-    ovText.textContent = text;
-    document.getElementById('startBtn').textContent = 'Rematch — 1P vs AI';
-    document.getElementById('start2pBtn').textContent = 'Rematch — 2 Players';
+    ovTitle.textContent = title; ovText.textContent = text;
+    document.getElementById('startBtn').textContent = 'Fight — 1P vs AI';
+    document.getElementById('start2pBtn').textContent = 'Fight — 2 Players';
     overlay.classList.remove('hidden');
   }
 
-  // ---- Rendering ----
+  // ---- Background ----
   function drawBackground() {
-    // sky already via canvas clear
-    ctx.fillStyle = '#160f28';
-    ctx.fillRect(0,0,W,H);
-    // distant pillars
+    ctx.fillStyle = '#160f28'; ctx.fillRect(0,0,W,H);
     ctx.fillStyle = '#20163a';
-    for (let i=0;i<6;i++){ const x = 60 + i*150; ctx.fillRect(x, 60, 40, GROUND-60); }
-    // moon
-    ctx.fillStyle = 'rgba(255,240,200,.15)';
-    ctx.beginPath(); ctx.arc(W-120, 90, 55, 0, Math.PI*2); ctx.fill();
-    // floor
+    for (let i=0;i<6;i++){ const x = 60 + i*150; ctx.fillRect(x, 50, 40, GROUND-50); }
+    ctx.fillStyle = 'rgba(255,240,200,.14)';
+    ctx.beginPath(); ctx.arc(W-120, 84, 52, 0, Math.PI*2); ctx.fill();
     const g = ctx.createLinearGradient(0, GROUND, 0, H);
     g.addColorStop(0, '#3a2c5a'); g.addColorStop(1, '#160f28');
-    ctx.fillStyle = g;
-    ctx.fillRect(0, GROUND + 26, W, H - GROUND);
-    ctx.strokeStyle = 'rgba(255,204,51,.15)';
-    ctx.lineWidth = 2;
-    ctx.beginPath(); ctx.moveTo(0, GROUND+26); ctx.lineTo(W, GROUND+26); ctx.stroke();
+    ctx.fillStyle = g; ctx.fillRect(0, GROUND, W, H - GROUND);
+    ctx.strokeStyle = 'rgba(255,204,51,.15)'; ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.moveTo(0, GROUND); ctx.lineTo(W, GROUND); ctx.stroke();
   }
 
   function drawHUD() {
-    // health bars
-    bar(30, 24, 360, p1.hp, '#ff4d4d', false, p1.name);
-    bar(W-30-360, 24, 360, p2.hp, '#4da6ff', true, aiMode ? 'AI' : p2.name);
-    // round pips
-    for (let i=0;i<2;i++){
-      pip(400 + i*22, 30, roundWins[0] > i);
-      pip(W-400 - i*22, 30, roundWins[1] > i);
-    }
-    // timer
-    ctx.fillStyle = '#ffcc33';
-    ctx.font = 'bold 30px monospace';
-    ctx.textAlign = 'center';
-    ctx.fillText(Math.ceil(roundTimer/60), W/2, 42);
-
+    bar(30, 22, 360, p1.hp, p1.char.collar || '#c8462f', false, p1.char.name);
+    bar(W-30-360, 22, 360, p2.hp, p2.char.collar || '#c8462f', true, p2.char.name + (aiMode ? ' (AI)' : ''));
+    for (let i=0;i<2;i++){ pip(404 + i*20, 28, roundWins[0] > i); pip(W-404 - i*20, 28, roundWins[1] > i); }
+    ctx.fillStyle = '#ffcc33'; ctx.font = 'bold 28px monospace'; ctx.textAlign = 'center';
+    ctx.fillText(Math.max(0, Math.ceil(roundTimer/60)), W/2, 40);
     if (msgT > 0) {
       ctx.globalAlpha = Math.min(1, msgT/30);
-      ctx.fillStyle = '#ffcc33';
-      ctx.font = 'bold 44px "Trebuchet MS", sans-serif';
-      ctx.textAlign = 'center';
+      ctx.fillStyle = '#ffcc33'; ctx.font = 'bold 42px "Trebuchet MS",sans-serif'; ctx.textAlign = 'center';
       ctx.shadowColor = 'rgba(0,0,0,.6)'; ctx.shadowBlur = 8;
-      ctx.fillText(msg, W/2, H/2 - 40);
-      ctx.shadowBlur = 0;
-      ctx.globalAlpha = 1;
+      ctx.fillText(msg, W/2, H/2 - 60); ctx.shadowBlur = 0; ctx.globalAlpha = 1;
     }
   }
-  function bar(x, y, w, hp, color, right, label) {
-    ctx.fillStyle = '#000'; ctx.fillRect(x-2, y-2, w+4, 22);
-    ctx.fillStyle = '#3a2c5a'; ctx.fillRect(x, y, w, 18);
-    const fw = w * hp/100;
-    ctx.fillStyle = color;
-    ctx.fillRect(right ? x + w - fw : x, y, fw, 18);
-    ctx.fillStyle = '#fff'; ctx.font = 'bold 13px sans-serif';
-    ctx.textAlign = right ? 'right' : 'left';
+  function bar(x,y,w,hp,color,right,label) {
+    ctx.fillStyle = '#000'; ctx.fillRect(x-2, y-2, w+4, 20);
+    ctx.fillStyle = '#3a2c5a'; ctx.fillRect(x, y, w, 16);
+    const fw = w * hp/100; ctx.fillStyle = color;
+    ctx.fillRect(right ? x + w - fw : x, y, fw, 16);
+    ctx.fillStyle = '#fff'; ctx.font = 'bold 13px sans-serif'; ctx.textAlign = right ? 'right' : 'left';
     ctx.fillText(label, right ? x + w : x, y - 6);
   }
-  function pip(x, y, filled) {
-    ctx.beginPath(); ctx.arc(x, y, 7, 0, Math.PI*2);
+  function pip(x,y,filled) {
+    ctx.beginPath(); ctx.arc(x, y, 6, 0, Math.PI*2);
     ctx.fillStyle = filled ? '#ffcc33' : '#3a2c5a'; ctx.fill();
     ctx.strokeStyle = '#000'; ctx.lineWidth = 1.5; ctx.stroke();
   }
 
   // ---- Main loop ----
   function loop() {
+    tick++;
     if (state === 'fight' || state === 'roundover') {
       if (state === 'fight') {
-        p1.update(readControls(p1, 1), p2);
-        p2.update(readControls(p2, 2), p1);
+        p1.update(readControls(p1,1), p2);
+        p2.update(readControls(p2,2), p1);
         roundTimer--;
         if (p1.dead && !p2.dead) endRound(1);
         else if (p2.dead && !p1.dead) endRound(0);
         else if (p1.dead && p2.dead) endRound(-1);
-        else if (roundTimer <= 0) {
-          endRound(p1.hp === p2.hp ? -1 : (p1.hp > p2.hp ? 0 : 1));
-        }
+        else if (roundTimer <= 0) endRound(p1.hp === p2.hp ? -1 : (p1.hp > p2.hp ? 0 : 1));
       }
       drawBackground();
-      // draw back-most first by x for slight depth
-      p1.draw(); p2.draw();
+      p1.draw(tick); p2.draw(tick);
       drawHUD();
       if (msgT > 0 && msgT < 9999) msgT--;
     }
     requestAnimationFrame(loop);
   }
 
-  // ---- Buttons ----
+  // ---- Character-select UI ----
+  function miniDog(char) {
+    const cv = document.createElement('canvas'); cv.width = 48; cv.height = 48;
+    const g = cv.getContext('2d');
+    g.fillStyle = char.body; g.beginPath(); g.ellipse(24,30,13,12,0,0,Math.PI*2); g.fill();
+    g.beginPath(); g.ellipse(24,16,11,10,0,0,Math.PI*2); g.fill();
+    g.fillStyle = char.ear; g.beginPath(); g.ellipse(14,16,4,8,-0.5,0,Math.PI*2); g.fill();
+    g.beginPath(); g.ellipse(34,16,4,8,0.5,0,Math.PI*2); g.fill();
+    if (char.patch) { g.fillStyle = char.spot; g.beginPath(); g.ellipse(19,15,4,5,0,0,Math.PI*2); g.fill(); }
+    g.fillStyle = '#141414';
+    g.beginPath(); g.arc(20,15,1.6,0,Math.PI*2); g.fill();
+    g.beginPath(); g.arc(28,15,1.6,0,Math.PI*2); g.fill();
+    g.beginPath(); g.ellipse(24,20,2.4,2,0,0,Math.PI*2); g.fill();
+    if (char.collar) {
+      g.strokeStyle = char.collar; g.lineWidth = 3;
+      g.beginPath(); g.ellipse(24,23,9,4,0,0.2,Math.PI-0.2); g.stroke();
+    }
+    return cv;
+  }
+  function buildPicks(containerId, player) {
+    const box = document.getElementById(containerId);
+    box.innerHTML = '';
+    Object.values(CHARS).forEach(char => {
+      const el = document.createElement('div');
+      el.className = 'pick' + ((player===1?sel1:sel2)===char.key ? ' sel' : '');
+      el.appendChild(miniDog(char));
+      const label = document.createElement('div'); label.textContent = char.name; el.appendChild(label);
+      el.onclick = () => { if (player===1) sel1 = char.key; else sel2 = char.key; buildPicks('picks1',1); buildPicks('picks2',2); };
+      box.appendChild(el);
+    });
+  }
+  buildPicks('picks1',1); buildPicks('picks2',2);
+
   document.getElementById('startBtn').onclick = () => { overlay.classList.add('hidden'); newMatch(true); };
   document.getElementById('start2pBtn').onclick = () => { overlay.classList.add('hidden'); newMatch(false); };
 
-  drawBackground();
-  loop();
+  drawBackground(); loop();
 })();
 </script>
 </body>
