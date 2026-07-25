@@ -265,6 +265,7 @@ document.getElementById('importGo').onclick = async () => {
   }
   keys.forEach(k => { try{ localStorage.removeItem(k); }catch(e){} });
   document.getElementById('importBanner').classList.remove('show');
+  weekCache = {};
   loadWeek(currentWeekStart);
 };
 (async () => {
