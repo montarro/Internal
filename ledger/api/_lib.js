@@ -39,7 +39,11 @@ function safeEqualHex(a, b) {
 // ---- signed session tokens -------------------------------------------------
 // A tiny signed token: base64url(payload).hmac. The signing secret lives in the
 // database (generated once) so no secret ever has to be hand-configured.
+// Cached in module scope so a warm serverless instance skips the DB round-trip
+// on every request. The secret never changes once set.
+let cachedSecret = null;
 async function getSecret(redis) {
+  if (cachedSecret) return cachedSecret;
   let s = await redis.get('app:secret');
   if (!s) {
     const candidate = crypto.randomBytes(32).toString('hex');
@@ -47,7 +51,8 @@ async function getSecret(redis) {
     await redis.set('app:secret', candidate, { nx: true });
     s = await redis.get('app:secret');
   }
-  return String(s);
+  cachedSecret = String(s);
+  return cachedSecret;
 }
 function b64url(buf) {
   return Buffer.from(buf).toString('base64url');
