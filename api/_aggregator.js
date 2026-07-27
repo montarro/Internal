@@ -413,7 +413,7 @@ function cacheSet(key, value) {
 // Public entry point.
 // ---------------------------------------------------------------------------
 
-async function getNews({ categories, q, limit, lang, source } = {}) {
+async function getNews({ categories, q, limit, lang, source, force } = {}) {
   const L = normalizeLang(lang);
   const selected =
     Array.isArray(categories) && categories.length
@@ -423,8 +423,10 @@ async function getNews({ categories, q, limit, lang, source } = {}) {
   const query = (q || '').trim();
   const channelKey = CHANNELS[source] ? source : 'all';
   const cacheKey = JSON.stringify({ c: selected.slice().sort(), q: query.toLowerCase(), l: L, s: channelKey });
-  const cached = cacheGet(cacheKey);
-  if (cached) return { ...cached, cached: true };
+  if (!force) {
+    const cached = cacheGet(cacheKey);
+    if (cached) return { ...cached, cached: true };
+  }
 
   // Assemble the feed set — each category searched in the chosen language.
   const feeds = [];

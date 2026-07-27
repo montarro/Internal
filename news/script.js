@@ -961,7 +961,7 @@ function showSaved() {
   els.clearFiltersBtn.hidden = true;
 }
 
-async function load() {
+async function load({ force } = {}) {
   savedView = false;
   els.savedBtn.setAttribute('aria-pressed', 'false');
   if (inflight) inflight.abort();
@@ -975,6 +975,7 @@ async function load() {
   if (keyword) params.set('q', keyword);
   params.set('lang', lang);
   params.set('source', source);
+  if (force) params.set('refresh', '1');
 
   try {
     const res = await fetch(`${API}?${params.toString()}`, { signal: inflight.signal });
@@ -1086,7 +1087,7 @@ function wireEvents() {
   els.refreshBtn.addEventListener('click', () => {
     els.refreshBtn.classList.add('is-spinning');
     if (savedView) showSaved();
-    else load();
+    else load({ force: true });
     loadWeather();
   });
   els.speakBtn.addEventListener('click', onSpeakClick);
