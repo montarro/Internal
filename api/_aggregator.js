@@ -59,6 +59,15 @@ const CATEGORIES = {
     label: { en: 'France & French Politics', fr: 'France & Politique', ar: 'فرنسا والسياسة' },
     q: { en: 'France politics', fr: 'politique française', ar: 'فرنسا سياسة' },
   },
+  // Independent of the UI language: always pulls real Arabic-language
+  // headlines from Arabic outlets, so an EN/FR reader can still follow Arabic
+  // news in Arabic (not machine-translated), same as flipping to AR would,
+  // but as its own topic alongside the others.
+  arabicnews: {
+    label: { en: 'Arabic News', fr: 'Actualités arabes', ar: 'أخبار عربية' },
+    q: { en: 'أخبار', fr: 'أخبار', ar: 'أخبار' },
+    forceLang: 'ar',
+  },
 };
 
 // Aymen's preferred outlets, in the edition matching each UI language. Added to
@@ -85,6 +94,17 @@ const SOURCE_FEEDS = {
     { url: 'https://www.skynewsarabia.com/rss', source: 'سكاي نيوز عربية' },
   ],
 };
+
+// Real Arabic-language outlets, used directly (not translated) for the
+// "Arabic News" category regardless of which UI language is selected.
+const ARABIC_NEWS_FEEDS = [
+  { url: 'https://feeds.bbci.co.uk/arabic/rss.xml', source: 'BBC عربي' },
+  { url: 'https://www.aljazeera.net/feed', source: 'الجزيرة' },
+  { url: googleNews('site:alarabiya.net', 'ar'), source: 'العربية' },
+  { url: 'https://www.skynewsarabia.com/rss', source: 'سكاي نيوز عربية' },
+  { url: 'https://arabic.rt.com/rss/', source: 'آر تي بالعربية' },
+  { url: 'https://aawsat.com/feed', source: 'الشرق الأوسط' },
+];
 
 // Individually pickable channels. Each has a per-language domain so the search
 // lands on the right edition (aljazeera.com in English, aljazeera.net in
@@ -172,6 +192,7 @@ const CAT_TERMS = {
   middleeast: ['middle east', 'moyen-orient', 'الشرق الأوسط', 'gaza', 'israel', 'iran', 'syria', 'lebanon', 'palestin'],
   northafrica: ['maghreb', 'north africa', 'afrique du nord', 'algeria', 'morocco', 'libya', 'algérie', 'maroc', 'libye', 'المغرب', 'الجزائر', 'ليبيا', 'شمال أفريقيا'],
   france: ['france', 'french', 'française', 'français', 'فرنسا', 'macron', 'paris'],
+  arabicnews: null,
 };
 
 function articleMatchesCategory(a, cat) {
@@ -442,7 +463,14 @@ async function getNews({ categories, q, limit, lang, source, force } = {}) {
     for (const u of urls) feeds.push({ url: u, source: label });
   } else {
     for (const cat of usedCategories) {
-      feeds.push({ url: googleNews(CATEGORIES[cat].q[L], L), source: 'Google News' });
+      const catDef = CATEGORIES[cat];
+      // "Arabic News" is independent of the UI language: always use real
+      // Arabic-language outlets directly, never a translated Google News search.
+      if (cat === 'arabicnews') {
+        for (const af of ARABIC_NEWS_FEEDS) feeds.push(af);
+        continue;
+      }
+      feeds.push({ url: googleNews(catDef.q[L], L), source: 'Google News' });
       // The broad World view also pulls Aymen's preferred outlets directly.
       if (cat === 'world') {
         for (const sf of SOURCE_FEEDS[L] || []) feeds.push(sf);

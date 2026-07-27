@@ -613,6 +613,7 @@ const FALLBACK_CATEGORIES = [
   { key: 'middleeast', label: 'Middle East' },
   { key: 'northafrica', label: 'North Africa / Maghreb' },
   { key: 'france', label: 'France & French Politics' },
+  { key: 'arabicnews', label: 'Arabic News' },
 ];
 
 const DEFAULT_SELECTED = ['world', 'tunisia', 'middleeast', 'northafrica', 'france'];
