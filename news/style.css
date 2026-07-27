@@ -217,9 +217,89 @@ body {
   gap: 14px;
 }
 .today__icon {
-  font-size: 2.6rem;
-  line-height: 1;
+  width: 60px;
+  height: 60px;
   flex: none;
+  font-size: 2.2rem;
+  line-height: 60px;
+  text-align: center;
+}
+.today__icon svg.wx {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+/* Weather scene parts (shared across conditions) */
+.wx__sun circle { fill: #ffb703; }
+.wx__rays line { stroke: #ffb703; stroke-width: 2.4; stroke-linecap: round; }
+.wx__cloud { fill: #e7eef5; stroke: #c9d8e6; stroke-width: 1; }
+.wx__cloud--back { fill: #eef4fa; opacity: 0.85; }
+.wx__cloud--muted { fill: #dbe6ef; }
+.wx__cloud--dark { fill: #c7d3de; stroke: #aebcc9; }
+.wx__fog rect { fill: #cfdbe6; opacity: 0.55; }
+.wx__drop { stroke: #5aa7d6; stroke-width: 2.4; stroke-linecap: round; opacity: 0.85; }
+.wx__bolt { fill: #f5b400; opacity: 0; }
+.wx__flake { fill: #bcdcf2; }
+
+/* Animation only runs when the visitor hasn't asked for reduced motion —
+   without this media query the shapes above are simply static, calm images. */
+@media (prefers-reduced-motion: no-preference) {
+  .wx__sun { transform-origin: center; animation: wxPulse 4s ease-in-out infinite; }
+  .wx--partly .wx__cloud,
+  .wx--drizzle .wx__cloud,
+  .wx--rain .wx__cloud,
+  .wx--storm .wx__cloud,
+  .wx--snow .wx__cloud { animation: wxDriftA 9s ease-in-out infinite; }
+  .wx__cloud--front { animation: wxDriftA 9s ease-in-out infinite; }
+  .wx__cloud--back { animation: wxDriftB 11s ease-in-out infinite; }
+  .wx__fog rect { animation: wxFog 5s ease-in-out infinite; }
+  .wx__fog rect:nth-child(2) { animation-delay: 0.6s; }
+  .wx__fog rect:nth-child(3) { animation-delay: 1.2s; }
+  .wx__drop {
+    animation: wxDrop 1.1s linear infinite;
+    animation-delay: calc(var(--i, 0) * 0.18s);
+  }
+  .wx--drizzle .wx__drop { animation-duration: 1.6s; }
+  .wx--storm .wx__drop { animation-duration: 0.8s; }
+  .wx--storm .wx__bolt { animation: wxFlash 5s ease-in-out infinite; }
+  .wx__flake {
+    animation: wxSnow 3.2s linear infinite;
+    animation-delay: calc(var(--i, 0) * 0.4s);
+  }
+}
+
+@keyframes wxPulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.06); opacity: 0.92; }
+}
+@keyframes wxDriftA {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(4px); }
+}
+@keyframes wxDriftB {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(-3px); }
+}
+@keyframes wxFog {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 0.7; }
+}
+@keyframes wxDrop {
+  0% { transform: translateY(0); opacity: 0; }
+  15% { opacity: 1; }
+  100% { transform: translateY(16px); opacity: 0; }
+}
+@keyframes wxSnow {
+  0% { transform: translate(0, 0); opacity: 0; }
+  10% { opacity: 1; }
+  100% { transform: translate(4px, 20px); opacity: 0; }
+}
+@keyframes wxFlash {
+  0%, 92%, 100% { opacity: 0; }
+  94% { opacity: 1; }
+  96% { opacity: 0.3; }
+  98% { opacity: 0.9; }
 }
 .today__weatherbody {
   display: flex;
@@ -271,7 +351,7 @@ body {
 
 @media (max-width: 560px) {
   .today { padding: 16px; }
-  .today__icon { font-size: 2.2rem; }
+  .today__icon { width: 50px; height: 50px; font-size: 1.9rem; line-height: 50px; }
   .today__speak { top: 12px; inset-inline-end: 12px; }
 }
 

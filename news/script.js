@@ -111,189 +111,189 @@ const I18N = {
 
 const QUOTES = {
   en: [
+    'Have a good day today.',
     'Take things one step at a time.',
     'You are doing better than you think.',
     'A calm day can still be a good day.',
-    'Small progress still matters.',
-    'It is okay to take your time.',
+    'Small steps still count.',
+    'Take your time today.',
     'You do not have to be perfect today.',
-    'Rest is part of doing well.',
-    'One small step counts.',
+    'Rest is part of taking care of yourself.',
     'You are allowed to go at your own pace.',
-    'Today can be simple and that is fine.',
+    'Simple days can be good days.',
     'It is okay to ask for help.',
-    'You handled today, and that is enough.',
+    'You made it through today, and that matters.',
     'Quiet moments can be good moments.',
-    'You are learning, and that takes time.',
+    'Learning takes time, and that is okay.',
     'Doing a little is still doing something.',
-    'It is fine to take breaks.',
-    'You are not behind. You are on your own path.',
-    'A slow day is still a real day.',
-    'You are allowed to feel however you feel.',
+    'Breaks are good for you.',
+    'You are on your own path, and that is okay.',
+    'A slow day is still a good day.',
+    'Your feelings make sense.',
     'Small wins are still wins.',
-    'You do not need to rush.',
-    'Today is a new day.',
-    'You showed up today, and that matters.',
-    'It is okay if today was hard.',
-    'Being kind to yourself is a good choice.',
-    'You are trying, and that counts.',
+    'There is no need to rush.',
+    'Today is a fresh start.',
+    'Showing up today matters.',
+    'It is okay if today feels hard.',
+    'Be kind to yourself today.',
+    'Trying counts, even on hard days.',
     'One thing at a time is enough.',
-    'You are safe to go slowly.',
-    'Comfort is important too.',
-    'You get to decide what feels okay for you.',
-    'It is okay to repeat things you like.',
+    'Going slowly is okay.',
+    'Comfort matters too.',
+    'You get to choose what feels good for you.',
+    'It is okay to enjoy the same things again.',
     'Familiar things can feel good.',
-    'You are allowed to take breaks whenever you need.',
-    'Every day does not need to be exciting to be good.',
+    'Take a break whenever you need one.',
+    'A quiet day can still be a good day.',
     'You are doing okay.',
-    'It is fine to do things your own way.',
-    'Small steps still move you forward.',
-    'You can go at whatever speed feels right.',
-    'Today only needs to be today.',
-    'You are allowed to rest without a reason.',
-    'Simple days can still be good days.',
+    'Your own way is a good way.',
+    'Small steps add up.',
+    'Go at the speed that feels right for you.',
+    'Today just needs to be today.',
+    'Resting does not need a reason.',
+    'Simple can still be good.',
     'You are enough just as you are.',
     'It is okay to need time to adjust.',
-    'You do not have to explain your feelings to anyone.',
-    'Taking care of yourself is important.',
-    'You are allowed to say what you need.',
-    'A quiet win is still a win.',
-    'You can be proud of small things.',
-    'It is okay to go at your own rhythm.',
-    'You are doing your best, and that is enough.',
-    'It is okay to feel calm, and that is nice.',
-    'You get to choose what makes today good.',
-    'You are allowed to like what you like.',
+    'You do not owe anyone an explanation for how you feel.',
+    'Taking care of yourself matters.',
+    'It is okay to say what you need.',
+    'A small win still counts.',
+    'Be proud of the small things.',
+    'Your own rhythm is a good rhythm.',
+    'Doing your best is enough.',
+    'Feeling calm is a nice feeling.',
+    'You get to decide what makes today good.',
+    'It is okay to like what you like.',
     'Today can be a gentle day.',
     'You are capable, even on slow days.',
-    'It is okay to take things slowly today.',
+    'Slow and steady is okay today.',
     'You are not alone in how you feel.',
-    'One good moment can make a day better.',
-    'You are allowed to be exactly where you are.',
+    'One good moment can brighten a day.',
+    'Wherever you are today is okay.',
     'Small comforts matter too.',
   ],
   fr: [
-    'Va à ton rythme, une étape à la fois.',
+    'Passe une bonne journée aujourd’hui.',
+    'Avance étape par étape.',
     'Tu fais mieux que tu ne le penses.',
-    'Une journée calme peut quand même être une bonne journée.',
-    'Un petit progrès compte aussi.',
-    'Tu peux prendre ton temps.',
+    'Une journée calme peut aussi être une bonne journée.',
+    'Les petits pas comptent aussi.',
+    'Prends ton temps aujourd’hui.',
     "Tu n'as pas besoin d'être parfait aujourd'hui.",
-    'Se reposer, c’est aussi bien faire.',
-    'Un petit pas compte.',
+    'Se reposer, c’est prendre soin de toi.',
     "Tu as le droit d'avancer à ton rythme.",
-    'Une journée simple, c’est très bien aussi.',
+    'Une journée simple peut être une bonne journée.',
     "Tu peux demander de l'aide.",
-    "Tu as traversé aujourd'hui, et c'est suffisant.",
+    "Tu as tenu bon aujourd'hui, et cela compte.",
     'Les moments calmes peuvent être de bons moments.',
-    'Tu apprends, et cela prend du temps.',
+    'Apprendre prend du temps, et c’est normal.',
     'Faire un peu, c’est déjà faire quelque chose.',
-    'Tu peux faire des pauses.',
-    "Tu n'es pas en retard. Tu suis ton propre chemin.",
-    'Une journée lente reste une vraie journée.',
-    'Tu as le droit de ressentir ce que tu ressens.',
+    'Les pauses te font du bien.',
+    'Tu suis ton propre chemin, et c’est très bien.',
+    'Une journée lente reste une bonne journée.',
+    'Tes émotions sont légitimes.',
     'Les petites victoires comptent aussi.',
-    "Tu n'as pas besoin de te presser.",
-    "Aujourd'hui est un nouveau jour.",
-    "Tu es venu aujourd'hui, et cela compte.",
-    "C'est normal si aujourd'hui a été difficile.",
-    'Être gentil avec toi-même est un bon choix.',
-    'Tu essaies, et cela compte.',
+    "Il n'y a pas besoin de te presser.",
+    "Aujourd'hui est un nouveau départ.",
+    "Le simple fait d'être là aujourd'hui compte.",
+    "C'est normal si aujourd'hui semble difficile.",
+    'Sois bienveillant envers toi-même aujourd’hui.',
+    'Essayer compte, même les jours difficiles.',
     'Une chose à la fois, c’est suffisant.',
-    'Tu peux avancer lentement, en toute sécurité.',
+    'Avancer doucement, c’est très bien.',
     'Le confort compte aussi.',
-    'Tu décides de ce qui te convient.',
-    'Tu peux refaire les choses que tu aimes.',
+    'Tu choisis ce qui te fait du bien.',
+    'Tu peux apprécier les mêmes choses encore une fois.',
     'Les choses familières peuvent faire du bien.',
-    "Tu peux faire une pause quand tu en as besoin.",
-    "Chaque jour n'a pas besoin d'être excitant pour être bon.",
+    "Prends une pause dès que tu en as besoin.",
+    'Une journée tranquille peut être une bonne journée.',
     'Tu vas bien.',
-    'C’est bien de faire les choses à ta façon.',
-    'Les petits pas te font quand même avancer.',
-    'Tu peux avancer à la vitesse qui te convient.',
-    "Aujourd'hui n'a besoin que d'être aujourd'hui.",
-    'Tu peux te reposer sans raison particulière.',
-    'Les journées simples peuvent aussi être bonnes.',
+    'Ta façon de faire est une bonne façon.',
+    'Les petits pas s’additionnent.',
+    'Avance à la vitesse qui te convient.',
+    "Aujourd'hui n'a qu'à être aujourd'hui.",
+    'Se reposer n’a pas besoin de raison.',
+    'Simple peut aussi être bien.',
     'Tu es suffisant tel que tu es.',
-    "C'est normal d'avoir besoin de temps pour s'adapter.",
-    "Tu n'as pas à expliquer tes sentiments à personne.",
+    "C'est normal d'avoir besoin de temps pour t'adapter.",
+    "Tu ne dois d'explication à personne sur tes sentiments.",
     'Prendre soin de toi est important.',
     'Tu peux dire ce dont tu as besoin.',
-    'Une petite victoire reste une victoire.',
-    'Tu peux être fier des petites choses.',
-    "C'est bien d'avancer à ton propre rythme.",
-    'Tu fais de ton mieux, et cela suffit.',
-    'C’est agréable de se sentir calme.',
+    'Une petite victoire compte quand même.',
+    'Sois fier des petites choses.',
+    'Ton propre rythme est un bon rythme.',
+    'Faire de ton mieux, c’est suffisant.',
+    'Se sentir calme, c’est agréable.',
     'Tu choisis ce qui rend ta journée bonne.',
-    "Tu as le droit d'aimer ce que tu aimes.",
+    "C'est normal d'aimer ce que tu aimes.",
     "Aujourd'hui peut être une journée douce.",
     'Tu es capable, même les jours plus lents.',
-    "Tu peux prendre les choses doucement aujourd'hui.",
+    'Doucement et sûrement, c’est très bien aujourd’hui.',
     'Tu n’es pas seul dans ce que tu ressens.',
-    'Un bon moment peut améliorer une journée.',
-    'Tu as le droit d’être exactement où tu es.',
+    'Un bon moment peut illuminer une journée.',
+    'Là où tu es aujourd’hui, c’est très bien.',
     'Les petits conforts comptent aussi.',
   ],
   ar: [
-    'خذ الأمور خطوة بخطوة.',
+    'أتمنى لك يومًا جميلًا اليوم.',
+    'تقدم خطوة بخطوة.',
     'أنت تقوم بعمل أفضل مما تظن.',
     'يوم هادئ يمكن أن يكون يومًا جيدًا أيضًا.',
-    'التقدم البسيط مهم أيضًا.',
-    'لا بأس أن تأخذ وقتك.',
+    'الخطوات الصغيرة مهمة أيضًا.',
+    'خذ وقتك اليوم.',
     'لست بحاجة لأن تكون مثاليًا اليوم.',
-    'الراحة جزء من النجاح.',
-    'كل خطوة صغيرة مهمة.',
+    'الراحة هي نوع من الاعتناء بنفسك.',
     'من حقك أن تسير بالسرعة التي تناسبك.',
-    'يوم بسيط يكفي، ولا بأس بذلك.',
-    'لا بأس أن تطلب المساعدة.',
-    'أنجزت يومك، وهذا يكفي.',
+    'يوم بسيط يمكن أن يكون يومًا جيدًا.',
+    'يمكنك طلب المساعدة.',
+    'صمدت اليوم، وهذا يكفي.',
     'اللحظات الهادئة يمكن أن تكون لحظات جيدة.',
-    'أنت تتعلم، وهذا يحتاج وقتًا.',
+    'التعلم يحتاج وقتًا، وهذا أمر طبيعي.',
     'فعل القليل هو فعل شيء بالفعل.',
-    'لا بأس أن تأخذ استراحة.',
-    'لست متأخرًا، أنت تسير في طريقك الخاص.',
-    'اليوم الهادئ يبقى يومًا حقيقيًا.',
-    'من حقك أن تشعر بما تشعر به.',
+    'الاستراحات مفيدة لك.',
+    'أنت تسير في طريقك الخاص، وهذا جيد جدًا.',
+    'اليوم الهادئ يبقى يومًا جيدًا.',
+    'مشاعرك مفهومة ومقبولة.',
     'الإنجازات الصغيرة مهمة أيضًا.',
     'لا داعي للاستعجال.',
-    'اليوم يوم جديد.',
-    'حضورك اليوم أمر مهم.',
-    'لا بأس إن كان اليوم صعبًا.',
-    'أن تكون لطيفًا مع نفسك خيار جيد.',
-    'أنت تحاول، وهذا يكفي.',
+    'اليوم بداية جديدة.',
+    'مجرد حضورك اليوم أمر مهم.',
+    'لا بأس إن بدا اليوم صعبًا.',
+    'كن لطيفًا مع نفسك اليوم.',
+    'المحاولة مهمة، حتى في الأيام الصعبة.',
     'شيء واحد في كل مرة يكفي.',
-    'من حقك أن تتقدم ببطء وبأمان.',
+    'التقدم ببطء أمر جيد.',
     'الراحة مهمة أيضًا.',
-    'أنت من يقرر ما يناسبك.',
-    'لا بأس أن تكرر ما تحب.',
+    'أنت من يختار ما يشعرك بالراحة.',
+    'يمكنك الاستمتاع بنفس الأشياء مرة أخرى.',
     'الأشياء المألوفة قد تشعرك بالراحة.',
-    'لك أن تأخذ استراحة متى احتجت.',
-    'لا يلزم أن يكون كل يوم مثيرًا ليكون جيدًا.',
+    'خذ استراحة متى احتجت إليها.',
+    'يوم هادئ يمكن أن يكون يومًا جيدًا.',
     'أنت بخير.',
-    'لا بأس أن تفعل الأمور بطريقتك.',
-    'الخطوات الصغيرة تقدّمك أيضًا.',
-    'يمكنك التقدم بالسرعة التي تناسبك.',
+    'طريقتك الخاصة طريقة جيدة.',
+    'الخطوات الصغيرة تتراكم مع الوقت.',
+    'تقدم بالسرعة التي تناسبك.',
     'يكفي أن يكون اليوم يومًا عاديًا.',
-    'من حقك أن ترتاح دون سبب.',
-    'الأيام البسيطة يمكن أن تكون جيدة أيضًا.',
+    'الراحة لا تحتاج إلى سبب.',
+    'البساطة يمكن أن تكون جيدة أيضًا.',
     'أنت كافٍ كما أنت.',
     'لا بأس أن تحتاج وقتًا للتأقلم.',
-    'لست مضطرًا لشرح مشاعرك لأحد.',
+    'لست مضطرًا لتبرير مشاعرك لأحد.',
     'الاعتناء بنفسك أمر مهم.',
-    'من حقك أن تقول ما تحتاجه.',
-    'الإنجاز الصغير يبقى إنجازًا.',
-    'يمكنك أن تفتخر بالأشياء الصغيرة.',
-    'لا بأس أن تسير على إيقاعك الخاص.',
-    'تبذل قصارى جهدك، وهذا يكفي.',
-    'من الجميل أن تشعر بالهدوء.',
+    'يمكنك أن تقول ما تحتاجه.',
+    'الإنجاز الصغير يبقى مهمًا.',
+    'افتخر بالأشياء الصغيرة.',
+    'إيقاعك الخاص إيقاع جيد.',
+    'بذل قصارى جهدك يكفي.',
+    'الشعور بالهدوء أمر لطيف.',
     'أنت من يختار ما يجعل يومك جيدًا.',
-    'من حقك أن تحب ما تحب.',
+    'لا بأس أن تحب ما تحب.',
     'يمكن أن يكون اليوم يومًا لطيفًا.',
     'أنت قادر، حتى في الأيام البطيئة.',
-    'يمكنك أخذ الأمور ببطء اليوم.',
+    'ببطء وثبات، هذا جيد اليوم.',
     'لست وحدك فيما تشعر به.',
-    'لحظة جيدة واحدة قد تُحسّن يومك.',
-    'من حقك أن تكون بالضبط حيث أنت.',
+    'لحظة جيدة واحدة قد تُنير يومك.',
+    'أينما كنت اليوم، هذا جيد.',
     'الراحة الصغيرة مهمة أيضًا.',
   ],
 };
@@ -355,10 +355,105 @@ const WEATHER_CODE_BUCKET = {
   95: 'storm', 96: 'storm', 99: 'storm',
 };
 
-const WEATHER_ICON = {
-  sunny: '☀️', partlyCloudy: '⛅', cloudy: '☁️', foggy: '🌫️',
-  drizzle: '🌦️', rain: '🌧️', snow: '❄️', storm: '⛈️',
-};
+// ---------------------------------------------------------------------------
+// Weather scene — a small animated SVG per condition (sun, drifting clouds,
+// falling rain/snow, an occasional soft flash for storms) instead of a static
+// icon. Animation only runs under prefers-reduced-motion: no-preference (see
+// CSS), so it degrades to a calm static picture for anyone who needs that.
+// ---------------------------------------------------------------------------
+
+const WX_CLOUD_PATH =
+  'M14 38c-5 0-9-4-9-9 0-4.4 3.2-8 7.4-8.8C13.8 15 18.6 11 24.5 11c6.2 0 11.3 4.4 12.4 10.1' +
+  'C42 22 46 26.4 46 31.5c0 4.7-3.8 6.5-8.5 6.5H14z';
+
+function wxRays(cx, cy, rInner, rOuter, count) {
+  let out = '';
+  for (let i = 0; i < count; i++) {
+    const a = (i / count) * Math.PI * 2;
+    const x1 = (cx + Math.cos(a) * rInner).toFixed(1);
+    const y1 = (cy + Math.sin(a) * rInner).toFixed(1);
+    const x2 = (cx + Math.cos(a) * rOuter).toFixed(1);
+    const y2 = (cy + Math.sin(a) * rOuter).toFixed(1);
+    out += `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" />`;
+  }
+  return out;
+}
+
+function wxDrops(count, xs) {
+  let out = '';
+  for (let i = 0; i < count; i++) {
+    const x = xs[i % xs.length];
+    out += `<line class="wx__drop" style="--i:${i}" x1="${x}" y1="40" x2="${x - 3}" y2="50" />`;
+  }
+  return out;
+}
+
+function wxFlakes(xs) {
+  let out = '';
+  for (let i = 0; i < xs.length; i++) {
+    out += `<circle class="wx__flake" style="--i:${i}" cx="${xs[i]}" cy="40" r="1.6" />`;
+  }
+  return out;
+}
+
+function weatherSceneHTML(bucket) {
+  switch (bucket) {
+    case 'sunny':
+      return (
+        '<svg class="wx wx--sunny" viewBox="0 0 64 64">' +
+        '<g class="wx__sun"><circle cx="32" cy="30" r="11" />' +
+        `<g class="wx__rays">${wxRays(32, 30, 15, 21, 8)}</g></g></svg>`
+      );
+    case 'partlyCloudy':
+      return (
+        '<svg class="wx wx--partly" viewBox="0 0 64 64">' +
+        '<g class="wx__sun wx__sun--small"><circle cx="24" cy="20" r="8" />' +
+        `<g class="wx__rays">${wxRays(24, 20, 11, 15, 8)}</g></g>` +
+        `<path class="wx__cloud" d="${WX_CLOUD_PATH}" transform="translate(10,10)" /></svg>`
+      );
+    case 'cloudy':
+      return (
+        '<svg class="wx wx--cloudy" viewBox="0 0 64 64">' +
+        `<path class="wx__cloud wx__cloud--back" d="${WX_CLOUD_PATH}" transform="translate(2,4) scale(0.85)" />` +
+        `<path class="wx__cloud wx__cloud--front" d="${WX_CLOUD_PATH}" transform="translate(14,16)" /></svg>`
+      );
+    case 'foggy':
+      return (
+        '<svg class="wx wx--foggy" viewBox="0 0 64 64">' +
+        `<path class="wx__cloud wx__cloud--muted" d="${WX_CLOUD_PATH}" transform="translate(12,6)" />` +
+        '<g class="wx__fog"><rect x="6" y="40" width="52" height="4" rx="2" />' +
+        '<rect x="12" y="48" width="42" height="4" rx="2" />' +
+        '<rect x="8" y="56" width="48" height="4" rx="2" /></g></svg>'
+      );
+    case 'drizzle':
+      return (
+        '<svg class="wx wx--drizzle" viewBox="0 0 64 64">' +
+        `<path class="wx__cloud" d="${WX_CLOUD_PATH}" transform="translate(12,4)" />` +
+        `<g class="wx__drops">${wxDrops(3, [18, 32, 26])}</g></svg>`
+      );
+    case 'rain':
+      return (
+        '<svg class="wx wx--rain" viewBox="0 0 64 64">' +
+        `<path class="wx__cloud" d="${WX_CLOUD_PATH}" transform="translate(12,4)" />` +
+        `<g class="wx__drops">${wxDrops(5, [14, 22, 30, 38, 46])}</g></svg>`
+      );
+    case 'storm':
+      return (
+        '<svg class="wx wx--storm" viewBox="0 0 64 64">' +
+        `<path class="wx__cloud wx__cloud--dark" d="${WX_CLOUD_PATH}" transform="translate(12,4)" />` +
+        `<g class="wx__drops">${wxDrops(5, [14, 22, 30, 38, 46])}</g>` +
+        '<polygon class="wx__bolt" points="30,38 24,52 29,52 26,60 38,44 32,44 35,38" /></svg>'
+      );
+    case 'snow':
+      return (
+        '<svg class="wx wx--snow" viewBox="0 0 64 64">' +
+        `<path class="wx__cloud" d="${WX_CLOUD_PATH}" transform="translate(12,4)" />` +
+        `<g class="wx__flakes">${wxFlakes([14, 22, 32, 42, 50])}</g></svg>`
+      );
+    default:
+      return weatherSceneHTML('cloudy');
+  }
+}
 
 const WEATHER_TEXT = {
   en: {
@@ -414,7 +509,7 @@ function renderWeather() {
   }
   const wt = WEATHER_TEXT[lang] || WEATHER_TEXT.en;
   const info = wt[weatherState.bucket] || wt.cloudy;
-  els.weatherIcon.textContent = WEATHER_ICON[weatherState.bucket] || '🌡️';
+  els.weatherIcon.innerHTML = weatherSceneHTML(weatherState.bucket);
   els.weatherTemp.textContent = `${Math.round(weatherState.tempC)}°`;
   els.weatherDesc.textContent = info.label;
   els.weatherPlace.textContent = weatherState.place || '';
