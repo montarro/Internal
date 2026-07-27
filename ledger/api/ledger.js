@@ -25,13 +25,17 @@ function sanitize(data) {
       out.budget = parseFloat(data.budget);
     }
     if (Array.isArray(data.entries)) {
-      out.entries = data.entries.slice(0, 2000).map((e) => ({
-        id: e && e.id != null ? e.id : null,
-        day: Math.max(0, Math.min(6, Number(e && e.day) || 0)),
-        desc: String((e && e.desc) || '').slice(0, 200),
-        amount: Number((e && e.amount) || 0),
-        ...(e && e.flag ? { flag: String(e.flag).slice(0, 200) } : {}),
-      }));
+      out.entries = data.entries.slice(0, 2000).map((e) => {
+        const o = {
+          id: e && e.id != null ? e.id : null,
+          day: Math.max(0, Math.min(6, Number(e && e.day) || 0)),
+          desc: String((e && e.desc) || '').slice(0, 200),
+          amount: Number((e && e.amount) || 0),
+        };
+        if (e && (e.cat === 'bill' || e.cat === 'household' || e.cat === 'regular')) o.cat = e.cat;
+        if (e && e.flag) o.flag = String(e.flag).slice(0, 200);
+        return o;
+      });
     }
   }
   return out;
