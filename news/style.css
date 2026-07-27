@@ -427,8 +427,10 @@ body {
   transition: color var(--ease), background var(--ease), transform 120ms ease;
 }
 .like:hover { color: var(--blue); background: var(--blue-pale); }
-.like[aria-pressed="true"] { color: var(--blue); }
-.like[aria-pressed="true"] svg { fill: currentColor; }
+.like[aria-pressed="true"] { color: #e0405a; }
+/* The heart's <path> carries its own fill="none" attribute, which beats a
+   fill set on the parent <svg> — target the path itself so it actually fills. */
+.like[aria-pressed="true"] svg path { fill: currentColor; }
 .like.is-pulsing { transform: scale(1.22); }
 
 /* ---------- Skeleton loading cards ---------- */
