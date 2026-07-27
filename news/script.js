@@ -1087,9 +1087,16 @@ function wireEvents() {
   });
   els.refreshBtn.addEventListener('click', () => {
     els.refreshBtn.classList.add('is-spinning');
-    if (savedView) showSaved();
-    else load({ force: true });
+    const done = savedView ? Promise.resolve(showSaved()) : load({ force: true });
     loadWeather();
+    Promise.resolve(done).then(() => {
+      // Clear confirmation that the refresh actually happened, since the
+      // headlines themselves may look unchanged if nothing new was published
+      // upstream in the meantime.
+      els.updatedLine.classList.remove('is-flash');
+      void els.updatedLine.offsetWidth;
+      els.updatedLine.classList.add('is-flash');
+    });
   });
   els.speakBtn.addEventListener('click', onSpeakClick);
   els.savedBtn.addEventListener('click', () => {

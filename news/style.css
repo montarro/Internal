@@ -151,6 +151,16 @@ body {
   font-size: 0.78rem;
   color: var(--text-faint);
   white-space: nowrap;
+  transition: color 200ms ease, font-weight 200ms ease;
+}
+.updated.is-flash {
+  color: var(--blue-dark);
+  font-weight: 700;
+  animation: updatedFlash 1.8s ease forwards;
+}
+@keyframes updatedFlash {
+  0%, 55% { color: var(--blue-dark); }
+  100% { color: var(--text-faint); }
 }
 .iconbtn {
   display: inline-flex;
