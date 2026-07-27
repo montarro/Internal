@@ -40,6 +40,9 @@ const I18N = {
     loadingWeather: 'Loading weather…',
     readAloud: 'Read this aloud',
     stopReading: 'Stop reading',
+    greetingMorning: 'Good morning, Aymen 👋',
+    greetingAfternoon: 'Good afternoon, Aymen 👋',
+    greetingEvening: 'Good evening, Aymen 👋',
   },
   fr: {
     tagline: "L'actualité du jour",
@@ -65,6 +68,9 @@ const I18N = {
     loadingWeather: 'Chargement de la météo…',
     readAloud: 'Lire à voix haute',
     stopReading: 'Arrêter la lecture',
+    greetingMorning: 'Bonjour, Aymen 👋',
+    greetingAfternoon: 'Bon après-midi, Aymen 👋',
+    greetingEvening: 'Bonsoir, Aymen 👋',
   },
   ar: {
     tagline: 'أخبار اليوم',
@@ -90,8 +96,242 @@ const I18N = {
     loadingWeather: 'جارٍ تحميل حالة الطقس…',
     readAloud: 'اقرأ هذا بصوت عالٍ',
     stopReading: 'إيقاف القراءة',
+    greetingMorning: 'صباح الخير يا أيمن 👋',
+    greetingAfternoon: 'طاب يومك يا أيمن 👋',
+    greetingEvening: 'مساء الخير يا أيمن 👋',
   },
 };
+
+// ---------------------------------------------------------------------------
+// Quote of the day — a fixed local list per language (no API/key needed).
+// Picked deterministically from the local calendar date, so it stays the
+// same all day and changes the next day. Kept simple and concrete on
+// purpose: no metaphors, religion, politics, or pressure-based phrasing.
+// ---------------------------------------------------------------------------
+
+const QUOTES = {
+  en: [
+    'Take things one step at a time.',
+    'You are doing better than you think.',
+    'A calm day can still be a good day.',
+    'Small progress still matters.',
+    'It is okay to take your time.',
+    'You do not have to be perfect today.',
+    'Rest is part of doing well.',
+    'One small step counts.',
+    'You are allowed to go at your own pace.',
+    'Today can be simple and that is fine.',
+    'It is okay to ask for help.',
+    'You handled today, and that is enough.',
+    'Quiet moments can be good moments.',
+    'You are learning, and that takes time.',
+    'Doing a little is still doing something.',
+    'It is fine to take breaks.',
+    'You are not behind. You are on your own path.',
+    'A slow day is still a real day.',
+    'You are allowed to feel however you feel.',
+    'Small wins are still wins.',
+    'You do not need to rush.',
+    'Today is a new day.',
+    'You showed up today, and that matters.',
+    'It is okay if today was hard.',
+    'Being kind to yourself is a good choice.',
+    'You are trying, and that counts.',
+    'One thing at a time is enough.',
+    'You are safe to go slowly.',
+    'Comfort is important too.',
+    'You get to decide what feels okay for you.',
+    'It is okay to repeat things you like.',
+    'Familiar things can feel good.',
+    'You are allowed to take breaks whenever you need.',
+    'Every day does not need to be exciting to be good.',
+    'You are doing okay.',
+    'It is fine to do things your own way.',
+    'Small steps still move you forward.',
+    'You can go at whatever speed feels right.',
+    'Today only needs to be today.',
+    'You are allowed to rest without a reason.',
+    'Simple days can still be good days.',
+    'You are enough just as you are.',
+    'It is okay to need time to adjust.',
+    'You do not have to explain your feelings to anyone.',
+    'Taking care of yourself is important.',
+    'You are allowed to say what you need.',
+    'A quiet win is still a win.',
+    'You can be proud of small things.',
+    'It is okay to go at your own rhythm.',
+    'You are doing your best, and that is enough.',
+    'It is okay to feel calm, and that is nice.',
+    'You get to choose what makes today good.',
+    'You are allowed to like what you like.',
+    'Today can be a gentle day.',
+    'You are capable, even on slow days.',
+    'It is okay to take things slowly today.',
+    'You are not alone in how you feel.',
+    'One good moment can make a day better.',
+    'You are allowed to be exactly where you are.',
+    'Small comforts matter too.',
+  ],
+  fr: [
+    'Va à ton rythme, une étape à la fois.',
+    'Tu fais mieux que tu ne le penses.',
+    'Une journée calme peut quand même être une bonne journée.',
+    'Un petit progrès compte aussi.',
+    'Tu peux prendre ton temps.',
+    "Tu n'as pas besoin d'être parfait aujourd'hui.",
+    'Se reposer, c’est aussi bien faire.',
+    'Un petit pas compte.',
+    "Tu as le droit d'avancer à ton rythme.",
+    'Une journée simple, c’est très bien aussi.',
+    "Tu peux demander de l'aide.",
+    "Tu as traversé aujourd'hui, et c'est suffisant.",
+    'Les moments calmes peuvent être de bons moments.',
+    'Tu apprends, et cela prend du temps.',
+    'Faire un peu, c’est déjà faire quelque chose.',
+    'Tu peux faire des pauses.',
+    "Tu n'es pas en retard. Tu suis ton propre chemin.",
+    'Une journée lente reste une vraie journée.',
+    'Tu as le droit de ressentir ce que tu ressens.',
+    'Les petites victoires comptent aussi.',
+    "Tu n'as pas besoin de te presser.",
+    "Aujourd'hui est un nouveau jour.",
+    "Tu es venu aujourd'hui, et cela compte.",
+    "C'est normal si aujourd'hui a été difficile.",
+    'Être gentil avec toi-même est un bon choix.',
+    'Tu essaies, et cela compte.',
+    'Une chose à la fois, c’est suffisant.',
+    'Tu peux avancer lentement, en toute sécurité.',
+    'Le confort compte aussi.',
+    'Tu décides de ce qui te convient.',
+    'Tu peux refaire les choses que tu aimes.',
+    'Les choses familières peuvent faire du bien.',
+    "Tu peux faire une pause quand tu en as besoin.",
+    "Chaque jour n'a pas besoin d'être excitant pour être bon.",
+    'Tu vas bien.',
+    'C’est bien de faire les choses à ta façon.',
+    'Les petits pas te font quand même avancer.',
+    'Tu peux avancer à la vitesse qui te convient.',
+    "Aujourd'hui n'a besoin que d'être aujourd'hui.",
+    'Tu peux te reposer sans raison particulière.',
+    'Les journées simples peuvent aussi être bonnes.',
+    'Tu es suffisant tel que tu es.',
+    "C'est normal d'avoir besoin de temps pour s'adapter.",
+    "Tu n'as pas à expliquer tes sentiments à personne.",
+    'Prendre soin de toi est important.',
+    'Tu peux dire ce dont tu as besoin.',
+    'Une petite victoire reste une victoire.',
+    'Tu peux être fier des petites choses.',
+    "C'est bien d'avancer à ton propre rythme.",
+    'Tu fais de ton mieux, et cela suffit.',
+    'C’est agréable de se sentir calme.',
+    'Tu choisis ce qui rend ta journée bonne.',
+    "Tu as le droit d'aimer ce que tu aimes.",
+    "Aujourd'hui peut être une journée douce.",
+    'Tu es capable, même les jours plus lents.',
+    "Tu peux prendre les choses doucement aujourd'hui.",
+    'Tu n’es pas seul dans ce que tu ressens.',
+    'Un bon moment peut améliorer une journée.',
+    'Tu as le droit d’être exactement où tu es.',
+    'Les petits conforts comptent aussi.',
+  ],
+  ar: [
+    'خذ الأمور خطوة بخطوة.',
+    'أنت تقوم بعمل أفضل مما تظن.',
+    'يوم هادئ يمكن أن يكون يومًا جيدًا أيضًا.',
+    'التقدم البسيط مهم أيضًا.',
+    'لا بأس أن تأخذ وقتك.',
+    'لست بحاجة لأن تكون مثاليًا اليوم.',
+    'الراحة جزء من النجاح.',
+    'كل خطوة صغيرة مهمة.',
+    'من حقك أن تسير بالسرعة التي تناسبك.',
+    'يوم بسيط يكفي، ولا بأس بذلك.',
+    'لا بأس أن تطلب المساعدة.',
+    'أنجزت يومك، وهذا يكفي.',
+    'اللحظات الهادئة يمكن أن تكون لحظات جيدة.',
+    'أنت تتعلم، وهذا يحتاج وقتًا.',
+    'فعل القليل هو فعل شيء بالفعل.',
+    'لا بأس أن تأخذ استراحة.',
+    'لست متأخرًا، أنت تسير في طريقك الخاص.',
+    'اليوم الهادئ يبقى يومًا حقيقيًا.',
+    'من حقك أن تشعر بما تشعر به.',
+    'الإنجازات الصغيرة مهمة أيضًا.',
+    'لا داعي للاستعجال.',
+    'اليوم يوم جديد.',
+    'حضورك اليوم أمر مهم.',
+    'لا بأس إن كان اليوم صعبًا.',
+    'أن تكون لطيفًا مع نفسك خيار جيد.',
+    'أنت تحاول، وهذا يكفي.',
+    'شيء واحد في كل مرة يكفي.',
+    'من حقك أن تتقدم ببطء وبأمان.',
+    'الراحة مهمة أيضًا.',
+    'أنت من يقرر ما يناسبك.',
+    'لا بأس أن تكرر ما تحب.',
+    'الأشياء المألوفة قد تشعرك بالراحة.',
+    'لك أن تأخذ استراحة متى احتجت.',
+    'لا يلزم أن يكون كل يوم مثيرًا ليكون جيدًا.',
+    'أنت بخير.',
+    'لا بأس أن تفعل الأمور بطريقتك.',
+    'الخطوات الصغيرة تقدّمك أيضًا.',
+    'يمكنك التقدم بالسرعة التي تناسبك.',
+    'يكفي أن يكون اليوم يومًا عاديًا.',
+    'من حقك أن ترتاح دون سبب.',
+    'الأيام البسيطة يمكن أن تكون جيدة أيضًا.',
+    'أنت كافٍ كما أنت.',
+    'لا بأس أن تحتاج وقتًا للتأقلم.',
+    'لست مضطرًا لشرح مشاعرك لأحد.',
+    'الاعتناء بنفسك أمر مهم.',
+    'من حقك أن تقول ما تحتاجه.',
+    'الإنجاز الصغير يبقى إنجازًا.',
+    'يمكنك أن تفتخر بالأشياء الصغيرة.',
+    'لا بأس أن تسير على إيقاعك الخاص.',
+    'تبذل قصارى جهدك، وهذا يكفي.',
+    'من الجميل أن تشعر بالهدوء.',
+    'أنت من يختار ما يجعل يومك جيدًا.',
+    'من حقك أن تحب ما تحب.',
+    'يمكن أن يكون اليوم يومًا لطيفًا.',
+    'أنت قادر، حتى في الأيام البطيئة.',
+    'يمكنك أخذ الأمور ببطء اليوم.',
+    'لست وحدك فيما تشعر به.',
+    'لحظة جيدة واحدة قد تُحسّن يومك.',
+    'من حقك أن تكون بالضبط حيث أنت.',
+    'الراحة الصغيرة مهمة أيضًا.',
+  ],
+};
+
+function greetingKey() {
+  try {
+    const h = new Date().getHours();
+    if (h < 12) return 'greetingMorning';
+    if (h < 18) return 'greetingAfternoon';
+    return 'greetingEvening';
+  } catch {
+    return 'greetingMorning';
+  }
+}
+
+function renderGreeting() {
+  const text = t()[greetingKey()] || t().greetingMorning;
+  if (els.greetingText.textContent !== text) els.greetingText.textContent = text;
+}
+
+// Day-of-year in the visitor's local timezone, so the quote changes at local
+// midnight and stays put for the rest of the calendar day.
+function quoteIndexForToday() {
+  try {
+    const now = new Date();
+    const startOfYear = new Date(now.getFullYear(), 0, 1);
+    const dayOfYear = Math.floor((now - startOfYear) / 86400000);
+    return dayOfYear;
+  } catch {
+    return 0;
+  }
+}
+
+function renderQuote() {
+  const list = QUOTES[lang] || QUOTES.en;
+  const idx = ((quoteIndexForToday() % list.length) + list.length) % list.length;
+  els.quoteBody.textContent = list[idx] || QUOTES.en[0];
+}
 
 // ---------------------------------------------------------------------------
 // Weather — simple, concrete, plain-language, with a "read aloud" option.
@@ -311,6 +551,8 @@ const els = {
   weatherPlace: document.getElementById('weatherPlace'),
   weatherTip: document.getElementById('weatherTip'),
   speakBtn: document.getElementById('speakBtn'),
+  greetingText: document.getElementById('greetingText'),
+  quoteBody: document.getElementById('quoteBody'),
 };
 
 let categories = FALLBACK_CATEGORIES;
@@ -410,7 +652,10 @@ function renderDate() {
 let clockTimer = null;
 function startClock() {
   if (clockTimer) return;
-  clockTimer = setInterval(renderDate, 20000);
+  clockTimer = setInterval(() => {
+    renderDate();
+    renderGreeting();
+  }, 20000);
 }
 
 function applyLanguageChrome() {
@@ -423,6 +668,8 @@ function applyLanguageChrome() {
   els.clearFiltersBtn.textContent = t().clearFilters;
   els.footer.textContent = '';
   renderDate();
+  renderGreeting();
+  renderQuote();
   renderWeather();
   els.langSwitch.querySelectorAll('.lang').forEach((b) => {
     b.setAttribute('aria-pressed', b.dataset.lang === lang ? 'true' : 'false');

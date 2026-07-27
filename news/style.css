@@ -171,6 +171,37 @@ body {
 .iconbtn.is-spinning svg { animation: spin 0.8s linear infinite; }
 @keyframes spin { to { transform: rotate(360deg); } }
 
+/* ---------- Greeting + quote of the day ---------- */
+.greeting {
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.greeting__text {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--text);
+}
+.greeting__quote {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+.greeting__mark {
+  color: var(--blue);
+  font-size: 1.15rem;
+  font-weight: 800;
+  line-height: 1;
+  flex: none;
+}
+
 /* ---------- Today's weather at a glance ---------- */
 .today {
   background: var(--blue-pale);
@@ -576,6 +607,7 @@ body {
 [dir="rtl"] .like { margin-inline-start: 0; margin-inline-end: auto; }
 [dir="rtl"] .card__cat { margin-inline-start: 0; margin-inline-end: 2px; }
 [dir="rtl"] .today__weatherbody { text-align: right; }
+[dir="rtl"] .greeting { text-align: right; }
 /* The language switch itself keeps its own dir="ltr" in the markup. */
 
 /* ---------- Responsive ---------- */
