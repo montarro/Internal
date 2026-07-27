@@ -1,67 +1,87 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="color-scheme" content="dark"><title>Weekly Ledger</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap"><style>:root{--bg:#14171C;--surface:#1D2129;--surface-2:#252A33;--line:#2A2F38;--text:#E9E7E2;--muted:#8B93A0;--teal:#4FB8AA;--coral:#E2624B;--gold:#D9A94E}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;-webkit-font-smoothing:antialiased}.wrap{max-width:760px;margin:0 auto;padding:28px 20px 60px}.acct{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px;font-size:12px;color:var(--muted);font-family:'IBM Plex Mono',monospace}.acct .who{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.acct button{background:var(--surface);border:1px solid var(--line);color:var(--muted);border-radius:8px;padding:6px 12px;font-family:'Inter',sans-serif;font-size:12px;cursor:pointer;transition:border-color .15s,color .15s;flex-shrink:0}.acct button:hover{border-color:var(--coral);color:var(--text)}.tabs{display:flex;gap:6px;margin-bottom:18px;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:4px}.tab{flex:1;background:none;border:none;color:var(--muted);border-radius:7px;padding:9px;font-family:'Inter',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:background .15s,color .15s}.tab.active{background:var(--surface-2);color:var(--text)}.import{display:none;align-items:center;justify-content:space-between;gap:12px;background:rgba(217,169,78,.10);border:1px solid rgba(217,169,78,.35);border-radius:10px;padding:10px 14px;margin-bottom:18px;font-size:13px}.import.show{display:flex}.import .itxt{color:var(--text)}.import .iact{display:flex;gap:8px;flex-shrink:0}.import button{border:none;border-radius:8px;padding:7px 12px;font-size:12px;font-weight:600;cursor:pointer}.import .igo{background:var(--gold);color:#0E1216}.import .idismiss{background:transparent;color:var(--muted);border:1px solid var(--line)}.top{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:22px;gap:12px;flex-wrap:wrap}h1{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:26px;margin:0 0 2px;letter-spacing:-0.02em}.week-range{font-family:'IBM Plex Mono',monospace;color:var(--muted);font-size:13px}.nav{display:flex;align-items:center;gap:10px}.nav button{background:var(--surface);border:1px solid var(--line);color:var(--text);width:32px;height:32px;border-radius:8px;cursor:pointer;font-size:15px;display:flex;align-items:center;justify-content:center;transition:border-color .15s,background .15s}.nav button:hover{border-color:var(--gold);background:var(--surface-2)}.nav .today{font-family:'Inter',sans-serif;font-size:12px;color:var(--muted);background:none;border:1px solid var(--line);border-radius:8px;padding:0 10px;height:32px;cursor:pointer;width:auto}.nav .today:hover{color:var(--text);border-color:var(--gold)}.strip{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-bottom:20px}.day{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:10px 6px 8px;cursor:pointer;text-align:center;transition:border-color .15s,transform .1s;position:relative}.day:hover{border-color:var(--gold)}.day.active{border-color:var(--gold);background:var(--surface-2)}.day .dname{font-family:'Space Grotesk',sans-serif;font-size:12px;font-weight:600;color:var(--muted)}.day.active .dname{color:var(--gold)}.day .ddate{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--muted);margin-bottom:6px}.barwrap{height:44px;display:flex;align-items:flex-end;justify-content:center;margin-bottom:4px}.bar{width:14px;border-radius:3px 3px 0 0;background:var(--teal);min-height:2px;transition:height .25s ease}.day .dsub{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--text)}.addcard{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px;margin-bottom:20px}.addrow{display:grid;grid-template-columns:90px 1fr;gap:8px}.addrow2{display:grid;grid-template-columns:1fr 1fr 44px;gap:8px;margin-top:8px}.addcard select,.addcard input[type=text],.addcard input[type=number],.addcard input[type=date]{background:var(--surface-2);border:1px solid var(--line);color:var(--text);border-radius:8px;padding:9px 10px;font-family:'Inter',sans-serif;font-size:13px;width:100%}.addcard input[type=number]{font-family:'IBM Plex Mono',monospace}.addcard select:focus,.addcard input:focus{outline:none;border-color:var(--gold)}.addcard .addbtn{background:var(--teal);color:#0E1216;border:none;border-radius:8px;font-weight:600;font-size:18px;cursor:pointer;transition:filter .15s}.addcard .addbtn:hover{filter:brightness(1.1)}.billrow2{display:grid;grid-template-columns:1fr 96px 44px;gap:8px;margin-top:8px}.section-label{font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin:0 0 8px 2px}.entries{border:1px solid var(--line);border-radius:12px;overflow:hidden;margin-bottom:22px}.entry{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:var(--surface);border-bottom:1px solid var(--line);gap:10px}.entry:last-child{border-bottom:none}.entry .edesc{font-size:13px;display:flex;align-items:center;gap:8px;min-width:0}.entry .eday{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--muted);background:var(--surface-2);border-radius:5px;padding:2px 6px;flex-shrink:0}.entry .eamt{font-family:'IBM Plex Mono',monospace;font-size:13px;flex-shrink:0}.entry .eflag{color:var(--gold);font-size:11px;font-style:italic}.entry .bdue{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--muted)}.entry .bdue.soon{color:var(--gold)}.entry .bdue.over{color:var(--coral)}.entry .edel,.entry .eedit{background:none;border:none;color:var(--muted);cursor:pointer;font-size:14px;padding:2px 6px;flex-shrink:0}.entry .edel:hover{color:var(--coral)}.entry .eedit:hover{color:var(--gold)}.entry.editing{padding:8px 10px}.editform{display:flex;flex-wrap:wrap;gap:6px;width:100%;align-items:center}.editform select,.editform input{background:var(--surface-2);border:1px solid var(--line);color:var(--text);border-radius:7px;padding:7px 8px;font-family:'Inter',sans-serif;font-size:13px}.editform .eday2{width:62px}.editform .edesc2{flex:1 1 120px;min-width:0}.editform .einAmt{width:74px;font-family:'IBM Plex Mono',monospace}.editform .ecat2{width:104px}.editform .bdate2{width:130px}.editform select:focus,.editform input:focus{outline:none;border-color:var(--gold)}.editform .esave,.editform .ecancel{border:none;border-radius:7px;cursor:pointer;font-size:14px;padding:7px 10px;font-weight:600;flex:0 0 auto}.editform .esave{background:var(--teal);color:#0E1216}.editform .esave:hover{filter:brightness(1.1)}.editform .ecancel{background:var(--surface-2);color:var(--muted);border:1px solid var(--line)}.editform .ecancel:hover{color:var(--text);border-color:var(--coral)}.chip{font-family:'Inter',sans-serif;font-size:10px;font-weight:600;border-radius:5px;padding:2px 7px;flex-shrink:0}.chip.household{background:var(--gold);color:#0E1216}.chip.bill{background:var(--coral);color:#0E1216}.empty{padding:20px 14px;color:var(--muted);font-size:13px;text-align:center;background:var(--surface)}.summary{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px 18px}.srow{display:flex;justify-content:space-between;align-items:center;font-size:13px;padding:6px 0}.srow .l{color:var(--muted)}.srow .v{font-family:'IBM Plex Mono',monospace;font-size:14px}.srow.sub .l{padding-left:12px;font-size:12px;opacity:.85}.srow.sub .v{font-size:13px}.srow.budget input{background:var(--surface-2);border:1px solid var(--line);color:var(--text);border-radius:7px;padding:5px 9px;font-family:'IBM Plex Mono',monospace;font-size:13px;width:100px;text-align:right}.srow.budget input:focus{outline:none;border-color:var(--gold)}.divider{height:1px;background:var(--line);margin:6px 0}.remaining .v{font-size:19px;font-weight:600}.remaining .v.pos{color:var(--teal)}.remaining .v.neg{color:var(--coral)}.srow.house .v{color:var(--gold)}.srow.house .l{font-style:italic}.billstotal{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px 18px;margin-bottom:18px;display:flex;justify-content:space-between;align-items:center}.billstotal .l{color:var(--muted);font-size:13px}.billstotal .v{font-family:'IBM Plex Mono',monospace;font-size:18px;font-weight:600;color:var(--gold)}</style></head><body><div class="wrap"><div class="acct"><div class="who" id="acctWho">...</div><button id="signOut">Sign out</button></div><div class="tabs"><button class="tab active" id="tabLedger">Weekly</button><button class="tab" id="tabBills">Upcoming bills</button></div><div class="import" id="importBanner"><div class="itxt" id="importText">Found expenses saved on this device. Import them into your account?</div><div class="iact"><button class="igo" id="importGo">Import</button><button class="idismiss" id="importDismiss">Dismiss</button></div></div><div id="ledgerView"><div class="top"><div><h1>Weekly Ledger</h1><div class="week-range" id="weekRange">-</div></div><div class="nav"><button id="prevWeek">&lsaquo;</button><button class="today" id="todayBtn">This week</button><button id="nextWeek">&rsaquo;</button></div></div><div class="strip" id="strip"></div><div class="addcard"><div class="addrow"><select id="inDay"></select><input type="text" id="inDesc" placeholder="Description"></div><div class="addrow2"><input type="number" id="inAmt" placeholder="0.00" step="0.01"><select id="inCat"><option value="regular">Regular</option><option value="bill">Bill</option><option value="household">Household</option></select><button class="addbtn" id="inAdd">+</button></div></div><div class="section-label" id="entriesLabel">All entries</div><div class="entries" id="entries"></div><div class="summary"><div class="srow"><div class="l">Total spent</div><div class="v" id="sumSpent">$0.00</div></div><div class="srow sub"><div class="l">of which bills</div><div class="v" id="sumBills">$0.00</div></div><div class="srow house"><div class="l">Household (separate)</div><div class="v" id="sumHouse">$0.00</div></div><div class="srow budget"><div class="l">Weekly budget</div><div><input type="number" id="sumBudget" step="0.01" placeholder="set budget"></div></div><div class="divider"></div><div class="srow remaining"><div class="l">Remaining</div><div class="v" id="sumRemaining">-</div></div></div></div><div id="billsView" style="display:none"><div class="section-label">Add upcoming bill</div><div class="addcard"><div class="addrow" style="grid-template-columns:1fr"><input type="text" id="binName" placeholder="Bill name"></div><div class="billrow2"><input type="date" id="binDate"><input type="number" id="binCost" placeholder="0.00" step="0.01"><button class="addbtn" id="binAdd">+</button></div></div><div class="billstotal"><div class="l">Total upcoming</div><div class="v" id="billsTotal">$0.00</div></div><div class="section-label">Upcoming bills</div><div class="entries" id="billsList"></div></div></div><script>
-const storage = {
-  async get(key){
-    const week = key.split(':')[1];
-    const r = await fetch('/api/ledger?week=' + encodeURIComponent(week));
-    if(r.status === 401){ location.href = '/login.html'; return null; }
-    if(!r.ok) return null;
-    const data = await r.json();
-    return { value: JSON.stringify(data) };
-  },
-  async set(key, value){
-    const week = key.split(':')[1];
-    const r = await fetch('/api/ledger', {
-      method:'POST',
-      headers:{'content-type':'application/json'},
-      body: JSON.stringify({ week, data: JSON.parse(value) })
-    });
-    if(r.status === 401){ location.href = '/login.html'; }
-  }
-};
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="color-scheme" content="dark"><title>Weekly Ledger</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap"><style>:root{--bg:#14171C;--surface:#1D2129;--surface-2:#252A33;--line:#2A2F38;--text:#E9E7E2;--muted:#8B93A0;--teal:#4FB8AA;--coral:#E2624B;--gold:#D9A94E}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;-webkit-font-smoothing:antialiased}.wrap{max-width:760px;margin:0 auto;padding:28px 20px 60px}.acct{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px;font-size:12px;color:var(--muted);font-family:'IBM Plex Mono',monospace}.acct .who{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.acct button{background:var(--surface);border:1px solid var(--line);color:var(--muted);border-radius:8px;padding:6px 12px;font-family:'Inter',sans-serif;font-size:12px;cursor:pointer;transition:border-color .15s,color .15s;flex-shrink:0}.acct button:hover{border-color:var(--coral);color:var(--text)}.tabs{display:flex;gap:6px;margin-bottom:18px;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:4px}.tab{flex:1;background:none;border:none;color:var(--muted);border-radius:7px;padding:9px;font-family:'Inter',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:background .15s,color .15s}.tab.active{background:var(--surface-2);color:var(--text)}.import{display:none;align-items:center;justify-content:space-between;gap:12px;background:rgba(217,169,78,.10);border:1px solid rgba(217,169,78,.35);border-radius:10px;padding:10px 14px;margin-bottom:18px;font-size:13px}.import.show{display:flex}.import .itxt{color:var(--text)}.import .iact{display:flex;gap:8px;flex-shrink:0}.import button{border:none;border-radius:8px;padding:7px 12px;font-size:12px;font-weight:600;cursor:pointer}.import .igo{background:var(--gold);color:#0E1216}.import .idismiss{background:transparent;color:var(--muted);border:1px solid var(--line)}.top{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:22px;gap:12px;flex-wrap:wrap}h1{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:26px;margin:0 0 2px;letter-spacing:-0.02em}.week-range{font-family:'IBM Plex Mono',monospace;color:var(--muted);font-size:13px}.nav{display:flex;align-items:center;gap:10px}.nav button{background:var(--surface);border:1px solid var(--line);color:var(--text);width:32px;height:32px;border-radius:8px;cursor:pointer;font-size:15px;display:flex;align-items:center;justify-content:center;transition:border-color .15s,background .15s}.nav button:hover{border-color:var(--gold);background:var(--surface-2)}.nav .today{font-family:'Inter',sans-serif;font-size:12px;color:var(--muted);background:none;border:1px solid var(--line);border-radius:8px;padding:0 10px;height:32px;cursor:pointer;width:auto}.nav .today:hover{color:var(--text);border-color:var(--gold)}.strip{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-bottom:20px}.day{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:10px 6px 8px;cursor:pointer;text-align:center;transition:border-color .15s,transform .1s;position:relative}.day:hover{border-color:var(--gold)}.day.active{border-color:var(--gold);background:var(--surface-2)}.day .dname{font-family:'Space Grotesk',sans-serif;font-size:12px;font-weight:600;color:var(--muted)}.day.active .dname{color:var(--gold)}.day .ddate{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--muted);margin-bottom:6px}.barwrap{height:44px;display:flex;align-items:flex-end;justify-content:center;margin-bottom:4px}.bar{width:14px;border-radius:3px 3px 0 0;background:var(--teal);min-height:2px;transition:height .25s ease}.day .dsub{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--text)}.addcard{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px;margin-bottom:20px}.addrow{display:grid;grid-template-columns:90px 1fr;gap:8px}.addrow.m{grid-template-columns:150px 1fr}.addrow2{display:grid;grid-template-columns:1fr 1fr 44px;gap:8px;margin-top:8px}.addcard select,.addcard input[type=text],.addcard input[type=number],.addcard input[type=date]{background:var(--surface-2);border:1px solid var(--line);color:var(--text);border-radius:8px;padding:9px 10px;font-family:'Inter',sans-serif;font-size:13px;width:100%}.addcard input[type=number]{font-family:'IBM Plex Mono',monospace}.addcard select:focus,.addcard input:focus{outline:none;border-color:var(--gold)}.addcard .addbtn{background:var(--teal);color:#0E1216;border:none;border-radius:8px;font-weight:600;font-size:18px;cursor:pointer;transition:filter .15s}.addcard .addbtn:hover{filter:brightness(1.1)}.billrow2{display:grid;grid-template-columns:1fr 96px 44px;gap:8px;margin-top:8px}.section-label{font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin:0 0 8px 2px}.entries{border:1px solid var(--line);border-radius:12px;overflow:hidden;margin-bottom:22px}.entry{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:var(--surface);border-bottom:1px solid var(--line);gap:10px}.entry:last-child{border-bottom:none}.entry .edesc{font-size:13px;display:flex;align-items:center;gap:8px;min-width:0}.entry .eday{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--muted);background:var(--surface-2);border-radius:5px;padding:2px 6px;flex-shrink:0}.entry .eamt{font-family:'IBM Plex Mono',monospace;font-size:13px;flex-shrink:0}.entry .eflag{color:var(--gold);font-size:11px;font-style:italic}.entry .bdue{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--muted)}.entry .bdue.soon{color:var(--gold)}.entry .bdue.over{color:var(--coral)}.entry .edel,.entry .eedit,.entry .bpaid{background:none;border:none;color:var(--muted);cursor:pointer;font-size:14px;padding:2px 6px;flex-shrink:0}.entry .edel:hover{color:var(--coral)}.entry .eedit:hover{color:var(--gold)}.entry .bpaid{color:var(--teal);border:1px solid var(--line);border-radius:7px;font-size:11px;font-weight:600;padding:4px 9px}.entry .bpaid:hover{background:var(--teal);color:#0E1216}.entry.editing{padding:8px 10px}.editform{display:flex;flex-wrap:wrap;gap:6px;width:100%;align-items:center}.editform select,.editform input{background:var(--surface-2);border:1px solid var(--line);color:var(--text);border-radius:7px;padding:7px 8px;font-family:'Inter',sans-serif;font-size:13px}.editform .eday2{width:62px}.editform .edesc2{flex:1 1 120px;min-width:0}.editform .einAmt{width:74px;font-family:'IBM Plex Mono',monospace}.editform .ecat2{width:104px}.editform .bdate2{width:140px}.editform select:focus,.editform input:focus{outline:none;border-color:var(--gold)}.editform .esave,.editform .ecancel{border:none;border-radius:7px;cursor:pointer;font-size:14px;padding:7px 10px;font-weight:600;flex:0 0 auto}.editform .esave{background:var(--teal);color:#0E1216}.editform .esave:hover{filter:brightness(1.1)}.editform .ecancel{background:var(--surface-2);color:var(--muted);border:1px solid var(--line)}.editform .ecancel:hover{color:var(--text);border-color:var(--coral)}.chip{font-family:'Inter',sans-serif;font-size:10px;font-weight:600;border-radius:5px;padding:2px 7px;flex-shrink:0}.chip.household{background:var(--gold);color:#0E1216}.chip.bill{background:var(--coral);color:#0E1216}.chip.gas{background:var(--teal);color:#0E1216}.empty{padding:20px 14px;color:var(--muted);font-size:13px;text-align:center;background:var(--surface)}.summary{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px 18px}.srow{display:flex;justify-content:space-between;align-items:center;font-size:13px;padding:6px 0}.srow .l{color:var(--muted)}.srow .v{font-family:'IBM Plex Mono',monospace;font-size:14px}.srow.sub .l{padding-left:12px;font-size:12px;opacity:.85}.srow.sub .v{font-size:13px}.srow.budget input{background:var(--surface-2);border:1px solid var(--line);color:var(--text);border-radius:7px;padding:5px 9px;font-family:'IBM Plex Mono',monospace;font-size:13px;width:100px;text-align:right}.srow.budget input:focus{outline:none;border-color:var(--gold)}.divider{height:1px;background:var(--line);margin:6px 0}.remaining .v{font-size:19px;font-weight:600}.remaining .v.pos{color:var(--teal)}.remaining .v.neg{color:var(--coral)}.srow.house .v{color:var(--gold)}.srow.house .l{font-style:italic}.billstotal{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px 18px;margin-bottom:18px;display:flex;justify-content:space-between;align-items:center}.billstotal .l{color:var(--muted);font-size:13px}.billstotal .v{font-family:'IBM Plex Mono',monospace;font-size:18px;font-weight:600;color:var(--gold)}.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(20px);background:var(--surface-2);border:1px solid var(--line);color:var(--text);padding:11px 18px;border-radius:10px;font-size:13px;opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;z-index:50;box-shadow:0 8px 24px rgba(0,0,0,.4)}.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}</style></head><body><div class="wrap"><div class="acct"><div class="who" id="acctWho">...</div><button id="signOut">Sign out</button></div><div class="tabs"><button class="tab active" id="tabWeekly">Weekly</button><button class="tab" id="tabMonthly">Monthly</button><button class="tab" id="tabBills">Bills</button></div><div class="import" id="importBanner"><div class="itxt" id="importText">Found expenses saved on this device. Import them into your account?</div><div class="iact"><button class="igo" id="importGo">Import</button><button class="idismiss" id="importDismiss">Dismiss</button></div></div><div id="weeklyView"><div class="top"><div><h1>Weekly Ledger</h1><div class="week-range" id="weekRange">-</div></div><div class="nav"><button id="prevWeek">&lsaquo;</button><button class="today" id="todayBtn">This week</button><button id="nextWeek">&rsaquo;</button></div></div><div class="strip" id="strip"></div><div class="addcard"><div class="addrow"><select id="inDay"></select><input type="text" id="inDesc" placeholder="Description"></div><div class="addrow2"><input type="number" id="inAmt" placeholder="0.00" step="0.01"><select id="inCat"><option value="regular">Regular</option><option value="bill">Bill</option><option value="household">Household</option><option value="gas">Gas</option></select><button class="addbtn" id="inAdd">+</button></div></div><div class="section-label" id="entriesLabel">All entries</div><div class="entries" id="entries"></div><div class="summary"><div class="srow"><div class="l">Total spent</div><div class="v" id="sumSpent">$0.00</div></div><div class="srow sub"><div class="l">of which bills</div><div class="v" id="sumBills">$0.00</div></div><div class="srow sub"><div class="l">of which gas</div><div class="v" id="sumGas">$0.00</div></div><div class="srow house"><div class="l">Household (separate)</div><div class="v" id="sumHouse">$0.00</div></div><div class="srow budget"><div class="l">Weekly budget</div><div><input type="number" id="sumBudget" step="0.01" placeholder="set budget"></div></div><div class="divider"></div><div class="srow remaining"><div class="l">Remaining</div><div class="v" id="sumRemaining">-</div></div></div></div><div id="monthlyView" style="display:none"><div class="top"><div><h1>Monthly</h1><div class="week-range" id="monthLabel">-</div></div><div class="nav"><button id="prevMonth">&lsaquo;</button><button class="today" id="thisMonthBtn">This month</button><button id="nextMonth">&rsaquo;</button></div></div><div class="addcard"><div class="addrow m"><input type="date" id="mDate"><input type="text" id="mDesc" placeholder="Description"></div><div class="addrow2"><input type="number" id="mAmt" placeholder="0.00" step="0.01"><select id="mCat"><option value="regular">Regular</option><option value="bill">Bill</option><option value="household">Household</option><option value="gas">Gas</option></select><button class="addbtn" id="mAdd">+</button></div></div><div class="section-label">This month</div><div class="entries" id="mEntries"></div><div class="summary"><div class="srow"><div class="l">Total spent</div><div class="v" id="mSumSpent">$0.00</div></div><div class="srow sub"><div class="l">of which bills</div><div class="v" id="mSumBills">$0.00</div></div><div class="srow sub"><div class="l">of which gas</div><div class="v" id="mSumGas">$0.00</div></div><div class="srow house"><div class="l">Household (separate)</div><div class="v" id="mSumHouse">$0.00</div></div><div class="srow budget"><div class="l">Monthly budget</div><div><input type="number" id="mBudget" step="0.01" placeholder="set budget"></div></div><div class="divider"></div><div class="srow remaining"><div class="l">Remaining</div><div class="v" id="mRemaining">-</div></div></div></div><div id="billsView" style="display:none"><div class="section-label">Add upcoming bill</div><div class="addcard"><div class="addrow" style="grid-template-columns:1fr"><input type="text" id="binName" placeholder="Bill name"></div><div class="billrow2"><input type="date" id="binDate"><input type="number" id="binCost" placeholder="0.00" step="0.01"><button class="addbtn" id="binAdd">+</button></div></div><div class="billstotal"><div class="l">Total upcoming</div><div class="v" id="billsTotal">$0.00</div></div><div class="section-label">Upcoming bills</div><div class="entries" id="billsList"></div></div></div><script>
+function api(path, opts){ return fetch(path, opts); }
 const DAY_NAMES = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
-const CAT_OPTS = '<option value="regular">Regular</option><option value="bill">Bill</option><option value="household">Household</option>';
+const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+const CAT_OPTS = '<option value="regular">Regular</option><option value="bill">Bill</option><option value="household">Household</option><option value="gas">Gas</option>';
+function pad2(n){ return String(n).padStart(2,'0'); }
 function toISO(d){ return d.toISOString().slice(0,10); }
 function fromISO(s){ const [y,m,d]=s.split('-').map(Number); return new Date(Date.UTC(y,m-1,d)); }
 function fmt(n){ return '$' + n.toFixed(2); }
 function fmtDate(d){ return d.toLocaleDateString('en-AU',{month:'short',day:'numeric'}); }
-function sundayOf(date){
-  const d = new Date(date);
-  const day = d.getUTCDay();
-  d.setUTCDate(d.getUTCDate() - day);
-  return d;
-}
-const TODAY = new Date();
-const THIS_WEEK_START = toISO(sundayOf(TODAY));
-let view = 'ledger';
-let currentWeekStart = THIS_WEEK_START;
-let selectedDay = null;
-let editingId = null;
-let weekData = { budget: null, entries: [] };
-let weekCache = {};
-let idCounter = 1;
-let bills = [];
-let billsLoaded = false;
-let billEditingId = null;
-function nextId(){ return idCounter++; }
+function todayISO(){ const n=new Date(); return n.getFullYear()+'-'+pad2(n.getMonth()+1)+'-'+pad2(n.getDate()); }
+function thisMonthStr(){ const n=new Date(); return n.getFullYear()+'-'+pad2(n.getMonth()+1); }
+function monthLabel(ms){ const [y,m]=ms.split('-').map(Number); return MONTHS[m-1]+' '+y; }
+function addMonths(ms,n){ const [y,m]=ms.split('-').map(Number); const d=new Date(Date.UTC(y,m-1+n,1)); return d.getUTCFullYear()+'-'+pad2(d.getUTCMonth()+1); }
+function monthOf(ds){ return ds ? ds.slice(0,7) : ''; }
+function addMonthsToDate(ds,n){ const [y,m,d]=ds.split('-').map(Number); const dt=new Date(Date.UTC(y,m-1+n,d)); return toISO(dt); }
+function sundayOf(date){ const d=new Date(date); const day=d.getUTCDay(); d.setUTCDate(d.getUTCDate()-day); return d; }
 function catOf(e){
   if(e && e.cat) return e.cat;
   if(e && e.desc && e.desc.trim().toLowerCase().includes('house')) return 'household';
   return 'regular';
 }
+function toast(msg){
+  let t=document.getElementById('toast');
+  if(!t){ t=document.createElement('div'); t.id='toast'; t.className='toast'; document.body.appendChild(t); }
+  t.textContent=msg; t.classList.add('show');
+  clearTimeout(t._h); t._h=setTimeout(()=>t.classList.remove('show'),2200);
+}
+const TODAY = new Date();
+const THIS_WEEK_START = toISO(sundayOf(TODAY));
+let view = 'weekly';
+// ---- weekly state ----
+let currentWeekStart = THIS_WEEK_START;
+let selectedDay = null;
+let editingId = null;
+let weekData = { budget: null, entries: [] };
+let weekCache = {};
+// ---- monthly state ----
+let currentMonth = thisMonthStr();
+let monthData = { budget: null, entries: [] };
+let monthCache = {};
+let monthEditingId = null;
+let monthLoadedFor = null;
+// ---- bills state ----
+let bills = [];
+let billsLoaded = false;
+let billEditingId = null;
+let idCounter = 1;
+function nextId(){ return idCounter++; }
+// ---- tabs ----
+function setView(v){
+  view = v;
+  document.getElementById('weeklyView').style.display = v==='weekly' ? '' : 'none';
+  document.getElementById('monthlyView').style.display = v==='monthly' ? '' : 'none';
+  document.getElementById('billsView').style.display = v==='bills' ? '' : 'none';
+  document.getElementById('tabWeekly').classList.toggle('active', v==='weekly');
+  document.getElementById('tabMonthly').classList.toggle('active', v==='monthly');
+  document.getElementById('tabBills').classList.toggle('active', v==='bills');
+  if(v==='monthly' && monthLoadedFor!==currentMonth) loadMonth(currentMonth);
+  if(v==='bills' && !billsLoaded) loadBills();
+}
+document.getElementById('tabWeekly').onclick = () => setView('weekly');
+document.getElementById('tabMonthly').onclick = () => setView('monthly');
+document.getElementById('tabBills').onclick = () => setView('bills');
+// ================= WEEKLY =================
+const storage = {
+  async get(week){
+    const r = await fetch('/api/ledger?week=' + encodeURIComponent(week));
+    if(r.status === 401){ location.href = '/login.html'; return null; }
+    if(!r.ok) return null;
+    return await r.json();
+  },
+  async set(week, data){
+    const r = await fetch('/api/ledger', { method:'POST', headers:{'content-type':'application/json'}, body: JSON.stringify({ week, data }) });
+    if(r.status === 401){ location.href = '/login.html'; }
+  }
+};
 async function loadWeek(weekStart){
   currentWeekStart = weekStart;
   selectedDay = null;
   editingId = null;
-  if(weekCache[weekStart]){
-    weekData = weekCache[weekStart];
-    render();
-    return;
-  }
+  if(weekCache[weekStart]){ weekData = weekCache[weekStart]; render(); return; }
   let stored = null;
-  try{
-    const res = await storage.get('ledger:' + weekStart);
-    if(res) stored = JSON.parse(res.value);
-  }catch(e){ stored = null; }
+  try{ stored = await storage.get(weekStart); }catch(e){ stored = null; }
   weekData = (stored && Array.isArray(stored.entries))
     ? { budget: stored.budget != null ? stored.budget : null, entries: stored.entries }
     : { budget: null, entries: [] };
@@ -69,10 +89,7 @@ async function loadWeek(weekStart){
   weekCache[weekStart] = weekData;
   render();
 }
-function saveWeek(){
-  weekCache[currentWeekStart] = weekData;
-  storage.set('ledger:' + currentWeekStart, JSON.stringify(weekData));
-}
+function saveWeek(){ weekCache[currentWeekStart] = weekData; storage.set(currentWeekStart, weekData); }
 function render(){
   const start = fromISO(currentWeekStart);
   const end = new Date(start); end.setUTCDate(end.getUTCDate()+6);
@@ -104,103 +121,80 @@ function render(){
     selectedDay!==null ? DAY_NAMES[selectedDay] + ' entries' : 'All entries';
   const list = document.getElementById('entries');
   list.innerHTML = '';
-  const shown = weekData.entries
-    .filter(e => selectedDay===null || e.day===selectedDay)
-    .sort((a,b)=> a.day-b.day);
-  if(shown.length===0){
-    list.innerHTML = '<div class="empty">Nothing logged yet.</div>';
-  } else {
-    shown.forEach(e => {
-      const row = document.createElement('div');
-      row.className = 'entry';
-      if(editingId === e.id){
-        row.classList.add('editing');
-        const form = document.createElement('div');
-        form.className = 'editform';
-        const daySel = document.createElement('select');
-        daySel.className = 'eday2';
-        daySel.innerHTML = DAY_NAMES.map((n,i)=>'<option value="'+i+'">'+n+'</option>').join('');
-        daySel.value = e.day;
-        const descIn = document.createElement('input');
-        descIn.type = 'text';
-        descIn.className = 'edesc2';
-        descIn.value = e.desc;
-        const amtIn = document.createElement('input');
-        amtIn.type = 'number';
-        amtIn.step = '0.01';
-        amtIn.className = 'einAmt';
-        amtIn.value = e.amount;
-        const catSel = document.createElement('select');
-        catSel.className = 'ecat2';
-        catSel.innerHTML = CAT_OPTS;
-        catSel.value = catOf(e);
-        const saveBtn = document.createElement('button');
-        saveBtn.className = 'esave';
-        saveBtn.title = 'Save';
-        saveBtn.innerHTML = '&#10003;';
-        const cancelBtn = document.createElement('button');
-        cancelBtn.className = 'ecancel';
-        cancelBtn.title = 'Cancel';
-        cancelBtn.innerHTML = '&#10005;';
-        const commit = () => {
-          const nd = descIn.value.trim();
-          const na = parseFloat(amtIn.value);
-          if(!nd || isNaN(na)) return;
-          e.desc = nd;
-          e.amount = na;
-          e.day = Number(daySel.value);
-          e.cat = catSel.value;
-          editingId = null;
-          saveWeek(); render();
-        };
-        const cancel = () => { editingId = null; render(); };
-        saveBtn.onclick = commit;
-        cancelBtn.onclick = cancel;
-        [descIn, amtIn].forEach(inp => inp.addEventListener('keydown', ev => {
-          if(ev.key === 'Enter') commit();
-          if(ev.key === 'Escape') cancel();
-        }));
-        form.appendChild(daySel); form.appendChild(descIn); form.appendChild(amtIn); form.appendChild(catSel); form.appendChild(saveBtn); form.appendChild(cancelBtn);
-        row.appendChild(form);
-        list.appendChild(row);
-        setTimeout(() => descIn.focus(), 0);
-        return;
-      }
-      const cat = catOf(e);
-      const chip = cat==='household' ? '<span class="chip household">House</span>' : (cat==='bill' ? '<span class="chip bill">Bill</span>' : '');
-      const dayTag = selectedDay===null ? '<span class="eday">' + DAY_NAMES[e.day] + '</span>' : '';
-      const flagTag = e.flag ? '<span class="eflag">' + e.flag + '</span>' : '';
-      row.innerHTML =
-        '<div class="edesc">' + dayTag + '<span>' + e.desc + '</span>' + flagTag + '</div>' +
-        '<div style="display:flex;align-items:center;gap:6px;">' + chip +
-        '<span class="eamt">' + fmt(Number(e.amount)) + '</span>' +
-        '<button class="eedit" title="Edit">&#9998;</button>' +
-        '<button class="edel" title="Remove">&#10005;</button></div>';
-      row.querySelector('.eedit').onclick = () => { editingId = e.id; render(); };
-      row.querySelector('.edel').onclick = () => {
-        weekData.entries = weekData.entries.filter(x => x.id !== e.id);
-        if(editingId === e.id) editingId = null;
-        saveWeek(); render();
-      };
-      list.appendChild(row);
-    });
-  }
+  const shown = weekData.entries.filter(e => selectedDay===null || e.day===selectedDay).sort((a,b)=> a.day-b.day);
+  if(shown.length===0){ list.innerHTML = '<div class="empty">Nothing logged yet.</div>'; }
+  else { shown.forEach(e => list.appendChild(entryRow(e, 'week'))); }
   const total = weekData.entries.filter(e=>catOf(e)!=='household').reduce((s,e)=>s+Number(e.amount||0),0);
   const billTotal = weekData.entries.filter(e=>catOf(e)==='bill').reduce((s,e)=>s+Number(e.amount||0),0);
+  const gasTotal = weekData.entries.filter(e=>catOf(e)==='gas').reduce((s,e)=>s+Number(e.amount||0),0);
   const houseTotal = weekData.entries.filter(e=>catOf(e)==='household').reduce((s,e)=>s+Number(e.amount||0),0);
   document.getElementById('sumSpent').textContent = fmt(total);
   document.getElementById('sumBills').textContent = fmt(billTotal);
+  document.getElementById('sumGas').textContent = fmt(gasTotal);
   document.getElementById('sumHouse').textContent = fmt(houseTotal);
   document.getElementById('sumBudget').value = weekData.budget != null ? weekData.budget : '';
-  const remEl = document.getElementById('sumRemaining');
-  if(weekData.budget === null || weekData.budget === ''){
-    remEl.textContent = 'set a budget';
-    remEl.className = 'v';
-  } else {
-    const rem = Number(weekData.budget) - total;
-    remEl.textContent = (rem<0?'-':'') + fmt(Math.abs(rem));
-    remEl.className = 'v ' + (rem<0 ? 'neg' : 'pos');
+  setRemaining('sumRemaining', weekData.budget, total);
+}
+function setRemaining(id, budget, total){
+  const remEl = document.getElementById(id);
+  if(budget === null || budget === ''){ remEl.textContent = 'set a budget'; remEl.className = 'v'; }
+  else { const rem = Number(budget) - total; remEl.textContent = (rem<0?'-':'') + fmt(Math.abs(rem)); remEl.className = 'v ' + (rem<0 ? 'neg' : 'pos'); }
+}
+// shared expense row builder (mode 'week' or 'month')
+function entryRow(e, mode){
+  const row = document.createElement('div');
+  row.className = 'entry';
+  const isEditing = (mode==='week' ? editingId : monthEditingId) === e.id;
+  if(isEditing){
+    row.classList.add('editing');
+    const form = document.createElement('div'); form.className = 'editform';
+    let firstField;
+    if(mode==='week'){
+      const daySel = document.createElement('select'); daySel.className='eday2';
+      daySel.innerHTML = DAY_NAMES.map((n,i)=>'<option value="'+i+'">'+n+'</option>').join('');
+      daySel.value = e.day; form.appendChild(daySel); form._day = daySel;
+    } else {
+      const dateIn = document.createElement('input'); dateIn.type='date'; dateIn.className='bdate2';
+      dateIn.value = e.date || (currentMonth+'-01'); form.appendChild(dateIn); form._date = dateIn;
+    }
+    const descIn = document.createElement('input'); descIn.type='text'; descIn.className='edesc2'; descIn.value=e.desc; firstField=descIn;
+    const amtIn = document.createElement('input'); amtIn.type='number'; amtIn.step='0.01'; amtIn.className='einAmt'; amtIn.value=e.amount;
+    const catSel = document.createElement('select'); catSel.className='ecat2'; catSel.innerHTML=CAT_OPTS; catSel.value=catOf(e);
+    const saveBtn = document.createElement('button'); saveBtn.className='esave'; saveBtn.title='Save'; saveBtn.innerHTML='&#10003;';
+    const cancelBtn = document.createElement('button'); cancelBtn.className='ecancel'; cancelBtn.title='Cancel'; cancelBtn.innerHTML='&#10005;';
+    const commit = () => {
+      const nd = descIn.value.trim(); const na = parseFloat(amtIn.value);
+      if(!nd || isNaN(na)) return;
+      e.desc=nd; e.amount=na; e.cat=catSel.value;
+      if(mode==='week'){ e.day=Number(form._day.value); editingId=null; saveWeek(); render(); }
+      else { e.date=form._date.value||e.date; monthEditingId=null; saveMonth(); renderMonth(); }
+    };
+    const cancel = () => { if(mode==='week'){ editingId=null; render(); } else { monthEditingId=null; renderMonth(); } };
+    saveBtn.onclick=commit; cancelBtn.onclick=cancel;
+    [descIn, amtIn].forEach(inp => inp.addEventListener('keydown', ev => { if(ev.key==='Enter') commit(); if(ev.key==='Escape') cancel(); }));
+    form.appendChild(descIn); form.appendChild(amtIn); form.appendChild(catSel); form.appendChild(saveBtn); form.appendChild(cancelBtn);
+    row.appendChild(form);
+    setTimeout(()=>firstField.focus(),0);
+    return row;
   }
+  const cat = catOf(e);
+  const chip = cat==='household' ? '<span class="chip household">House</span>' : (cat==='bill' ? '<span class="chip bill">Bill</span>' : (cat==='gas' ? '<span class="chip gas">Gas</span>' : ''));
+  let label = '';
+  if(mode==='week'){ label = (selectedDay===null) ? '<span class="eday">' + DAY_NAMES[e.day] + '</span>' : ''; }
+  else { label = e.date ? '<span class="eday">' + fmtDate(fromISO(e.date)) + '</span>' : ''; }
+  const flagTag = e.flag ? '<span class="eflag">' + e.flag + '</span>' : '';
+  row.innerHTML =
+    '<div class="edesc">' + label + '<span>' + e.desc + '</span>' + flagTag + '</div>' +
+    '<div style="display:flex;align-items:center;gap:6px;">' + chip +
+    '<span class="eamt">' + fmt(Number(e.amount)) + '</span>' +
+    '<button class="eedit" title="Edit">&#9998;</button>' +
+    '<button class="edel" title="Remove">&#10005;</button></div>';
+  row.querySelector('.eedit').onclick = () => { if(mode==='week'){ editingId=e.id; render(); } else { monthEditingId=e.id; renderMonth(); } };
+  row.querySelector('.edel').onclick = () => {
+    if(mode==='week'){ weekData.entries = weekData.entries.filter(x=>x.id!==e.id); if(editingId===e.id) editingId=null; saveWeek(); render(); }
+    else { monthData.entries = monthData.entries.filter(x=>x.id!==e.id); if(monthEditingId===e.id) monthEditingId=null; saveMonth(); renderMonth(); }
+  };
+  return row;
 }
 document.getElementById('inAdd').onclick = () => {
   const day = Number(document.getElementById('inDay').value);
@@ -209,68 +203,80 @@ document.getElementById('inAdd').onclick = () => {
   const cat = document.getElementById('inCat').value;
   if(!desc || isNaN(amt)) return;
   weekData.entries.push({id: nextId(), day, desc, amount: amt, cat});
-  document.getElementById('inDesc').value='';
-  document.getElementById('inAmt').value='';
-  render();
-  saveWeek();
+  document.getElementById('inDesc').value=''; document.getElementById('inAmt').value='';
+  render(); saveWeek();
 };
-document.getElementById('inDesc').addEventListener('keydown', e=>{
-  if(e.key==='Enter') document.getElementById('inAdd').click();
-});
-document.getElementById('inAmt').addEventListener('keydown', e=>{
-  if(e.key==='Enter') document.getElementById('inAdd').click();
-});
-document.getElementById('sumBudget').addEventListener('change', (e) => {
-  const v = e.target.value;
-  weekData.budget = v === '' ? null : parseFloat(v);
-  render();
-  saveWeek();
-});
-document.getElementById('prevWeek').onclick = () => {
-  const d = fromISO(currentWeekStart); d.setUTCDate(d.getUTCDate()-7);
-  loadWeek(toISO(d));
-};
-document.getElementById('nextWeek').onclick = () => {
-  const d = fromISO(currentWeekStart); d.setUTCDate(d.getUTCDate()+7);
-  loadWeek(toISO(d));
-};
+document.getElementById('inDesc').addEventListener('keydown', e=>{ if(e.key==='Enter') document.getElementById('inAdd').click(); });
+document.getElementById('inAmt').addEventListener('keydown', e=>{ if(e.key==='Enter') document.getElementById('inAdd').click(); });
+document.getElementById('sumBudget').addEventListener('change', (e) => { const v=e.target.value; weekData.budget = v===''?null:parseFloat(v); render(); saveWeek(); });
+document.getElementById('prevWeek').onclick = () => { const d=fromISO(currentWeekStart); d.setUTCDate(d.getUTCDate()-7); loadWeek(toISO(d)); };
+document.getElementById('nextWeek').onclick = () => { const d=fromISO(currentWeekStart); d.setUTCDate(d.getUTCDate()+7); loadWeek(toISO(d)); };
 document.getElementById('todayBtn').onclick = () => loadWeek(THIS_WEEK_START);
-document.getElementById('signOut').onclick = async () => {
-  try{ await fetch('/api/auth', { method:'POST', headers:{'content-type':'application/json'}, body: JSON.stringify({ action:'logout' }) }); }
-  catch(e){}
-  location.href = '/login.html';
-};
-// ---- upcoming bills --------------------------------------------------------
-function setView(v){
-  view = v;
-  document.getElementById('ledgerView').style.display = v==='ledger' ? '' : 'none';
-  document.getElementById('billsView').style.display = v==='bills' ? '' : 'none';
-  document.getElementById('tabLedger').classList.toggle('active', v==='ledger');
-  document.getElementById('tabBills').classList.toggle('active', v==='bills');
-  if(v==='bills' && !billsLoaded) loadBills();
+// ================= MONTHLY =================
+async function fetchMonth(ms){
+  try{ const r = await fetch('/api/month?month='+encodeURIComponent(ms)); if(r.status===401){ location.href='/login.html'; return null; } if(!r.ok) return null; return await r.json(); }
+  catch(e){ return null; }
 }
-document.getElementById('tabLedger').onclick = () => setView('ledger');
-document.getElementById('tabBills').onclick = () => setView('bills');
+async function loadMonth(ms){
+  currentMonth = ms; monthEditingId = null;
+  if(monthCache[ms]){ monthData = monthCache[ms]; monthLoadedFor = ms; renderMonth(); return; }
+  const stored = await fetchMonth(ms);
+  monthData = (stored && Array.isArray(stored.entries)) ? { budget: stored.budget!=null?stored.budget:null, entries: stored.entries } : { budget:null, entries:[] };
+  monthData.entries = monthData.entries.map(e => (e && e.id!=null) ? e : Object.assign({}, e, { id: nextId() }));
+  monthCache[ms] = monthData; monthLoadedFor = ms;
+  renderMonth();
+}
+function saveMonth(){ monthCache[currentMonth] = monthData; fetch('/api/month', { method:'POST', headers:{'content-type':'application/json'}, body: JSON.stringify({ month: currentMonth, data: monthData }) }); }
+function renderMonth(){
+  document.getElementById('monthLabel').textContent = monthLabel(currentMonth) + (currentMonth===thisMonthStr() ? '  (this month)' : '');
+  const dateIn = document.getElementById('mDate');
+  if(!dateIn.value || monthOf(dateIn.value)!==currentMonth){ dateIn.value = (currentMonth===thisMonthStr()) ? todayISO() : (currentMonth+'-01'); }
+  const list = document.getElementById('mEntries'); list.innerHTML='';
+  const shown = monthData.entries.slice().sort((a,b)=> (a.date||'')<(b.date||'')?-1:((a.date||'')>(b.date||'')?1:0));
+  if(shown.length===0){ list.innerHTML = '<div class="empty">Nothing logged this month.</div>'; }
+  else { shown.forEach(e => list.appendChild(entryRow(e, 'month'))); }
+  const total = monthData.entries.filter(e=>catOf(e)!=='household').reduce((s,e)=>s+Number(e.amount||0),0);
+  const billTotal = monthData.entries.filter(e=>catOf(e)==='bill').reduce((s,e)=>s+Number(e.amount||0),0);
+  const gasTotal = monthData.entries.filter(e=>catOf(e)==='gas').reduce((s,e)=>s+Number(e.amount||0),0);
+  const houseTotal = monthData.entries.filter(e=>catOf(e)==='household').reduce((s,e)=>s+Number(e.amount||0),0);
+  document.getElementById('mSumSpent').textContent = fmt(total);
+  document.getElementById('mSumBills').textContent = fmt(billTotal);
+  document.getElementById('mSumGas').textContent = fmt(gasTotal);
+  document.getElementById('mSumHouse').textContent = fmt(houseTotal);
+  document.getElementById('mBudget').value = monthData.budget != null ? monthData.budget : '';
+  setRemaining('mRemaining', monthData.budget, total);
+}
+document.getElementById('mAdd').onclick = () => {
+  const date = document.getElementById('mDate').value || (currentMonth+'-01');
+  const desc = document.getElementById('mDesc').value.trim();
+  const amt = parseFloat(document.getElementById('mAmt').value);
+  const cat = document.getElementById('mCat').value;
+  if(!desc || isNaN(amt)) return;
+  monthData.entries.push({id: nextId(), date, desc, amount: amt, cat});
+  document.getElementById('mDesc').value=''; document.getElementById('mAmt').value='';
+  renderMonth(); saveMonth();
+};
+document.getElementById('mDesc').addEventListener('keydown', e=>{ if(e.key==='Enter') document.getElementById('mAdd').click(); });
+document.getElementById('mAmt').addEventListener('keydown', e=>{ if(e.key==='Enter') document.getElementById('mAdd').click(); });
+document.getElementById('mBudget').addEventListener('change', (e) => { const v=e.target.value; monthData.budget = v===''?null:parseFloat(v); renderMonth(); saveMonth(); });
+document.getElementById('prevMonth').onclick = () => loadMonth(addMonths(currentMonth,-1));
+document.getElementById('nextMonth').onclick = () => loadMonth(addMonths(currentMonth,1));
+document.getElementById('thisMonthBtn').onclick = () => loadMonth(thisMonthStr());
+// ================= BILLS =================
 async function loadBills(){
-  try{
-    const r = await fetch('/api/bills');
-    if(r.status===401){ location.href='/login.html'; return; }
-    bills = r.ok ? await r.json() : [];
-  }catch(e){ bills = []; }
+  try{ const r = await fetch('/api/bills'); if(r.status===401){ location.href='/login.html'; return; } bills = r.ok ? await r.json() : []; }
+  catch(e){ bills = []; }
   if(!Array.isArray(bills)) bills = [];
   bills = bills.map(b => (b && b.id!=null) ? b : Object.assign({}, b, { id: nextId() }));
-  billsLoaded = true;
-  renderBills();
+  billsLoaded = true; renderBills();
 }
-function saveBills(){
-  fetch('/api/bills', { method:'POST', headers:{'content-type':'application/json'}, body: JSON.stringify({ bills }) });
-}
+function saveBills(){ fetch('/api/bills', { method:'POST', headers:{'content-type':'application/json'}, body: JSON.stringify({ bills }) }); }
 function daysUntil(dateStr){
   if(!dateStr) return null;
   const [y,m,d] = dateStr.split('-').map(Number);
   const due = Date.UTC(y, m-1, d);
   const now = new Date();
-  const today = Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate());
+  const today = Date.UTC(now.getFullYear(), now.getMonth(), now.getDate());
   return Math.round((due - today) / 86400000);
 }
 function dueInfo(dateStr){
@@ -282,57 +288,45 @@ function dueInfo(dateStr){
   if(n<=7) return { label:'in '+n+' days', cls:'soon' };
   return { label:'in '+n+' days', cls:'' };
 }
+async function payBill(b){
+  const m = thisMonthStr();
+  let data = monthCache[m];
+  if(!data){
+    const stored = await fetchMonth(m);
+    data = (stored && Array.isArray(stored.entries)) ? { budget: stored.budget!=null?stored.budget:null, entries: stored.entries } : { budget:null, entries:[] };
+    data.entries = data.entries.map(e => (e && e.id!=null) ? e : Object.assign({}, e, { id: nextId() }));
+    monthCache[m] = data;
+  }
+  data.entries.push({ id: nextId(), date: todayISO(), desc: b.name, amount: Number(b.cost||0), cat: 'bill' });
+  await fetch('/api/month', { method:'POST', headers:{'content-type':'application/json'}, body: JSON.stringify({ month: m, data }) });
+  if(view==='monthly' && currentMonth===m){ monthData = data; renderMonth(); }
+  // roll the recurring bill forward one month
+  if(b.date) b.date = addMonthsToDate(b.date, 1);
+  renderBills(); saveBills();
+  toast('Logged ' + fmt(Number(b.cost||0)) + ' to ' + monthLabel(m));
+}
 function renderBills(){
   const total = bills.reduce((s,b)=>s+Number(b.cost||0),0);
   document.getElementById('billsTotal').textContent = fmt(total);
-  const list = document.getElementById('billsList');
-  list.innerHTML = '';
-  const shown = bills.slice().sort((a,b)=>{
-    if(!a.date && !b.date) return 0;
-    if(!a.date) return 1;
-    if(!b.date) return -1;
-    return a.date < b.date ? -1 : (a.date > b.date ? 1 : 0);
-  });
-  if(shown.length===0){
-    list.innerHTML = '<div class="empty">No upcoming bills yet.</div>';
-    return;
-  }
+  const list = document.getElementById('billsList'); list.innerHTML='';
+  const shown = bills.slice().sort((a,b)=>{ if(!a.date&&!b.date) return 0; if(!a.date) return 1; if(!b.date) return -1; return a.date<b.date?-1:(a.date>b.date?1:0); });
+  if(shown.length===0){ list.innerHTML = '<div class="empty">No upcoming bills yet.</div>'; return; }
   shown.forEach(b => {
-    const row = document.createElement('div');
-    row.className = 'entry';
+    const row = document.createElement('div'); row.className='entry';
     if(billEditingId === b.id){
       row.classList.add('editing');
-      const form = document.createElement('div');
-      form.className = 'editform';
-      const nameIn = document.createElement('input');
-      nameIn.type='text'; nameIn.className='edesc2'; nameIn.value=b.name;
-      const dateIn = document.createElement('input');
-      dateIn.type='date'; dateIn.className='bdate2'; dateIn.value=b.date||'';
-      const costIn = document.createElement('input');
-      costIn.type='number'; costIn.step='0.01'; costIn.className='einAmt'; costIn.value=b.cost;
-      const saveBtn = document.createElement('button');
-      saveBtn.className='esave'; saveBtn.title='Save'; saveBtn.innerHTML='&#10003;';
-      const cancelBtn = document.createElement('button');
-      cancelBtn.className='ecancel'; cancelBtn.title='Cancel'; cancelBtn.innerHTML='&#10005;';
-      const commit = () => {
-        const nn = nameIn.value.trim();
-        const nc = parseFloat(costIn.value);
-        if(!nn || isNaN(nc)) return;
-        b.name = nn; b.cost = nc; b.date = dateIn.value || '';
-        billEditingId = null;
-        renderBills(); saveBills();
-      };
-      const cancel = () => { billEditingId = null; renderBills(); };
-      saveBtn.onclick = commit; cancelBtn.onclick = cancel;
-      [nameIn, costIn].forEach(inp => inp.addEventListener('keydown', ev => {
-        if(ev.key==='Enter') commit();
-        if(ev.key==='Escape') cancel();
-      }));
+      const form = document.createElement('div'); form.className='editform';
+      const nameIn = document.createElement('input'); nameIn.type='text'; nameIn.className='edesc2'; nameIn.value=b.name;
+      const dateIn = document.createElement('input'); dateIn.type='date'; dateIn.className='bdate2'; dateIn.value=b.date||'';
+      const costIn = document.createElement('input'); costIn.type='number'; costIn.step='0.01'; costIn.className='einAmt'; costIn.value=b.cost;
+      const saveBtn = document.createElement('button'); saveBtn.className='esave'; saveBtn.title='Save'; saveBtn.innerHTML='&#10003;';
+      const cancelBtn = document.createElement('button'); cancelBtn.className='ecancel'; cancelBtn.title='Cancel'; cancelBtn.innerHTML='&#10005;';
+      const commit = () => { const nn=nameIn.value.trim(); const nc=parseFloat(costIn.value); if(!nn||isNaN(nc)) return; b.name=nn; b.cost=nc; b.date=dateIn.value||''; billEditingId=null; renderBills(); saveBills(); };
+      const cancel = () => { billEditingId=null; renderBills(); };
+      saveBtn.onclick=commit; cancelBtn.onclick=cancel;
+      [nameIn, costIn].forEach(inp => inp.addEventListener('keydown', ev => { if(ev.key==='Enter') commit(); if(ev.key==='Escape') cancel(); }));
       form.appendChild(nameIn); form.appendChild(dateIn); form.appendChild(costIn); form.appendChild(saveBtn); form.appendChild(cancelBtn);
-      row.appendChild(form);
-      list.appendChild(row);
-      setTimeout(()=>nameIn.focus(),0);
-      return;
+      row.appendChild(form); list.appendChild(row); setTimeout(()=>nameIn.focus(),0); return;
     }
     const info = dueInfo(b.date);
     const dateText = b.date ? (fmtDate(fromISO(b.date)) + ' &middot; ' + info.label) : info.label;
@@ -340,14 +334,12 @@ function renderBills(){
       '<div class="edesc"><span>' + b.name + '</span> <span class="bdue ' + info.cls + '">' + dateText + '</span></div>' +
       '<div style="display:flex;align-items:center;gap:6px;">' +
       '<span class="eamt">' + fmt(Number(b.cost||0)) + '</span>' +
+      '<button class="bpaid" title="Log as paid this month">Paid</button>' +
       '<button class="eedit" title="Edit">&#9998;</button>' +
       '<button class="edel" title="Remove">&#10005;</button></div>';
+    row.querySelector('.bpaid').onclick = () => payBill(b);
     row.querySelector('.eedit').onclick = () => { billEditingId = b.id; renderBills(); };
-    row.querySelector('.edel').onclick = () => {
-      bills = bills.filter(x => x.id !== b.id);
-      if(billEditingId === b.id) billEditingId = null;
-      renderBills(); saveBills();
-    };
+    row.querySelector('.edel').onclick = () => { bills = bills.filter(x=>x.id!==b.id); if(billEditingId===b.id) billEditingId=null; renderBills(); saveBills(); };
     list.appendChild(row);
   });
 }
@@ -357,73 +349,32 @@ document.getElementById('binAdd').onclick = () => {
   const cost = parseFloat(document.getElementById('binCost').value);
   if(!name || isNaN(cost)) return;
   bills.push({ id: nextId(), name, date: date || '', cost });
-  document.getElementById('binName').value='';
-  document.getElementById('binDate').value='';
-  document.getElementById('binCost').value='';
-  renderBills();
-  saveBills();
+  document.getElementById('binName').value=''; document.getElementById('binDate').value=''; document.getElementById('binCost').value='';
+  renderBills(); saveBills();
 };
 document.getElementById('binName').addEventListener('keydown', e=>{ if(e.key==='Enter') document.getElementById('binAdd').click(); });
 document.getElementById('binCost').addEventListener('keydown', e=>{ if(e.key==='Enter') document.getElementById('binAdd').click(); });
-// ---- import from this browser ----------------------------------------------
-function isWeekStr(w){
-  if(typeof w !== 'string' || w.length !== 10) return false;
-  if(w[4] !== '-' || w[7] !== '-') return false;
-  for(let i=0;i<10;i++){ if(i===4||i===7) continue; if(w[i]<'0'||w[i]>'9') return false; }
-  return true;
-}
-function localLedgerKeys(){
-  const keys = [];
-  try{
-    for(let i=0;i<localStorage.length;i++){
-      const k = localStorage.key(i);
-      if(k && k.indexOf('ledger:') === 0) keys.push(k);
-    }
-  }catch(e){}
-  return keys;
-}
-function maybeShowImport(){
-  const keys = localLedgerKeys();
-  if(keys.length){
-    document.getElementById('importText').textContent =
-      'Found ' + keys.length + ' week' + (keys.length>1?'s':'') + ' of expenses saved on this device. Import into your account?';
-    document.getElementById('importBanner').classList.add('show');
-  }
-}
-document.getElementById('importDismiss').onclick = () => {
-  document.getElementById('importBanner').classList.remove('show');
-};
+// ================= IMPORT (legacy localStorage) =================
+function isWeekStr(w){ if(typeof w!=='string'||w.length!==10) return false; if(w[4]!=='-'||w[7]!=='-') return false; for(let i=0;i<10;i++){ if(i===4||i===7) continue; if(w[i]<'0'||w[i]>'9') return false; } return true; }
+function localLedgerKeys(){ const keys=[]; try{ for(let i=0;i<localStorage.length;i++){ const k=localStorage.key(i); if(k && k.indexOf('ledger:')===0) keys.push(k); } }catch(e){} return keys; }
+function maybeShowImport(){ const keys=localLedgerKeys(); if(keys.length){ document.getElementById('importText').textContent = 'Found '+keys.length+' week'+(keys.length>1?'s':'')+' of expenses saved on this device. Import into your account?'; document.getElementById('importBanner').classList.add('show'); } }
+document.getElementById('importDismiss').onclick = () => { document.getElementById('importBanner').classList.remove('show'); };
 document.getElementById('importGo').onclick = async () => {
-  const btn = document.getElementById('importGo');
-  btn.disabled = true; btn.textContent = 'Importing...';
+  const btn = document.getElementById('importGo'); btn.disabled=true; btn.textContent='Importing...';
   const keys = localLedgerKeys();
-  for(const k of keys){
-    const week = k.slice('ledger:'.length);
-    if(!isWeekStr(week)) continue;
-    try{
-      const data = JSON.parse(localStorage.getItem(k));
-      await fetch('/api/ledger', {
-        method:'POST', headers:{'content-type':'application/json'},
-        body: JSON.stringify({ week, data })
-      });
-    }catch(e){}
-  }
+  for(const k of keys){ const week=k.slice('ledger:'.length); if(!isWeekStr(week)) continue; try{ const data=JSON.parse(localStorage.getItem(k)); await fetch('/api/ledger',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({week,data})}); }catch(e){} }
   keys.forEach(k => { try{ localStorage.removeItem(k); }catch(e){} });
   document.getElementById('importBanner').classList.remove('show');
-  weekCache = {};
-  loadWeek(currentWeekStart);
+  weekCache = {}; loadWeek(currentWeekStart);
 };
-// ---- boot ------------------------------------------------------------------
+// ================= BOOT =================
 (async () => {
   try{
     const r = await fetch('/api/auth');
     if(!r.ok){ location.href = '/login.html'; return; }
     const me = await r.json();
     document.getElementById('acctWho').textContent = me.email || 'Signed in';
-  }catch(e){
-    location.href = '/login.html';
-    return;
-  }
+  }catch(e){ location.href = '/login.html'; return; }
   maybeShowImport();
   loadWeek(THIS_WEEK_START);
 })();
