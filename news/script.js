@@ -34,6 +34,12 @@ const I18N = {
     savedCount: (n) => `${n} saved`,
     updated: 'Updated',
     updatedAt: (s) => `Updated ${s}`,
+    yourLocation: 'Your location',
+    weatherUnavailable: "Weather isn't available right now.",
+    tryAgainSoon: 'Try again soon.',
+    loadingWeather: 'Loading weather…',
+    readAloud: 'Read this aloud',
+    stopReading: 'Stop reading',
   },
   fr: {
     tagline: "L'actualité du jour",
@@ -53,6 +59,12 @@ const I18N = {
     savedCount: (n) => `${n} enregistré${n === 1 ? '' : 's'}`,
     updated: 'Mis à jour',
     updatedAt: (s) => `Mis à jour ${s}`,
+    yourLocation: 'Votre position',
+    weatherUnavailable: "La météo n'est pas disponible pour le moment.",
+    tryAgainSoon: 'Réessayez bientôt.',
+    loadingWeather: 'Chargement de la météo…',
+    readAloud: 'Lire à voix haute',
+    stopReading: 'Arrêter la lecture',
   },
   ar: {
     tagline: 'أخبار اليوم',
@@ -72,8 +84,188 @@ const I18N = {
     savedCount: (n) => `${n} محفوظ`,
     updated: 'آخر تحديث',
     updatedAt: (s) => `آخر تحديث ${s}`,
+    yourLocation: 'موقعك',
+    weatherUnavailable: 'تعذّر عرض حالة الطقس الآن.',
+    tryAgainSoon: 'أعد المحاولة بعد قليل.',
+    loadingWeather: 'جارٍ تحميل حالة الطقس…',
+    readAloud: 'اقرأ هذا بصوت عالٍ',
+    stopReading: 'إيقاف القراءة',
   },
 };
+
+// ---------------------------------------------------------------------------
+// Weather — simple, concrete, plain-language, with a "read aloud" option.
+// Fetched straight from the browser (Open-Meteo + BigDataCloud, both free
+// and keyless) so there's no server dependency; falls back quietly to Tunis
+// if location access is denied or unavailable — no alarming error shown.
+// ---------------------------------------------------------------------------
+
+const TUNIS_COORDS = { lat: 36.8065, lon: 10.1815 };
+const WEATHER_TUNIS_LABEL = { en: 'Tunis, Tunisia', fr: 'Tunis, Tunisie', ar: 'تونس العاصمة، تونس' };
+
+// WMO weather codes grouped into a handful of concrete, everyday buckets.
+const WEATHER_CODE_BUCKET = {
+  0: 'sunny',
+  1: 'partlyCloudy', 2: 'partlyCloudy',
+  3: 'cloudy',
+  45: 'foggy', 48: 'foggy',
+  51: 'drizzle', 53: 'drizzle', 55: 'drizzle', 56: 'drizzle', 57: 'drizzle',
+  61: 'rain', 63: 'rain', 65: 'rain', 66: 'rain', 67: 'rain', 80: 'rain', 81: 'rain', 82: 'rain',
+  71: 'snow', 73: 'snow', 75: 'snow', 77: 'snow', 85: 'snow', 86: 'snow',
+  95: 'storm', 96: 'storm', 99: 'storm',
+};
+
+const WEATHER_ICON = {
+  sunny: '☀️', partlyCloudy: '⛅', cloudy: '☁️', foggy: '🌫️',
+  drizzle: '🌦️', rain: '🌧️', snow: '❄️', storm: '⛈️',
+};
+
+const WEATHER_TEXT = {
+  en: {
+    sunny: { label: 'Sunny', tip: 'You may want sunglasses.' },
+    partlyCloudy: { label: 'Partly cloudy', tip: 'A light jacket should be fine.' },
+    cloudy: { label: 'Cloudy', tip: 'A calm, cloudy day.' },
+    foggy: { label: 'Foggy', tip: 'Take care if you go outside.' },
+    drizzle: { label: 'Light rain', tip: 'Bring an umbrella.' },
+    rain: { label: 'Rainy', tip: 'Bring an umbrella and a coat.' },
+    snow: { label: 'Snowy', tip: 'Wear a warm coat.' },
+    storm: { label: 'Stormy', tip: 'It may be best to stay inside.' },
+  },
+  fr: {
+    sunny: { label: 'Ensoleillé', tip: 'Pensez à vos lunettes de soleil.' },
+    partlyCloudy: { label: 'Partiellement nuageux', tip: 'Une veste légère suffira.' },
+    cloudy: { label: 'Nuageux', tip: 'Une journée calme et nuageuse.' },
+    foggy: { label: 'Brumeux', tip: 'Soyez prudent si vous sortez.' },
+    drizzle: { label: 'Pluie légère', tip: 'Prenez un parapluie.' },
+    rain: { label: 'Pluvieux', tip: 'Prenez un parapluie et un manteau.' },
+    snow: { label: 'Neigeux', tip: 'Portez un manteau chaud.' },
+    storm: { label: 'Orageux', tip: 'Il vaut mieux rester à l’intérieur.' },
+  },
+  ar: {
+    sunny: { label: 'مشمس', tip: 'قد تحتاج إلى نظارة شمسية.' },
+    partlyCloudy: { label: 'غائم جزئيًا', tip: 'سترة خفيفة تكفي.' },
+    cloudy: { label: 'غائم', tip: 'يوم هادئ وغائم.' },
+    foggy: { label: 'ضبابي', tip: 'كن حذرًا إذا خرجت.' },
+    drizzle: { label: 'أمطار خفيفة', tip: 'خذ مظلة معك.' },
+    rain: { label: 'ممطر', tip: 'خذ مظلة ومعطفًا.' },
+    snow: { label: 'ثلجي', tip: 'ارتدِ معطفًا دافئًا.' },
+    storm: { label: 'عاصف', tip: 'يفضل البقاء في الداخل.' },
+  },
+};
+
+let weatherState = null; // { bucket, tempC, place, ok }
+
+function weatherSpeechLang() {
+  return lang === 'ar' ? 'ar-SA' : lang === 'fr' ? 'fr-FR' : 'en-US';
+}
+
+function renderWeather() {
+  if (!weatherState || !weatherState.ok) {
+    els.weatherIcon.textContent = '🌡️';
+    els.weatherTemp.textContent = '';
+    els.weatherDesc.textContent = t().weatherUnavailable;
+    els.weatherPlace.textContent = '';
+    els.weatherTip.textContent = t().tryAgainSoon;
+    return;
+  }
+  const wt = WEATHER_TEXT[lang] || WEATHER_TEXT.en;
+  const info = wt[weatherState.bucket] || wt.cloudy;
+  els.weatherIcon.textContent = WEATHER_ICON[weatherState.bucket] || '🌡️';
+  els.weatherTemp.textContent = `${Math.round(weatherState.tempC)}°`;
+  els.weatherDesc.textContent = info.label;
+  els.weatherPlace.textContent = weatherState.place || '';
+  els.weatherTip.textContent = info.tip;
+
+  if ('speechSynthesis' in window) {
+    els.speakBtn.hidden = false;
+    els.speakBtn.setAttribute('aria-label', t().readAloud);
+  }
+}
+
+async function fetchWeather(lat, lon) {
+  const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,weather_code&timezone=auto`;
+  const res = await fetch(url);
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  const data = await res.json();
+  const code = data && data.current && data.current.weather_code;
+  const tempC = data && data.current && data.current.temperature_2m;
+  if (typeof tempC !== 'number') throw new Error('No current weather in response');
+  return { bucket: WEATHER_CODE_BUCKET[code] || 'cloudy', tempC };
+}
+
+async function reverseGeocode(lat, lon) {
+  try {
+    const res = await fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lon}&localityLanguage=${lang}`);
+    if (!res.ok) return null;
+    const data = await res.json();
+    const city = data.city || data.locality || data.principalSubdivision;
+    if (!city) return null;
+    return data.countryName ? `${city}, ${data.countryName}` : city;
+  } catch {
+    return null;
+  }
+}
+
+function getGeolocation(timeoutMs) {
+  return new Promise((resolve) => {
+    if (!('geolocation' in navigator)) { resolve(null); return; }
+    let done = false;
+    const finish = (val) => { if (!done) { done = true; resolve(val); } };
+    navigator.geolocation.getCurrentPosition(
+      (pos) => finish({ lat: pos.coords.latitude, lon: pos.coords.longitude }),
+      () => finish(null),
+      { timeout: timeoutMs, maximumAge: 10 * 60 * 1000 }
+    );
+    setTimeout(() => finish(null), timeoutMs + 500);
+  });
+}
+
+async function loadWeather() {
+  els.weatherDesc.textContent = t().loadingWeather;
+  els.weatherPlace.textContent = '';
+  els.weatherTip.textContent = '';
+
+  const pos = await getGeolocation(6000);
+  const usingFallback = !pos;
+  const coords = pos || TUNIS_COORDS;
+
+  try {
+    const weather = await fetchWeather(coords.lat, coords.lon);
+    let place;
+    if (usingFallback) {
+      place = WEATHER_TUNIS_LABEL[lang] || WEATHER_TUNIS_LABEL.en;
+    } else {
+      place = (await reverseGeocode(coords.lat, coords.lon)) || t().yourLocation;
+    }
+    weatherState = { ...weather, place, ok: true };
+  } catch {
+    weatherState = { ok: false };
+  }
+  renderWeather();
+}
+
+function speechSentence() {
+  if (!weatherState || !weatherState.ok) return t().weatherUnavailable;
+  const wt = WEATHER_TEXT[lang] || WEATHER_TEXT.en;
+  const info = wt[weatherState.bucket] || wt.cloudy;
+  const place = weatherState.place ? `${weatherState.place}. ` : '';
+  return `${place}${info.label}. ${Math.round(weatherState.tempC)}°. ${info.tip}`;
+}
+
+function onSpeakClick() {
+  if (!('speechSynthesis' in window)) return;
+  if (window.speechSynthesis.speaking) {
+    window.speechSynthesis.cancel();
+    els.speakBtn.classList.remove('is-speaking');
+    return;
+  }
+  const utter = new SpeechSynthesisUtterance(speechSentence());
+  utter.lang = weatherSpeechLang();
+  utter.onend = () => els.speakBtn.classList.remove('is-speaking');
+  utter.onerror = () => els.speakBtn.classList.remove('is-speaking');
+  els.speakBtn.classList.add('is-speaking');
+  window.speechSynthesis.speak(utter);
+}
 
 const FALLBACK_CATEGORIES = [
   { key: 'world', label: 'World & Politics' },
@@ -109,6 +301,12 @@ const els = {
   footer: document.getElementById('footer'),
   sourceSelect: document.getElementById('sourceSelect'),
   channelLabel: document.getElementById('channelLabel'),
+  weatherIcon: document.getElementById('weatherIcon'),
+  weatherTemp: document.getElementById('weatherTemp'),
+  weatherDesc: document.getElementById('weatherDesc'),
+  weatherPlace: document.getElementById('weatherPlace'),
+  weatherTip: document.getElementById('weatherTip'),
+  speakBtn: document.getElementById('speakBtn'),
 };
 
 let categories = FALLBACK_CATEGORIES;
@@ -199,9 +397,16 @@ function writeState() {
 // ---------------------------------------------------------------------------
 
 function renderDate() {
-  els.dateLine.textContent = new Date().toLocaleDateString(loc(), {
-    weekday: 'long', month: 'long', day: 'numeric',
-  });
+  const now = new Date();
+  const datePart = now.toLocaleDateString(loc(), { weekday: 'long', month: 'long', day: 'numeric' });
+  const timePart = now.toLocaleTimeString(loc(), { hour: '2-digit', minute: '2-digit' });
+  els.dateLine.textContent = `${datePart} · ${timePart}`;
+}
+
+let clockTimer = null;
+function startClock() {
+  if (clockTimer) return;
+  clockTimer = setInterval(renderDate, 20000);
 }
 
 function applyLanguageChrome() {
@@ -214,6 +419,7 @@ function applyLanguageChrome() {
   els.clearFiltersBtn.textContent = t().clearFilters;
   els.footer.textContent = '';
   renderDate();
+  renderWeather();
   els.langSwitch.querySelectorAll('.lang').forEach((b) => {
     b.setAttribute('aria-pressed', b.dataset.lang === lang ? 'true' : 'false');
   });
@@ -535,7 +741,9 @@ function wireEvents() {
     els.refreshBtn.classList.add('is-spinning');
     if (savedView) showSaved();
     else load();
+    loadWeather();
   });
+  els.speakBtn.addEventListener('click', onSpeakClick);
   els.savedBtn.addEventListener('click', () => {
     if (savedView) load();
     else showSaved();
@@ -562,6 +770,8 @@ function wireEvents() {
   els.clearBtn.hidden = !keyword;
   updateSavedCount();
   wireEvents();
+  startClock();
+  loadWeather();
   await Promise.all([loadCategories(), loadChannels()]);
   renderChips();
   load();

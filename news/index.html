@@ -39,6 +39,24 @@
       </div>
     </header>
 
+    <!-- Today's weather — meant to help orient the reader at a glance, with
+         a "read aloud" option for anyone who finds reading harder than
+         listening. -->
+    <section class="today" id="todayCard" aria-label="Weather">
+      <div class="today__weather">
+        <div class="today__icon" id="weatherIcon" aria-hidden="true">🌡️</div>
+        <div class="today__weatherbody">
+          <div class="today__temp" id="weatherTemp">--°</div>
+          <div class="today__desc" id="weatherDesc">Loading weather…</div>
+          <div class="today__place" id="weatherPlace"></div>
+          <div class="today__tip" id="weatherTip"></div>
+        </div>
+      </div>
+      <button class="today__speak" id="speakBtn" type="button" aria-label="Read this aloud" hidden>
+        <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M4 9v6h4l5 5V4L8 9H4z" fill="currentColor"/><path d="M16.5 8.5a5 5 0 010 7M19 6a9 9 0 010 12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+      </button>
+    </section>
+
     <!-- Controls: search, channel, topics — all on the front page -->
     <section class="controls" aria-label="Filters">
       <form class="search" id="searchForm" role="search">

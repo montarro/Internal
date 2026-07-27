@@ -171,6 +171,79 @@ body {
 .iconbtn.is-spinning svg { animation: spin 0.8s linear infinite; }
 @keyframes spin { to { transform: rotate(360deg); } }
 
+/* ---------- Today's weather at a glance ---------- */
+.today {
+  background: var(--blue-pale);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 18px 68px 18px 20px;
+  position: relative;
+}
+[dir="rtl"] .today { padding: 18px 20px 18px 68px; }
+.today__weather {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.today__icon {
+  font-size: 2.6rem;
+  line-height: 1;
+  flex: none;
+}
+.today__weatherbody {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+.today__temp {
+  font-size: 1.7rem;
+  font-weight: 800;
+  color: var(--text);
+  line-height: 1.1;
+}
+.today__desc {
+  font-size: 1.02rem;
+  font-weight: 700;
+  color: var(--text);
+}
+.today__place {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+.today__tip {
+  font-size: 0.92rem;
+  color: var(--blue-dark);
+  font-weight: 600;
+  margin-top: 2px;
+}
+.today__speak {
+  position: absolute;
+  top: 14px;
+  inset-inline-end: 16px;
+  border: 1px solid var(--border);
+  background: var(--card);
+  color: var(--blue-dark);
+  border-radius: var(--radius-sm);
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background var(--ease), border-color var(--ease);
+}
+.today__speak:hover { background: var(--hover); border-color: var(--blue); }
+.today__speak.is-speaking { background: var(--blue); color: #ffffff; border-color: var(--blue); }
+
+@media (max-width: 560px) {
+  .today { padding: 16px; }
+  .today__icon { font-size: 2.2rem; }
+  .today__speak { top: 12px; inset-inline-end: 12px; }
+}
+
 /* ---------- Controls (front-page filters) ---------- */
 .controls {
   background: var(--bg-2);
@@ -502,6 +575,7 @@ body {
 [dir="rtl"] .card__snippet { text-align: right; }
 [dir="rtl"] .like { margin-inline-start: 0; margin-inline-end: auto; }
 [dir="rtl"] .card__cat { margin-inline-start: 0; margin-inline-end: 2px; }
+[dir="rtl"] .today__weatherbody { text-align: right; }
 /* The language switch itself keeps its own dir="ltr" in the markup. */
 
 /* ---------- Responsive ---------- */
