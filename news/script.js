@@ -160,7 +160,11 @@ function weatherSpeechLang() {
 }
 
 function renderWeather() {
-  if (!weatherState || !weatherState.ok) {
+  if (weatherState === null) {
+    els.weatherDesc.textContent = t().loadingWeather;
+    return;
+  }
+  if (!weatherState.ok) {
     els.weatherIcon.textContent = '🌡️';
     els.weatherTemp.textContent = '';
     els.weatherDesc.textContent = t().weatherUnavailable;
