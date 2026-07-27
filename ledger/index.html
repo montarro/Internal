@@ -63,6 +63,10 @@ function setView(v){
 document.getElementById('tabWeekly').onclick = () => setView('weekly');
 document.getElementById('tabMonthly').onclick = () => setView('monthly');
 document.getElementById('tabBills').onclick = () => setView('bills');
+document.getElementById('signOut').onclick = async () => {
+  try{ await fetch('/api/auth', { method:'POST', headers:{'content-type':'application/json'}, body: JSON.stringify({ action:'logout' }) }); }catch(e){}
+  location.href = '/login.html';
+};
 // ================= WEEKLY =================
 const storage = {
   async get(week){
