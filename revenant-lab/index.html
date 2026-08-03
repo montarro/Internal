@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="color-scheme" content="dark" />
+  <title>Revenant Lab · Research-Grade Peptides · Australian Supply</title>
+  <meta name="description" content="Revenant Lab supplies research-grade peptides in Australia. Third-party COA per batch, cold-chain dispatch from WA, express tracked shipping. Laboratory research only — not for human or veterinary use." />
+
+  <meta property="og:title" content="Revenant Lab · Research-Grade Peptides" />
+  <meta property="og:description" content="Australian-supplied research peptides. COA per batch. Dispatched cold-chain from WA. Laboratory research only." />
+  <meta property="og:type" content="website" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <!-- ============ Research-use acknowledgment gate ============ -->
+  <div class="gate" id="gate" hidden>
+    <div class="gate__panel" role="dialog" aria-modal="true" aria-labelledby="gateTitle">
+      <div class="wordmark wordmark--sm" aria-hidden="true">
+        <span class="wordmark__name">REVENANT</span>
+        <span class="wordmark__lab">LAB</span>
+      </div>
+      <h2 class="gate__title" id="gateTitle">Research use only</h2>
+      <p class="gate__body">
+        Every product supplied by Revenant Lab is intended strictly for
+        <strong>in-vitro laboratory research and development</strong>. Materials are
+        <strong>not for human or veterinary use</strong>, and no medical, diagnostic
+        or therapeutic claims are made.
+      </p>
+      <p class="gate__body gate__body--muted">
+        By entering you confirm you are 18 years or older and are acquiring these
+        materials for legitimate research purposes.
+      </p>
+      <div class="gate__actions">
+        <button class="btn btn--primary" id="gateAccept" type="button">I understand — enter</button>
+        <a class="btn btn--ghost" href="https://www.who.int/" rel="noopener">Leave</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ Announcement bar ============ -->
+  <div class="ticker" aria-label="Store notices">
+    <div class="ticker__track">
+      <span>Laboratory research only — not for human or veterinary use</span>
+      <span aria-hidden="true">·</span>
+      <span>Third-party COA per batch</span>
+      <span aria-hidden="true">·</span>
+      <span>Cold-chain dispatch from Western Australia</span>
+      <span aria-hidden="true">·</span>
+      <span>Express tracked shipping</span>
+      <span aria-hidden="true">·</span>
+      <span>Discreet packaging</span>
+      <span aria-hidden="true">·</span>
+      <!-- duplicate for seamless loop -->
+      <span>Laboratory research only — not for human or veterinary use</span>
+      <span aria-hidden="true">·</span>
+      <span>Third-party COA per batch</span>
+      <span aria-hidden="true">·</span>
+      <span>Cold-chain dispatch from Western Australia</span>
+      <span aria-hidden="true">·</span>
+      <span>Express tracked shipping</span>
+      <span aria-hidden="true">·</span>
+      <span>Discreet packaging</span>
+      <span aria-hidden="true">·</span>
+    </div>
+  </div>
+
+  <!-- ============ Header ============ -->
+  <header class="nav" id="nav">
+    <div class="nav__inner">
+      <a class="wordmark" href="#top" aria-label="Revenant Lab home">
+        <span class="wordmark__name">REVENANT</span>
+        <span class="wordmark__lab">LAB</span>
+      </a>
+
+      <nav class="nav__links" id="navLinks" aria-label="Primary">
+        <a href="#catalogue">Catalogue</a>
+        <a href="#testing">Testing</a>
+        <a href="#process">Ordering</a>
+        <a href="#about">About</a>
+        <a href="#faq">FAQ</a>
+        <a href="#contact">Contact</a>
+      </nav>
+
+      <div class="nav__actions">
+        <button class="cart-btn" id="cartBtn" type="button" aria-label="Open cart">
+          Cart<span class="cart-btn__count" id="cartCount" data-empty="true">0</span>
+        </button>
+        <button class="nav__toggle" id="navToggle" type="button" aria-label="Toggle menu" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main id="top">
+
+    <!-- ============ Hero ============ -->
+    <section class="hero">
+      <div class="hero__grid">
+        <div class="hero__copy">
+          <span class="eyebrow">The new direction · Australian supply</span>
+          <h1 class="hero__title">
+            Research-grade peptides,<br /><span class="accent">measured and documented.</span>
+          </h1>
+          <p class="hero__lede">
+            Revenant Lab supplies reference-standard research peptides to laboratories
+            across Australia. Every batch ships with a third-party certificate of
+            analysis, moves under cold-chain, and arrives in discreet, tracked packaging.
+          </p>
+          <div class="hero__cta">
+            <a class="btn btn--primary" href="#catalogue">Browse catalogue</a>
+            <a class="btn btn--ghost" href="#testing">How we test</a>
+          </div>
+          <p class="hero__note">
+            Supplied strictly for in-vitro laboratory research. Not for human or veterinary use.
+          </p>
+        </div>
+
+        <!-- Hero product photograph -->
+        <aside class="hero__vial">
+          <img class="hero__photo" src="assets/hero-vials.webp" width="620" height="705" loading="eager"
+               alt="Three Revenant Lab research vials with violet contents and clinical labels on a dark studio background" />
+        </aside>
+      </div>
+    </section>
+
+    <!-- ============ Trust strip ============ -->
+    <section class="trust" aria-label="Standards">
+      <ul class="trust__list">
+        <li><strong>COA per batch</strong><span>Third-party HPLC / LC-MS</span></li>
+        <li><strong>Cold-chain</strong><span>Refrigerated dispatch from WA</span></li>
+        <li><strong>Express tracked</strong><span>Discreet Australia-wide shipping</span></li>
+        <li><strong>Lot traceable</strong><span>Every vial carries a lot number</span></li>
+      </ul>
+    </section>
+
+    <!-- ============ Catalogue ============ -->
+    <section class="section catalogue" id="catalogue">
+      <div class="section__head">
+        <div>
+          <span class="eyebrow">Catalogue</span>
+          <h2 class="section__title">Reference materials</h2>
+        </div>
+        <p class="section__intro">
+          Filter by research area. Pricing in AUD. Purity is reported per batch on the
+          accompanying certificate of analysis — never assumed.
+        </p>
+      </div>
+
+      <div class="filters" id="filters" role="tablist" aria-label="Filter catalogue">
+        <!-- filled by app.js -->
+      </div>
+
+      <div class="grid" id="productGrid" aria-live="polite">
+        <!-- filled by app.js -->
+      </div>
+    </section>
+
+    <!-- ============ Testing & quality ============ -->
+    <section class="section testing" id="testing">
+      <div class="section__head">
+        <div>
+          <span class="eyebrow">Testing &amp; quality</span>
+          <h2 class="section__title">Documented, not asserted</h2>
+        </div>
+        <p class="section__intro">
+          We publish what we can verify. A purity percentage only appears against a
+          product once it has been confirmed for that specific batch.
+        </p>
+      </div>
+
+      <div class="cards">
+        <article class="card">
+          <span class="card__num">01</span>
+          <h3>Third-party analysis</h3>
+          <p>A sample from each production batch is sent to an independent laboratory. Identity is confirmed and purity quantified by HPLC and LC-MS.</p>
+        </article>
+        <article class="card">
+          <span class="card__num">02</span>
+          <h3>Batch-matched COA</h3>
+          <p>Your certificate of analysis is matched to the lot number printed on the vial — so the paperwork and the material are the same batch.</p>
+        </article>
+        <article class="card">
+          <span class="card__num">03</span>
+          <h3>Cold-chain handling</h3>
+          <p>Materials are stored and dispatched refrigerated from our Western Australian facility, with insulated packaging on every order.</p>
+        </article>
+        <article class="card">
+          <span class="card__num">04</span>
+          <h3>Lot traceability</h3>
+          <p>Every vial is labelled with its lot and a "keep refrigerated" instruction, so research records stay clean and auditable.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- ============ Process ============ -->
+    <section class="section process" id="process">
+      <div class="section__head">
+        <div>
+          <span class="eyebrow">Ordering</span>
+          <h2 class="section__title">From cart to cold-chain</h2>
+        </div>
+      </div>
+      <ol class="steps">
+        <li>
+          <span class="steps__n">1</span>
+          <h3>Select &amp; verify</h3>
+          <p>Add reference materials to your order and confirm the research-use acknowledgment at checkout.</p>
+        </li>
+        <li>
+          <span class="steps__n">2</span>
+          <h3>Packed cold</h3>
+          <p>Vials are labelled with lot numbers, matched to their COA, and packed with insulation for transit.</p>
+        </li>
+        <li>
+          <span class="steps__n">3</span>
+          <h3>Tracked dispatch</h3>
+          <p>Orders leave WA on express tracked services, in discreet outer packaging, Australia-wide.</p>
+        </li>
+      </ol>
+    </section>
+
+    <!-- ============ About ============ -->
+    <section class="section about" id="about">
+      <div class="about__grid">
+        <div class="about__copy">
+          <span class="eyebrow">About</span>
+          <h2 class="section__title">The new direction</h2>
+          <p>
+            Revenant Lab was built on a single idea: research supply should be
+            <strong>clean, documented and repeatable</strong>. No inflated claims, no
+            mystery batches — just reference-grade materials with the paperwork to match.
+          </p>
+          <p>
+            We supply qualified laboratories and researchers only. Everything we sell is
+            intended for in-vitro study, and everything we publish is something we can
+            stand behind against a specific lot.
+          </p>
+          <div class="about__stats">
+            <div><strong>WA</strong><span>Dispatched locally</span></div>
+            <div><strong>24 h</strong><span>Typical handling time</span></div>
+            <div><strong>100%</strong><span>Batches shipped with a COA</span></div>
+          </div>
+        </div>
+        <div class="about__panel" aria-hidden="true">
+          <div class="sticker sticker--alt">
+            <div class="sticker__brand">
+              <span class="sticker__name">REVENANT</span>
+              <span class="sticker__lab">LAB</span>
+            </div>
+            <div class="sticker__product">NAD+</div>
+            <div class="sticker__dose">500 MG</div>
+            <div class="sticker__meta">LOT ____ &nbsp;|&nbsp; KEEP REFRIGERATED</div>
+            <div class="sticker__warn">
+              LABORATORY RESEARCH ONLY<br />
+              <span>NOT FOR HUMAN / VETERINARY USE</span>
+            </div>
+            <div class="sticker__footer">REVENANTLAB.COM</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ FAQ ============ -->
+    <section class="section faq" id="faq">
+      <div class="section__head">
+        <div>
+          <span class="eyebrow">FAQ</span>
+          <h2 class="section__title">Common questions</h2>
+        </div>
+      </div>
+
+      <div class="accordion" id="accordion">
+        <details class="acc">
+          <summary>Are these products for human use?</summary>
+          <p>No. All materials are supplied strictly for in-vitro laboratory research and development. They are not for human or veterinary use, and no medical, diagnostic or therapeutic claims are made.</p>
+        </details>
+        <details class="acc">
+          <summary>Do I get a certificate of analysis?</summary>
+          <p>Yes. Each production batch is third-party tested by HPLC and LC-MS, and the certificate is matched to the lot number printed on your vial.</p>
+        </details>
+        <details class="acc">
+          <summary>Why don't all listings show a purity percentage?</summary>
+          <p>A purity figure only appears once it has been verified for the exact batch you'd receive. If a number isn't shown yet, the batch COA is the source of truth.</p>
+        </details>
+        <details class="acc">
+          <summary>How is my order shipped?</summary>
+          <p>Orders are dispatched cold-chain from Western Australia on express tracked services, in discreet outer packaging, Australia-wide.</p>
+        </details>
+        <details class="acc">
+          <summary>How should materials be stored?</summary>
+          <p>Keep refrigerated on arrival. Every vial is labelled with a "keep refrigerated" instruction and its lot number for your records.</p>
+        </details>
+        <details class="acc">
+          <summary>What is bacteriostatic water for?</summary>
+          <p>It's a laboratory reconstitution solvent listed for research handling of lyophilised reference materials. Like everything here, it is research-use only.</p>
+        </details>
+      </div>
+    </section>
+
+    <!-- ============ Compliance band ============ -->
+    <section class="compliance" aria-label="Compliance">
+      <div class="compliance__inner">
+        <h2>Laboratory research only</h2>
+        <p>
+          All products listed on this website are sold exclusively for laboratory and
+          research purposes. They are <strong>not intended for human or veterinary use</strong>,
+          not for diagnostic or therapeutic application, and are not foods, cosmetics or
+          drugs. Nothing on this site should be interpreted as encouraging any use other
+          than legitimate in-vitro research by a qualified person.
+        </p>
+      </div>
+    </section>
+
+    <!-- ============ Contact / newsletter ============ -->
+    <section class="section contact" id="contact">
+      <div class="contact__grid">
+        <div class="contact__copy">
+          <span class="eyebrow">Contact</span>
+          <h2 class="section__title">Talk to the lab</h2>
+          <p>Questions on a listing, a COA, or a batch? Reach the team directly.</p>
+          <ul class="contact__list">
+            <li><span>Email</span><a href="mailto:hello@revenantlab.com">hello@revenantlab.com</a></li>
+            <li><span>Support</span><a href="mailto:support@revenantlab.com">support@revenantlab.com</a></li>
+            <li><span>Location</span><span>Western Australia</span></li>
+            <li><span>Hours</span><span>Mon–Fri · 9:00–17:00 AWST</span></li>
+          </ul>
+        </div>
+
+        <form class="contact__form" id="contactForm" novalidate>
+          <h3>Ask a question</h3>
+          <label>
+            <span>Name</span>
+            <input type="text" name="name" autocomplete="name" required />
+          </label>
+          <label>
+            <span>Email</span>
+            <input type="email" name="email" autocomplete="email" required />
+          </label>
+          <label>
+            <span>Message</span>
+            <textarea name="message" rows="4" required></textarea>
+          </label>
+          <label class="contact__ack">
+            <input type="checkbox" name="ack" required />
+            <span>I confirm this enquiry relates to laboratory research use only.</span>
+          </label>
+          <button class="btn btn--primary" type="submit">Send enquiry</button>
+          <p class="contact__status" id="contactStatus" role="status" aria-live="polite"></p>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <!-- ============ Footer ============ -->
+  <footer class="foot">
+    <div class="foot__inner">
+      <div class="foot__brand">
+        <div class="wordmark">
+          <span class="wordmark__name">REVENANT</span>
+          <span class="wordmark__lab">LAB</span>
+        </div>
+        <p>Research-grade peptides. Australian supply.</p>
+      </div>
+      <nav class="foot__col" aria-label="Shop">
+        <h4>Shop</h4>
+        <a href="#catalogue">Catalogue</a>
+        <a href="#testing">Testing</a>
+        <a href="#process">Ordering</a>
+      </nav>
+      <nav class="foot__col" aria-label="Company">
+        <h4>Company</h4>
+        <a href="#about">About</a>
+        <a href="#faq">FAQ</a>
+        <a href="#contact">Contact</a>
+      </nav>
+      <div class="foot__col">
+        <h4>Compliance</h4>
+        <p class="foot__fine">Laboratory research only. Not for human or veterinary use. No therapeutic claims are made.</p>
+      </div>
+    </div>
+    <div class="foot__bar">
+      <span>© <span id="year">2026</span> Revenant Lab</span>
+      <span>revenantlab.com</span>
+    </div>
+  </footer>
+
+  <!-- ============ Cart drawer ============ -->
+  <div class="drawer" id="drawer" hidden>
+    <div class="drawer__scrim" id="drawerScrim"></div>
+    <aside class="drawer__panel" role="dialog" aria-modal="true" aria-label="Your order">
+      <header class="drawer__head">
+        <h2>Your order</h2>
+        <button class="drawer__close" id="drawerClose" type="button" aria-label="Close cart">&times;</button>
+      </header>
+      <div class="drawer__items" id="drawerItems"><!-- filled by app.js --></div>
+      <footer class="drawer__foot">
+        <div class="drawer__row">
+          <span>Subtotal</span>
+          <strong id="drawerSubtotal">A$0.00</strong>
+        </div>
+        <p class="drawer__ship">Shipping &amp; any applicable duties calculated at checkout.</p>
+        <button class="btn btn--primary btn--block" id="checkoutBtn" type="button">Proceed to checkout</button>
+        <p class="drawer__ack">Checkout requires a research-use acknowledgment.</p>
+      </footer>
+    </aside>
+  </div>
+
+  <script src="app.js" defer></script>
+</body>
+</html>
