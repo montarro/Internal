@@ -338,6 +338,13 @@ img { max-width: 100%; display: block; }
   letter-spacing: 0.02em;
 }
 .hero__vial { display: grid; place-items: center; }
+.hero__photo {
+  width: 100%;
+  max-width: 440px;
+  height: auto;
+  border-radius: var(--radius);
+  filter: drop-shadow(0 40px 70px rgba(111, 71, 232, 0.32));
+}
 
 /* ---------- Vial sticker (brand: white stock, violet dose badge) ---------- */
 .sticker {
