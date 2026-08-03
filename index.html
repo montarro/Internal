@@ -1,77 +1,629 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-AU">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="color-scheme" content="dark" />
-  <title>Montarro · Revenue Infrastructure Scorecard</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="stylesheet" href="style.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Turf &amp; Landscaping North-West Melbourne | Free On-Site Quotes</title>
+  <meta name="description" content="Turf laying, paving, retaining walls and garden design across Melbourne's north-west — Craigieburn, Sunbury, Melton, Werribee and nearby. Fully insured, 4.8-star rated. Call 0457 357 085 for a free on-site quote." />
+  <link rel="canonical" href="https://turfandlandscaping.com.au/" />
+  <meta name="theme-color" content="#0e3b23" />
+  <meta name="robots" content="index, follow" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Turf and Landscaping" />
+  <meta property="og:title" content="Turf &amp; Landscaping North-West Melbourne | Free On-Site Quotes" />
+  <meta property="og:description" content="Turf laying, paving, retaining walls and garden design across Melbourne's north-west. Fully insured, 4.8-star rated. Call 0457 357 085 for a free on-site quote." />
+  <meta property="og:url" content="https://turfandlandscaping.com.au/" />
+  <meta property="og:image" content="https://turfandlandscaping.com.au/assets/images/og-turf-and-landscaping.webp" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:locale" content="en_AU" />
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Turf &amp; Landscaping North-West Melbourne" />
+  <meta name="twitter:description" content="Turf, paving, retaining walls and garden design across Melbourne's north-west. Free on-site quotes — call 0457 357 085." />
+  <meta name="twitter:image" content="https://turfandlandscaping.com.au/assets/images/og-turf-and-landscaping.webp" />
+
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="/assets/favicon.svg" />
+  <link rel="preload" as="image" href="/assets/images/hero-landscaping-northwest-melbourne.webp" fetchpriority="high" />
+  <link rel="stylesheet" href="/style.css" />
+
+  <!-- LocalBusiness structured data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "HomeAndConstructionBusiness",
+    "@id": "https://turfandlandscaping.com.au/#business",
+    "name": "Turf and Landscaping",
+    "description": "Turf laying, paving, retaining walls, soft landscaping and garden design across Melbourne's north-west.",
+    "url": "https://turfandlandscaping.com.au/",
+    "telephone": "+61457357085",
+    "email": "info@turfandlandscaping.com.au",
+    "image": "https://turfandlandscaping.com.au/assets/images/og-turf-and-landscaping.webp",
+    "logo": "https://turfandlandscaping.com.au/assets/logo-mark.svg",
+    "priceRange": "$$",
+    "currenciesAccepted": "AUD",
+    "address": {
+      "@type": "PostalAddress",
+      "addressRegion": "VIC",
+      "addressCountry": "AU",
+      "addressLocality": "Melbourne"
+    },
+    "areaServed": [
+      { "@type": "City", "name": "Craigieburn" },
+      { "@type": "City", "name": "Mickleham" },
+      { "@type": "City", "name": "Sunbury" },
+      { "@type": "City", "name": "Point Cook" },
+      { "@type": "City", "name": "Melton" },
+      { "@type": "City", "name": "Werribee" }
+    ],
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "4.8",
+      "reviewCount": "17",
+      "bestRating": "5"
+    },
+    "openingHoursSpecification": [
+      { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday"], "opens": "07:00", "closes": "17:00" },
+      { "@type": "OpeningHoursSpecification", "dayOfWeek": "Saturday", "opens": "08:00", "closes": "14:00" }
+    ],
+    "sameAs": [
+      "https://www.instagram.com/turfandlandscaping",
+      "https://www.facebook.com/turfandlandscaping"
+    ],
+    "hasOfferCatalog": {
+      "@type": "OfferCatalog",
+      "name": "Landscaping services",
+      "itemListElement": [
+        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Natural Turf Solutions", "url": "https://turfandlandscaping.com.au/services/natural-turf-solutions" } },
+        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Paving & Stepping Stones", "url": "https://turfandlandscaping.com.au/services/paving-and-stepping-stones" } },
+        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Retaining Walls", "url": "https://turfandlandscaping.com.au/services/retaining-walls" } },
+        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Soft Landscaping", "url": "https://turfandlandscaping.com.au/services/soft-landscaping" } },
+        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Garden Design", "url": "https://turfandlandscaping.com.au/services/garden-design" } }
+      ]
+    }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      { "@type": "Question", "name": "How much does landscaping cost?", "acceptedAnswer": { "@type": "Answer", "text": "Every yard is different, so we price each job after seeing it. Small jobs like a new lawn start from a few hundred dollars, while full makeovers with paving and walls run into the thousands. Your free on-site quote is a clear fixed price with no obligation." } },
+      { "@type": "Question", "name": "How long will my job take?", "acceptedAnswer": { "@type": "Answer", "text": "A turf lay is usually one to two days. Paving and retaining walls typically take a few days to a week depending on size and access. We give you a realistic timeframe in writing before we start." } },
+      { "@type": "Question", "name": "How do I book?", "acceptedAnswer": { "@type": "Answer", "text": "Call 0457 357 085 or send the quote form on this page. We'll confirm a time to visit, measure up and quote — usually within a few days." } },
+      { "@type": "Question", "name": "Which suburbs do you service?", "acceptedAnswer": { "@type": "Answer", "text": "We work right across Melbourne's north-west, including Craigieburn, Mickleham, Sunbury, Point Cook, Melton and Werribee. Not sure if you're in range? Give us a call." } },
+      { "@type": "Question", "name": "What are your hours?", "acceptedAnswer": { "@type": "Answer", "text": "We're on the tools Monday to Friday 7am–5pm and Saturday 8am–2pm. You can call during those hours, or leave a message any time and we'll get back to you." } }
+    ]
+  }
+  </script>
 </head>
 <body>
-  <main class="app" aria-label="Revenue Infrastructure Scorecard">
-    <!-- Header -->
-    <header class="app__header">
-      <div class="brand">
-        <span class="brand__mark" aria-hidden="true"></span>
-        <span class="brand__name">Montarro</span>
-      </div>
-      <h1 class="app__title">Revenue Infrastructure Scorecard</h1>
-      <p class="app__subtitle">
-        Score each part of your revenue engine from 0&ndash;10 to reveal where leads,
-        time and revenue are leaking &mdash; and what to fix first.
-      </p>
-    </header>
+  <a class="skip-link" href="#main">Skip to content</a>
 
-    <!-- Score summary -->
-    <section class="summary" aria-live="polite">
-      <div class="summary__gauge">
-        <svg class="gauge" viewBox="0 0 120 120" role="img" aria-label="Total score gauge">
-          <circle class="gauge__track" cx="60" cy="60" r="52" />
-          <circle class="gauge__fill" cx="60" cy="60" r="52" />
-        </svg>
-        <div class="gauge__center">
-          <span class="gauge__value" id="totalScore">0</span>
-          <span class="gauge__max">/ 100</span>
+  <!-- ============ HEADER ============ -->
+  <header class="site-header">
+    <div class="wrap site-header__inner">
+      <a class="brand" href="/" aria-label="Turf and Landscaping — home">
+        <img class="brand__logo" src="/assets/logo-mark.svg" alt="Turf and Landscaping logo" width="46" height="46" />
+        <span class="brand__text">
+          <span class="brand__name">Turf <b>and</b> Landscaping</span>
+          <span class="brand__tag">North-West Melbourne</span>
+        </span>
+      </a>
+
+      <nav class="primary-nav" aria-label="Primary">
+        <a href="#services">Services</a>
+        <a href="#work">Recent work</a>
+        <a href="#reviews">Reviews</a>
+        <a href="#areas">Areas</a>
+        <a href="#faq">FAQ</a>
+      </nav>
+
+      <div class="header-cta">
+        <a class="header-call" href="tel:+61457357085">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6.6 10.8a15.5 15.5 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.24 11.4 11.4 0 0 0 3.6.58 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1 11.4 11.4 0 0 0 .58 3.6 1 1 0 0 1-.24 1z"/></svg>
+          <span class="header-call__label">Call</span>
+          <span class="header-call__num">0457&nbsp;357&nbsp;085</span>
+        </a>
+        <button class="nav-toggle" type="button" aria-label="Open menu" aria-controls="mobile-nav" aria-expanded="false">
+          <svg class="icon-open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+          <svg class="icon-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
+        </button>
+      </div>
+    </div>
+    <nav class="mobile-nav" id="mobile-nav" data-open="false" aria-label="Mobile">
+      <a href="#services">Services</a>
+      <a href="#how">How it works</a>
+      <a href="#reviews">Reviews</a>
+      <a href="#work">Recent work</a>
+      <a href="#areas">Areas we serve</a>
+      <a href="#faq">FAQ</a>
+      <a class="btn btn--primary btn--block" href="#quote">Get a free quote</a>
+    </nav>
+  </header>
+
+  <main id="main">
+    <!-- ============ HERO ============ -->
+    <section class="hero" aria-label="Introduction">
+      <div class="hero__media">
+        <img src="/assets/images/hero-landscaping-northwest-melbourne.webp"
+             alt="Landscaped backyard in Melbourne's north-west with freshly laid turf, paving and planted garden beds"
+             width="1920" height="1080" fetchpriority="high" />
+      </div>
+      <div class="wrap hero__inner">
+        <h1>Landscaping and turf, done properly across Melbourne's north-west</h1>
+        <p class="hero__sub">Fresh lawns, paving, retaining walls and full garden makeovers — built by a local crew, fully insured, and finished on time. Book your free on-site quote today.</p>
+        <div class="hero__actions">
+          <a class="btn btn--call" href="tel:+61457357085">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6.6 10.8a15.5 15.5 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.24 11.4 11.4 0 0 0 3.6.58 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1 11.4 11.4 0 0 0 .58 3.6 1 1 0 0 1-.24 1z"/></svg>
+            Call 0457 357 085
+          </a>
+          <a class="btn btn--ondark" href="#quote">Get a free quote</a>
+        </div>
+        <p class="hero__rating"><span class="stars" aria-hidden="true">★★★★★</span> <span>Rated 4.8 from 17 Google reviews</span></p>
+      </div>
+    </section>
+
+    <!-- ============ TRUST STRIP ============ -->
+    <section class="trust" aria-label="Why homeowners choose us">
+      <div class="wrap">
+        <ul class="trust__grid" style="list-style:none;margin:0;padding:0;">
+          <li class="trust__item"><span class="stars" aria-hidden="true">★★★★★</span> 4.8 from 17 Google reviews</li>
+          <li class="trust__item">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2 4 5v6c0 5 3.4 9.4 8 11 4.6-1.6 8-6 8-11V5z"/></svg>
+            Fully insured
+          </li>
+          <li class="trust__item">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2 2 7l10 5 10-5zM2 12l10 5 10-5M2 17l10 5 10-5"/></svg>
+            Victorian owned &amp; operated
+          </li>
+          <li class="trust__item">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg>
+            Free on-site quotes
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ============ SERVICES ============ -->
+    <section class="section" id="services" aria-labelledby="services-h">
+      <div class="wrap">
+        <div class="section__head">
+          <span class="eyebrow">Our services</span>
+          <h2 id="services-h">Everything your yard needs, from one local team</h2>
+          <p class="lead">Whether it's a single lawn or a whole backyard rebuild, we handle it end to end — the prep, the build and the clean-up.</p>
+        </div>
+
+        <div class="cards cards--services">
+          <!-- Turf -->
+          <article class="card">
+            <a class="card__media" href="/services/natural-turf-solutions" tabindex="-1" aria-hidden="true">
+              <img src="/assets/images/service-natural-turf-solutions.webp" alt="Roll of fresh natural turf being laid over prepared soil" loading="lazy" width="1200" height="750" />
+            </a>
+            <div class="card__body">
+              <h3>Natural Turf Solutions</h3>
+              <p class="card__desc">Hard-wearing lawns supplied and laid to suit your soil and sun.</p>
+              <ul class="card__list">
+                <li>Instant turf supply &amp; laying</li>
+                <li>Soil prep, grading &amp; levelling</li>
+                <li>Warm-season varieties for our climate</li>
+              </ul>
+              <a class="card__link" href="/services/natural-turf-solutions">Learn more <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+            </div>
+          </article>
+
+          <!-- Paving -->
+          <article class="card">
+            <a class="card__media" href="/services/paving-and-stepping-stones" tabindex="-1" aria-hidden="true">
+              <img src="/assets/images/service-paving-and-stepping-stones.webp" alt="Bluestone paving laid level across an outdoor patio area" loading="lazy" width="1200" height="750" />
+            </a>
+            <div class="card__body">
+              <h3>Paving &amp; Stepping Stones</h3>
+              <p class="card__desc">Patios, paths and pool surrounds laid dead level and built to last.</p>
+              <ul class="card__list">
+                <li>Bluestone, concrete &amp; clay pavers</li>
+                <li>Stepping-stone paths &amp; walkways</li>
+                <li>Correct drainage falls throughout</li>
+              </ul>
+              <a class="card__link" href="/services/paving-and-stepping-stones">Learn more <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+            </div>
+          </article>
+
+          <!-- Retaining walls -->
+          <article class="card">
+            <a class="card__media" href="/services/retaining-walls" tabindex="-1" aria-hidden="true">
+              <img src="/assets/images/service-retaining-walls.webp" alt="Concrete sleeper retaining wall holding back a garden bed" loading="lazy" width="1200" height="750" />
+            </a>
+            <div class="card__body">
+              <h3>Retaining Walls</h3>
+              <p class="card__desc">Structural walls that hold back slopes and carve out usable, level yard.</p>
+              <ul class="card__list">
+                <li>Timber &amp; concrete sleeper walls</li>
+                <li>Besser block &amp; rock walls</li>
+                <li>Ag-drain &amp; backfill done right</li>
+              </ul>
+              <a class="card__link" href="/services/retaining-walls">Learn more <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+            </div>
+          </article>
+
+          <!-- Soft landscaping -->
+          <article class="card">
+            <a class="card__media" href="/services/soft-landscaping" tabindex="-1" aria-hidden="true">
+              <img src="/assets/images/service-soft-landscaping.webp" alt="Freshly mulched garden bed planted with native shrubs" loading="lazy" width="1200" height="750" />
+            </a>
+            <div class="card__body">
+              <h3>Soft Landscaping</h3>
+              <p class="card__desc">Garden beds, mulch and planting that make the whole yard feel finished.</p>
+              <ul class="card__list">
+                <li>Plant selection &amp; planting</li>
+                <li>Quality soil, mulch &amp; edging</li>
+                <li>Low-maintenance garden beds</li>
+              </ul>
+              <a class="card__link" href="/services/soft-landscaping">Learn more <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+            </div>
+          </article>
+
+          <!-- Garden design -->
+          <article class="card">
+            <a class="card__media" href="/services/garden-design" tabindex="-1" aria-hidden="true">
+              <img src="/assets/images/service-garden-design.webp" alt="Hand-drawn garden design plan showing a landscaped courtyard layout" loading="lazy" width="1200" height="750" />
+            </a>
+            <div class="card__body">
+              <h3>Garden Design</h3>
+              <p class="card__desc">A clear plan for your outdoor space, costed and ready to build.</p>
+              <ul class="card__list">
+                <li>Concept &amp; layout plans</li>
+                <li>Plant &amp; materials schedule</li>
+                <li>Staged build options to suit budget</li>
+              </ul>
+              <a class="card__link" href="/services/garden-design">Learn more <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+            </div>
+          </article>
         </div>
       </div>
-      <div class="summary__status">
-        <span class="status__label" id="statusLabel">High Leakage</span>
-        <p class="status__hint" id="statusHint">Critical gaps &mdash; opportunities are slipping through.</p>
-        <div class="status__bar" aria-hidden="true">
-          <span class="status__bar-fill" id="statusBar"></span>
+    </section>
+
+    <!-- ============ HOW IT WORKS ============ -->
+    <section class="section section--tint" id="how" aria-labelledby="how-h">
+      <div class="wrap">
+        <div class="section__head section__head--center">
+          <span class="eyebrow">How we work</span>
+          <h2 id="how-h">From first call to finished job</h2>
+          <p class="lead">A simple, no-pressure process — you always know what's happening and what it costs.</p>
+        </div>
+        <ol class="steps" style="list-style:none;margin:0;padding:0;">
+          <li class="step">
+            <span class="step__num" aria-hidden="true">1</span>
+            <h3>Call or request a quote</h3>
+            <p>Tell us what you're after. We ask a few quick questions and lock in a time to visit.</p>
+          </li>
+          <li class="step">
+            <span class="step__num" aria-hidden="true">2</span>
+            <h3>Free on-site quote</h3>
+            <p>We come out, measure up and talk through options, then send a clear fixed price.</p>
+          </li>
+          <li class="step">
+            <span class="step__num" aria-hidden="true">3</span>
+            <h3>We build it</h3>
+            <p>Your local crew arrives on the agreed day and keeps the site tidy from start to finish.</p>
+          </li>
+          <li class="step">
+            <span class="step__num" aria-hidden="true">4</span>
+            <h3>Walk-through &amp; aftercare</h3>
+            <p>We hand over the finished job and leave you with simple tips to keep it looking great.</p>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- ============ WHY US ============ -->
+    <section class="section" id="why" aria-labelledby="why-h">
+      <div class="wrap">
+        <div class="section__head">
+          <span class="eyebrow">Why choose us</span>
+          <h2 id="why-h">Local, reliable and straight with you</h2>
+        </div>
+        <div class="reasons">
+          <div class="reason">
+            <span class="reason__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8 2 5 5 5 9c0 5 7 13 7 13s7-8 7-13c0-4-3-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6a2.5 2.5 0 0 1 0 5.5z"/></svg></span>
+            <div><h3>A local crew, not a call centre</h3><p>We live and work across the north-west, so we know the soils, the estates and the climate.</p></div>
+          </div>
+          <div class="reason">
+            <span class="reason__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h12v2H3z"/></svg></span>
+            <div><h3>Fixed quotes, no surprises</h3><p>The price we give you on-site is the price you pay. No vague estimates, no creeping costs.</p></div>
+          </div>
+          <div class="reason">
+            <span class="reason__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2 4 5v6c0 5 3.4 9.4 8 11 4.6-1.6 8-6 8-11V5z"/></svg></span>
+            <div><h3>Fully insured</h3><p>Public liability cover on every job, so you're protected from the first day to the last.</p></div>
+          </div>
+          <div class="reason">
+            <span class="reason__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 1a11 11 0 1 0 0 22 11 11 0 0 0 0-22zm1 11h5v2h-7V6h2z"/></svg></span>
+            <div><h3>Tidy work, on time</h3><p>We turn up when we say we will and clean up properly before we leave your place.</p></div>
+          </div>
+          <div class="reason">
+            <span class="reason__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 13h4v7H4zm6-5h4v12h-4zm6-4h4v16h-4z"/></svg></span>
+            <div><h3>Built to last</h3><p>Proper prep and drainage go in underneath every lawn, path and wall we build.</p></div>
+          </div>
+          <div class="reason">
+            <span class="reason__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="m12 2 3 6.6 7.2.6-5.4 4.8 1.6 7-6.4-3.8L5.2 21l1.6-7L1.4 9.2l7.2-.6z"/></svg></span>
+            <div><h3>A 4.8-star track record</h3><p>Rated 4.8 across 17 Google reviews from homeowners right here in the north-west.</p></div>
+          </div>
         </div>
       </div>
     </section>
 
-    <!-- Sliders -->
-    <section class="categories" id="categories" aria-label="Scoring categories">
-      <!-- populated by script.js -->
+    <!-- ============ REVIEWS ============ -->
+    <section class="section section--tint" id="reviews" aria-labelledby="reviews-h">
+      <div class="wrap">
+        <div class="section__head section__head--center">
+          <span class="eyebrow">Reviews</span>
+          <h2 id="reviews-h">What local homeowners say</h2>
+          <p class="lead">A 4.8-star average across 17 Google reviews.</p>
+        </div>
+        <div class="reviews">
+          <!-- TODO: replace the three reviews below with real, current Google reviews before publishing. -->
+          <blockquote class="review">
+            <div class="stars" aria-label="5 out of 5 stars">★★★★★</div>
+            <p class="review__text">"The team relaid our whole backyard with new turf and a paved area. Turned up on time every day, cleaned up after themselves and the finish is spot on. Couldn't be happier."</p>
+            <footer><div class="review__author">Rebecca M.</div><div class="review__meta">Craigieburn · Google review</div></footer>
+          </blockquote>
+          <blockquote class="review">
+            <div class="stars" aria-label="5 out of 5 stars">★★★★★</div>
+            <p class="review__text">"Built us a sleeper retaining wall and levelled off the yard for the kids. Fair quote, no surprises at the end, and the wall looks like it'll outlast the house. Highly recommend."</p>
+            <footer><div class="review__author">Daniel T.</div><div class="review__meta">Sunbury · Google review</div></footer>
+          </blockquote>
+          <blockquote class="review">
+            <div class="stars" aria-label="5 out of 5 stars">★★★★★</div>
+            <p class="review__text">"From the first call to the final walk-through everything was easy. They helped us pick the right plants for a low-maintenance front garden and it looks fantastic. Great local business."</p>
+            <footer><div class="review__author">Priya S.</div><div class="review__meta">Point Cook · Google review</div></footer>
+          </blockquote>
+        </div>
+        <div class="reviews__cta">
+          <!-- TODO: point this at the real Google Business Profile / reviews link before publishing. -->
+          <a class="btn btn--ghost" href="https://www.google.com/search?q=Turf+and+Landscaping+north-west+Melbourne+reviews" target="_blank" rel="noopener">Read all our Google reviews</a>
+        </div>
+      </div>
     </section>
 
-    <!-- Recommendations -->
-    <section class="recos" aria-label="Recommended modules">
-      <div class="recos__head">
-        <h2 class="recos__title">Recommended Modules</h2>
-        <span class="recos__tag" id="recosTag">Weakest areas first</span>
-      </div>
-      <div class="recos__list" id="recosList">
-        <!-- populated by script.js -->
+    <!-- ============ RECENT WORK ============ -->
+    <section class="section" id="work" aria-labelledby="work-h">
+      <div class="wrap">
+        <div class="section__head">
+          <span class="eyebrow">Recent work</span>
+          <h2 id="work-h">A look at some recent jobs</h2>
+          <p class="lead">Lawns, paving, walls and gardens completed across the north-west.</p>
+        </div>
+        <div class="gallery">
+          <figure><img src="/assets/images/new-turf-lawn-craigieburn-backyard.webp" alt="Freshly laid natural turf lawn in a Craigieburn backyard" loading="lazy" width="1200" height="900" /></figure>
+          <figure><img src="/assets/images/bluestone-paving-patio-sunbury.webp" alt="Bluestone paved patio area completed at a Sunbury home" loading="lazy" width="1200" height="900" /></figure>
+          <figure><img src="/assets/images/timber-sleeper-retaining-wall-melton.webp" alt="Timber sleeper retaining wall built along a sloping Melton yard" loading="lazy" width="1200" height="900" /></figure>
+          <figure><img src="/assets/images/native-garden-planting-point-cook.webp" alt="Native garden beds newly planted and mulched in Point Cook" loading="lazy" width="1200" height="900" /></figure>
+          <figure><img src="/assets/images/stepping-stone-path-werribee.webp" alt="Stepping-stone path set through a lawn in Werribee" loading="lazy" width="1200" height="900" /></figure>
+          <figure><img src="/assets/images/instant-turf-front-lawn-mickleham.webp" alt="Instant turf front lawn laid at a new Mickleham home" loading="lazy" width="1200" height="900" /></figure>
+          <figure><img src="/assets/images/courtyard-garden-design-craigieburn.webp" alt="Designed courtyard garden with paving and planting in Craigieburn" loading="lazy" width="1200" height="900" /></figure>
+          <figure><img src="/assets/images/concrete-sleeper-retaining-wall-sunbury.webp" alt="Concrete sleeper retaining wall finished in a Sunbury garden" loading="lazy" width="1200" height="900" /></figure>
+          <figure><img src="/assets/images/mulched-garden-beds-shrubs-melton.webp" alt="Mulched garden beds planted with shrubs at a Melton property" loading="lazy" width="1200" height="900" /></figure>
+        </div>
       </div>
     </section>
 
-    <!-- Actions -->
-    <footer class="actions">
-      <button class="btn btn--primary" id="copyBtn" type="button">
-        <span class="btn__icon" aria-hidden="true">&#9633;</span>
-        <span class="btn__label">Copy Summary</span>
-      </button>
-      <button class="btn btn--ghost" id="resetBtn" type="button">Reset</button>
-    </footer>
+    <!-- ============ AREAS ============ -->
+    <section class="section section--tint" id="areas" aria-labelledby="areas-h">
+      <div class="wrap">
+        <div class="section__head">
+          <span class="eyebrow">Areas we serve</span>
+          <h2 id="areas-h">Proudly working across Melbourne's north-west</h2>
+          <p class="lead">Tap your suburb for local turf and landscaping information. Not listed? Give us a call — we cover the surrounding areas too.</p>
+        </div>
+        <nav class="areas" aria-label="Suburbs we service">
+          <a class="area-link" href="/suburbs/craigieburn">Craigieburn <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+          <a class="area-link" href="/suburbs/mickleham">Mickleham <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+          <a class="area-link" href="/suburbs/sunbury">Sunbury <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+          <a class="area-link" href="/suburbs/point-cook">Point Cook <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+          <a class="area-link" href="/suburbs/melton">Melton <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+          <a class="area-link" href="/suburbs/werribee">Werribee <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        </nav>
+      </div>
+    </section>
 
-    <p class="legal">Built for Montarro strategy calls.</p>
+    <!-- ============ FAQ ============ -->
+    <section class="section" id="faq" aria-labelledby="faq-h">
+      <div class="wrap">
+        <div class="section__head">
+          <span class="eyebrow">FAQ</span>
+          <h2 id="faq-h">Questions homeowners ask us</h2>
+        </div>
+        <div class="faq">
+          <details>
+            <summary>How much does landscaping cost? <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></summary>
+            <div class="faq__answer"><p>Every yard is different, so we price each job after seeing it. Smaller jobs like a new lawn start from a few hundred dollars, while full makeovers with paving and walls run into the thousands. Your free on-site quote is a clear fixed price with no obligation.</p></div>
+          </details>
+          <details>
+            <summary>How long will my job take? <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></summary>
+            <div class="faq__answer"><p>A turf lay is usually one to two days. Paving and retaining walls typically take a few days to a week depending on size and access. We give you a realistic timeframe in writing before we start.</p></div>
+          </details>
+          <details>
+            <summary>How do I book? <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></summary>
+            <div class="faq__answer"><p>Call <a href="tel:+61457357085">0457 357 085</a> or send the quote form below. We'll confirm a time to visit, measure up and quote — usually within a few days.</p></div>
+          </details>
+          <details>
+            <summary>Which suburbs do you service? <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></summary>
+            <div class="faq__answer"><p>We work right across Melbourne's north-west, including Craigieburn, Mickleham, Sunbury, Point Cook, Melton and Werribee. Not sure if you're in range? Give us a call and we'll let you know.</p></div>
+          </details>
+          <details>
+            <summary>What are your hours? <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></summary>
+            <div class="faq__answer"><p>We're on the tools Monday to Friday 7am–5pm and Saturday 8am–2pm. You can call during those hours, or leave a message any time and we'll get back to you.</p></div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ QUOTE FORM ============ -->
+    <section class="section quote" id="quote" aria-labelledby="quote-h">
+      <div class="wrap quote__layout">
+        <div class="quote__aside">
+          <span class="eyebrow" style="color:var(--lime-400)">Free on-site quote</span>
+          <h2 id="quote-h">Get your free quote</h2>
+          <p class="lead">Fill in a few details and we'll call you back to arrange a visit. Prefer to talk now? Call <a href="tel:+61457357085">0457 357 085</a>.</p>
+          <ul>
+            <li><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg> Free, no-obligation on-site quote</li>
+            <li><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg> Clear fixed price in writing</li>
+            <li><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg> Fully insured, local crew</li>
+          </ul>
+        </div>
+
+        <form class="form" id="quote-form" novalidate>
+          <div class="form__row form__row--2">
+            <div class="field">
+              <label for="name">Name <span class="req" aria-hidden="true">*</span></label>
+              <input type="text" id="name" name="name" autocomplete="name" required />
+            </div>
+            <div class="field">
+              <label for="phone">Phone <span class="req" aria-hidden="true">*</span></label>
+              <input type="tel" id="phone" name="phone" autocomplete="tel" inputmode="tel" required />
+            </div>
+          </div>
+
+          <div class="form__row">
+            <div class="field">
+              <label for="email">Email</label>
+              <input type="email" id="email" name="email" autocomplete="email" inputmode="email" />
+            </div>
+          </div>
+
+          <div class="form__row form__row--2">
+            <div class="field">
+              <label for="suburb">Suburb <span class="req" aria-hidden="true">*</span></label>
+              <select id="suburb" name="suburb" required>
+                <option value="" selected disabled>Select your suburb</option>
+                <option>Craigieburn</option>
+                <option>Mickleham</option>
+                <option>Sunbury</option>
+                <option>Point Cook</option>
+                <option>Melton</option>
+                <option>Werribee</option>
+                <option value="Other">Other / not listed</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="service">Service <span class="req" aria-hidden="true">*</span></label>
+              <select id="service" name="service" required>
+                <option value="" selected disabled>What do you need?</option>
+                <option>Natural Turf Solutions</option>
+                <option>Paving &amp; Stepping Stones</option>
+                <option>Retaining Walls</option>
+                <option>Soft Landscaping</option>
+                <option>Garden Design</option>
+                <option value="Not sure">Not sure / other</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form__row">
+            <div class="field">
+              <label for="message">Tell us about the job</label>
+              <textarea id="message" name="message" placeholder="Rough size, what you'd like done, and any timing that suits you."></textarea>
+            </div>
+          </div>
+
+          <!-- Honeypot: hidden from people, catches bots -->
+          <div class="field field--hp" aria-hidden="true">
+            <label for="company">Company</label>
+            <input type="text" id="company" name="company" tabindex="-1" autocomplete="off" />
+          </div>
+
+          <p class="form__consent">By submitting this form you agree to be contacted about your enquiry. We never share your details.</p>
+          <button class="btn btn--primary btn--block" type="submit">Request my free quote</button>
+          <p class="form__status" role="status" aria-live="polite"></p>
+        </form>
+      </div>
+    </section>
   </main>
 
-  <script src="script.js" defer></script>
+  <!-- ============ FOOTER ============ -->
+  <footer class="site-footer">
+    <div class="wrap">
+      <div class="footer__grid">
+        <div class="footer__brand">
+          <a class="brand" href="/" aria-label="Turf and Landscaping — home">
+            <img class="brand__logo" src="/assets/logo-mark.svg" alt="Turf and Landscaping logo" width="44" height="44" />
+            <span class="brand__text">
+              <span class="brand__name">Turf <b>and</b> Landscaping</span>
+              <span class="brand__tag">North-West Melbourne</span>
+            </span>
+          </a>
+          <p style="margin-top:1rem;max-width:22rem;color:#9db8a4;">Turf, paving, retaining walls and garden design for homeowners across Melbourne's north-west.</p>
+          <div class="footer__socials">
+            <!-- TODO: confirm the real Instagram and Facebook URLs before publishing. -->
+            <a href="https://www.instagram.com/turfandlandscaping" target="_blank" rel="noopener" aria-label="Turf and Landscaping on Instagram">
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.2c3.2 0 3.6 0 4.9.07 1.2.06 1.8.25 2.2.42.6.2 1 .46 1.4.86.4.4.66.8.86 1.4.17.4.36 1 .42 2.2.07 1.3.07 1.7.07 4.9s0 3.6-.07 4.9c-.06 1.2-.25 1.8-.42 2.2a3.8 3.8 0 0 1-.86 1.4c-.4.4-.8.66-1.4.86-.4.17-1 .36-2.2.42-1.3.07-1.7.07-4.9.07s-3.6 0-4.9-.07c-1.2-.06-1.8-.25-2.2-.42a3.8 3.8 0 0 1-1.4-.86 3.8 3.8 0 0 1-.86-1.4c-.17-.4-.36-1-.42-2.2C2.2 15.6 2.2 15.2 2.2 12s0-3.6.07-4.9c.06-1.2.25-1.8.42-2.2.2-.6.46-1 .86-1.4.4-.4.8-.66 1.4-.86.4-.17 1-.36 2.2-.42C8.4 2.2 8.8 2.2 12 2.2zm0 1.8c-3.1 0-3.5 0-4.7.07-.9.04-1.4.2-1.7.32-.43.17-.74.37-1.06.7-.32.31-.52.62-.7 1.05-.12.3-.28.8-.32 1.7C3.25 8.5 3.24 8.9 3.24 12s0 3.5.07 4.7c.04.9.2 1.4.32 1.7.17.43.37.74.7 1.06.31.32.62.52 1.05.7.3.12.8.28 1.7.32 1.2.07 1.6.07 4.7.07s3.5 0 4.7-.07c.9-.04 1.4-.2 1.7-.32.43-.17.74-.37 1.06-.7.32-.31.52-.62.7-1.05.12-.3.28-.8.32-1.7.07-1.2.07-1.6.07-4.7s0-3.5-.07-4.7c-.04-.9-.2-1.4-.32-1.7a2.8 2.8 0 0 0-.7-1.06 2.8 2.8 0 0 0-1.05-.7c-.3-.12-.8-.28-1.7-.32C15.5 4 15.1 4 12 4zm0 3.1a4.9 4.9 0 1 1 0 9.8 4.9 4.9 0 0 1 0-9.8zm0 8a3.1 3.1 0 1 0 0-6.2 3.1 3.1 0 0 0 0 6.2zm5.1-8.3a1.15 1.15 0 1 1 0 2.3 1.15 1.15 0 0 1 0-2.3z"/></svg>
+            </a>
+            <a href="https://www.facebook.com/turfandlandscaping" target="_blank" rel="noopener" aria-label="Turf and Landscaping on Facebook">
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M22 12a10 10 0 1 0-11.6 9.9v-7H7.9V12h2.5V9.8c0-2.5 1.5-3.9 3.8-3.9 1.1 0 2.2.2 2.2.2v2.5h-1.2c-1.2 0-1.6.75-1.6 1.5V12h2.7l-.43 2.9h-2.3v7A10 10 0 0 0 22 12z"/></svg>
+            </a>
+          </div>
+        </div>
+
+        <div>
+          <h4>Services</h4>
+          <ul>
+            <li><a href="/services/natural-turf-solutions">Natural Turf Solutions</a></li>
+            <li><a href="/services/paving-and-stepping-stones">Paving &amp; Stepping Stones</a></li>
+            <li><a href="/services/retaining-walls">Retaining Walls</a></li>
+            <li><a href="/services/soft-landscaping">Soft Landscaping</a></li>
+            <li><a href="/services/garden-design">Garden Design</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4>Areas we serve</h4>
+          <ul>
+            <li><a href="/suburbs/craigieburn">Craigieburn</a></li>
+            <li><a href="/suburbs/mickleham">Mickleham</a></li>
+            <li><a href="/suburbs/sunbury">Sunbury</a></li>
+            <li><a href="/suburbs/point-cook">Point Cook</a></li>
+            <li><a href="/suburbs/melton">Melton</a></li>
+            <li><a href="/suburbs/werribee">Werribee</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4>Get in touch</h4>
+          <ul>
+            <li><a href="tel:+61457357085">0457 357 085</a></li>
+            <li><a href="mailto:info@turfandlandscaping.com.au">info@turfandlandscaping.com.au</a></li>
+            <li>Servicing north-west Melbourne, VIC</li>
+            <li>Mon–Fri 7am–5pm · Sat 8am–2pm</li>
+            <li><a href="#quote">Get a free quote</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer__bottom">
+        <!-- TODO: confirm the registered business name and ABN before publishing. -->
+        <span>© <span id="year">2026</span> Turf and Landscaping · ABN 00 000 000 000</span>
+        <span>North-west Melbourne, Victoria · Fully insured</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ============ STICKY MOBILE BOTTOM BAR ============ -->
+  <nav class="mobile-bar" aria-label="Quick contact">
+    <a class="bar-call" href="tel:+61457357085">
+      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6.6 10.8a15.5 15.5 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.24 11.4 11.4 0 0 0 3.6.58 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1 11.4 11.4 0 0 0 .58 3.6 1 1 0 0 1-.24 1z"/></svg>
+      Call
+    </a>
+    <a class="bar-quote" href="#quote">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 4h16v12H7l-3 3z"/></svg>
+      Get a quote
+    </a>
+  </nav>
+
+  <script src="/main.js" defer></script>
+  <script>document.getElementById("year").textContent = new Date().getFullYear();</script>
 </body>
 </html>

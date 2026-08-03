@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Turf and Landscaping">
+  <rect width="64" height="64" rx="14" fill="#0e3b23"/>
+  <defs>
+    <linearGradient id="g" x1="0" y1="1" x2="0" y2="0">
+      <stop offset="0" stop-color="#3f9d4f"/>
+      <stop offset="1" stop-color="#86c05a"/>
+    </linearGradient>
+  </defs>
+  <g fill="url(#g)">
+    <path d="M24 50 C21 40 20 30 22 20 C25 30 26 40 26 50 Z"/>
+    <path d="M30 50 C30 38 31 27 33 17 C35 29 34 40 33 50 Z"/>
+    <path d="M36 50 C38 40 41 32 46 26 C44 36 41 44 39 50 Z"/>
+    <path d="M20 50 C16 43 13 36 12 29 C17 36 20 43 22 50 Z"/>
+  </g>
+  <path d="M8 50 C22 43 40 45 52 50 L52 54 L8 54 Z" fill="#86c05a"/>
+</svg>
