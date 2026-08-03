@@ -1,0 +1,12 @@
+{
+  "name": "turf-and-landscaping",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Static marketing website for Turf and Landscaping, north-west Melbourne.",
+  "scripts": {
+    "build": "node scripts/build-site.js"
+  },
+  "devDependencies": {
+    "sharp": "^0.34.2"
+  }
+}

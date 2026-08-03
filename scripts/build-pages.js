@@ -11,6 +11,7 @@ const fs = require("fs");
 const path = require("path");
 
 const ROOT = path.join(__dirname, "..");
+const OUTDIR = process.env.OUTDIR || ROOT;
 const SITE = "https://turfandlandscaping.com.au";
 const PHONE_DISPLAY = "0457 357 085";
 const PHONE_TEL = "+61457357085";
@@ -471,18 +472,18 @@ ${FOOTER}`;
 }
 
 /* ---------- Write files ---------- */
-fs.mkdirSync(path.join(ROOT, "services"), { recursive: true });
-fs.mkdirSync(path.join(ROOT, "suburbs"), { recursive: true });
+fs.mkdirSync(path.join(OUTDIR, "services"), { recursive: true });
+fs.mkdirSync(path.join(OUTDIR, "suburbs"), { recursive: true });
 
 let count = 0;
 for (const s of SERVICES) {
-  const file = path.join(ROOT, "services", `${slug(s.name)}.html`);
+  const file = path.join(OUTDIR, "services", `${slug(s.name)}.html`);
   fs.writeFileSync(file, servicePage(s));
   console.log("wrote services/" + slug(s.name) + ".html");
   count++;
 }
 for (const name of SUBURBS) {
-  const file = path.join(ROOT, "suburbs", `${slug(name)}.html`);
+  const file = path.join(OUTDIR, "suburbs", `${slug(name)}.html`);
   fs.writeFileSync(file, suburbPage(name));
   console.log("wrote suburbs/" + slug(name) + ".html");
   count++;

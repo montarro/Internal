@@ -11,7 +11,9 @@ const fs = require("fs");
 const path = require("path");
 const sharp = require("sharp");
 
-const OUT = path.join(__dirname, "..", "assets", "images");
+const OUT = process.env.OUTDIR
+  ? path.join(process.env.OUTDIR, "assets", "images")
+  : path.join(__dirname, "..", "assets", "images");
 fs.mkdirSync(OUT, { recursive: true });
 
 const esc = (s) => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
