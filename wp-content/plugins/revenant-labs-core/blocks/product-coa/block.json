@@ -1,0 +1,32 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "revenant-labs/product-coa",
+	"version": "1.0.0",
+	"title": "COA details",
+	"category": "revenant-labs",
+	"icon": "media-document",
+	"description": "Shows the certificate of analysis published for this product's lot. Renders nothing when no report has been published.",
+	"keywords": [ "coa", "certificate", "analysis", "lot", "batch" ],
+	"textdomain": "revenant-labs-core",
+	"usesContext": [ "postId" ],
+	"attributes": {
+		"display": {
+			"type": "string",
+			"default": "summary",
+			"enum": [ "badge", "summary", "table" ]
+		}
+	},
+	"supports": {
+		"html": false,
+		"reusable": false,
+		"spacing": {
+			"margin": true,
+			"padding": true
+		},
+		"typography": {
+			"fontSize": true
+		}
+	},
+	"editorScript": "file:./index.js"
+}

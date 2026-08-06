@@ -1,0 +1,49 @@
+<!-- wp:template-part {"slug":"announcement-bar","tagName":"div"} /-->
+
+<!-- wp:template-part {"slug":"header","tagName":"header","className":"rl-header"} /-->
+
+<!-- wp:group {"tagName":"main","style":{"spacing":{"padding":{"top":"var:preset|spacing|70","bottom":"var:preset|spacing|90"}}},"layout":{"type":"constrained"}} -->
+<main class="wp-block-group" style="padding-top:var(--wp--preset--spacing--70);padding-bottom:var(--wp--preset--spacing--90)"><!-- wp:woocommerce/store-notices /-->
+
+<!-- wp:paragraph {"className":"is-style-rl-meta","textColor":"muted-text","fontSize":"x-small"} -->
+<p class="is-style-rl-meta has-muted-text-color has-text-color has-x-small-font-size">ORDER CONFIRMATION</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:woocommerce/order-confirmation-status {"level":1,"style":{"spacing":{"margin":{"top":"var:preset|spacing|20","bottom":"var:preset|spacing|60"}}}} /-->
+
+<!-- wp:woocommerce/order-confirmation-summary /-->
+
+<!-- wp:woocommerce/order-confirmation-totals {"style":{"spacing":{"margin":{"top":"var:preset|spacing|60"}}}} /-->
+
+<!-- wp:woocommerce/order-confirmation-downloads {"style":{"spacing":{"margin":{"top":"var:preset|spacing|60"}}}} /-->
+
+<!-- wp:columns {"style":{"spacing":{"margin":{"top":"var:preset|spacing|60"}}}} -->
+<div class="wp-block-columns" style="margin-top:var(--wp--preset--spacing--60)"><!-- wp:column -->
+<div class="wp-block-column"><!-- wp:woocommerce/order-confirmation-shipping-wrapper /--></div>
+<!-- /wp:column -->
+
+<!-- wp:column -->
+<div class="wp-block-column"><!-- wp:woocommerce/order-confirmation-billing-wrapper /--></div>
+<!-- /wp:column --></div>
+<!-- /wp:columns -->
+
+<!-- wp:woocommerce/order-confirmation-additional-fields-wrapper /-->
+
+<!-- wp:woocommerce/order-confirmation-additional-information /-->
+
+<!-- wp:paragraph {"className":"rl-compliance rl-compliance--strong","style":{"spacing":{"margin":{"top":"var:preset|spacing|70"}}},"fontSize":"x-small"} -->
+<p class="rl-compliance rl-compliance--strong has-x-small-font-size" style="margin-top:var(--wp--preset--spacing--70)">RESEARCH USE ONLY — NOT FOR HUMAN OR VETERINARY USE. THIS ORDER WAS PLACED UNDER A RESEARCH-USE DECLARATION.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:buttons {"style":{"spacing":{"margin":{"top":"var:preset|spacing|60"}}},"layout":{"type":"flex","flexWrap":"wrap"}} -->
+<div class="wp-block-buttons" style="margin-top:var(--wp--preset--spacing--60)"><!-- wp:button {"className":"is-style-rl-secondary"} -->
+<div class="wp-block-button is-style-rl-secondary"><a class="wp-block-button__link wp-element-button" href="/my-account/orders/">VIEW ORDERS</a></div>
+<!-- /wp:button -->
+
+<!-- wp:button {"className":"is-style-rl-secondary"} -->
+<div class="wp-block-button is-style-rl-secondary"><a class="wp-block-button__link wp-element-button" href="/lab-reports/">LAB REPORTS</a></div>
+<!-- /wp:button --></div>
+<!-- /wp:buttons --></main>
+<!-- /wp:group -->
+
+<!-- wp:template-part {"slug":"footer","tagName":"footer"} /-->

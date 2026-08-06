@@ -1,0 +1,86 @@
+/**
+ * core/navigation — header navigation and mobile drawer.
+ */
+
+.wp-block-navigation .wp-block-navigation-item__content {
+	padding-block: 0.5rem;
+}
+
+/* Underline that grows from the left on hover / current page. */
+.wp-block-navigation:not(.has-modal-open) .wp-block-navigation-item > .wp-block-navigation-item__content {
+	position: relative;
+}
+
+.wp-block-navigation:not(.has-modal-open) .wp-block-navigation-item > .wp-block-navigation-item__content::after {
+	background-color: var(--wp--preset--color--violet);
+	bottom: 0;
+	content: "";
+	height: 1px;
+	left: 0;
+	position: absolute;
+	transform: scaleX(0);
+	transform-origin: left center;
+	transition: transform var(--wp--custom--transition--base);
+	width: 100%;
+}
+
+.wp-block-navigation:not(.has-modal-open) .wp-block-navigation-item > .wp-block-navigation-item__content:hover::after,
+.wp-block-navigation:not(.has-modal-open) .wp-block-navigation-item > .wp-block-navigation-item__content:focus-visible::after,
+.wp-block-navigation:not(.has-modal-open) .wp-block-navigation-item.current-menu-item > .wp-block-navigation-item__content::after {
+	transform: scaleX(1);
+}
+
+.wp-block-navigation .wp-block-navigation-item.current-menu-item > .wp-block-navigation-item__content {
+	color: var(--wp--preset--color--violet);
+	font-weight: 600;
+}
+
+/* Submenus */
+.wp-block-navigation .wp-block-navigation__submenu-container {
+	background-color: var(--wp--preset--color--white);
+	border: 1px solid var(--wp--preset--color--warm-border);
+	border-radius: var(--wp--custom--radius--card);
+	box-shadow: var(--wp--preset--shadow--subtle);
+	padding: 0.5rem;
+}
+
+.wp-block-navigation .wp-block-navigation__submenu-container .wp-block-navigation-item__content {
+	padding: 0.5rem 0.75rem;
+}
+
+/* Mobile drawer — core handles focus trapping and aria wiring. */
+.wp-block-navigation__responsive-container.is-menu-open {
+	background-color: var(--wp--preset--color--white);
+	padding: var(--wp--preset--spacing--60) var(--wp--custom--gutter);
+}
+
+.wp-block-navigation__responsive-container.is-menu-open .wp-block-navigation__responsive-container-content {
+	padding-top: var(--wp--preset--spacing--50);
+}
+
+.wp-block-navigation__responsive-container.is-menu-open .wp-block-navigation-item__content {
+	font-family: var(--wp--preset--font-family--heading);
+	font-size: var(--wp--preset--font-size--x-large);
+	font-weight: 700;
+	letter-spacing: -0.03em;
+	padding-block: 0.35rem;
+}
+
+/* Touch targets on the open/close toggles. */
+.wp-block-navigation__responsive-container-open,
+.wp-block-navigation__responsive-container-close {
+	min-height: 44px;
+	min-width: 44px;
+}
+
+.wp-block-navigation__responsive-container-open svg,
+.wp-block-navigation__responsive-container-close svg {
+	height: 24px;
+	width: 24px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.wp-block-navigation-item__content::after {
+		transition: none;
+	}
+}

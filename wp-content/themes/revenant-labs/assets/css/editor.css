@@ -1,0 +1,41 @@
+/**
+ * Editor-only styles.
+ *
+ * Keeps the Site Editor honest about what the front end will do, and makes
+ * elements that are hidden until runtime (the research-use notice) editable.
+ */
+
+/* The notice is display:none on the front end until the script promotes it. */
+.editor-styles-wrapper .rl-research-notice {
+	border: 1px dashed var(--wp--preset--color--violet);
+	border-radius: var(--wp--custom--radius--card);
+	display: block;
+	padding: var(--wp--preset--spacing--40);
+}
+
+.editor-styles-wrapper .rl-research-notice::before {
+	color: var(--wp--preset--color--violet);
+	content: "First-visit research-use notice — shown as a modal dialog on the front end.";
+	display: block;
+	font-family: var(--wp--preset--font-family--mono);
+	font-size: 0.6875rem;
+	letter-spacing: 0.08em;
+	margin-bottom: 1rem;
+	text-transform: uppercase;
+}
+
+/* Sticky headers behave oddly inside the editor canvas. */
+.editor-styles-wrapper .rl-header {
+	position: static;
+}
+
+/* Reveal animations must never hide content from an editor. */
+.editor-styles-wrapper .js-rl-reveal {
+	opacity: 1;
+	transform: none;
+}
+
+/* Show the logo slot hint while no logo is set. */
+.editor-styles-wrapper .rl-logo:empty::before {
+	content: "Site logo";
+}

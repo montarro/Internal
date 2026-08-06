@@ -1,0 +1,31 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "revenant-labs/coa-library",
+	"version": "1.0.0",
+	"title": "COA library",
+	"category": "revenant-labs",
+	"icon": "portfolio",
+	"description": "Lists every certificate of analysis that has been published against a product lot, with optional filters. Shows a clear empty state when no reports exist.",
+	"keywords": [ "coa", "lab reports", "certificate", "analysis", "library" ],
+	"textdomain": "revenant-labs-core",
+	"attributes": {
+		"limit": {
+			"type": "number",
+			"default": 20
+		},
+		"showFilters": {
+			"type": "boolean",
+			"default": true
+		}
+	},
+	"supports": {
+		"html": false,
+		"align": [ "wide", "full" ],
+		"spacing": {
+			"margin": true,
+			"padding": true
+		}
+	},
+	"editorScript": "file:./index.js"
+}

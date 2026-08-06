@@ -1,0 +1,48 @@
+/**
+ * Self-hosted brand fonts.
+ *
+ * This stylesheet is only enqueued once at least one .woff2 file exists in
+ * /assets/fonts — see revenant_labs_has_local_fonts() in inc/assets.php.
+ * That keeps the site from requesting font files that have not been added yet.
+ *
+ * Expected filenames (variable fonts preferred, static weights also fine):
+ *   inter-tight-variable.woff2
+ *   inter-variable.woff2
+ *   ibm-plex-mono-400.woff2
+ *   ibm-plex-mono-500.woff2
+ *
+ * All three families are open source under the SIL Open Font License, so they
+ * may be self-hosted. Do not swap these for a third-party CDN.
+ */
+
+@font-face {
+	font-family: "Inter Tight";
+	font-style: normal;
+	font-weight: 400 800;
+	font-display: swap;
+	src: url("../fonts/inter-tight-variable.woff2") format("woff2-variations");
+}
+
+@font-face {
+	font-family: "Inter";
+	font-style: normal;
+	font-weight: 300 700;
+	font-display: swap;
+	src: url("../fonts/inter-variable.woff2") format("woff2-variations");
+}
+
+@font-face {
+	font-family: "IBM Plex Mono";
+	font-style: normal;
+	font-weight: 400;
+	font-display: swap;
+	src: url("../fonts/ibm-plex-mono-400.woff2") format("woff2");
+}
+
+@font-face {
+	font-family: "IBM Plex Mono";
+	font-style: normal;
+	font-weight: 500;
+	font-display: swap;
+	src: url("../fonts/ibm-plex-mono-500.woff2") format("woff2");
+}

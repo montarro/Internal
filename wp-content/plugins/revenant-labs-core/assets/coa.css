@@ -1,0 +1,242 @@
+/**
+ * Certificate-of-analysis display.
+ *
+ * Uses the theme's design tokens when the Revenant Labs theme is active, and
+ * falls back to neutral values when it is not — the plugin must never depend
+ * on a particular theme being installed.
+ */
+
+.rl-coa {
+	--rl-coa-accent: var(--wp--preset--color--violet, #6f47e8);
+	--rl-coa-muted: var(--wp--preset--color--muted-text, #6b6872);
+	--rl-coa-border: var(--wp--preset--color--warm-border, #e0d8c8);
+	--rl-coa-mono: var(--wp--preset--font-family--mono, ui-monospace, SFMono-Regular, Menlo, monospace);
+
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 0.5rem 0.75rem;
+}
+
+.rl-coa--table {
+	display: block;
+}
+
+.rl-coa__badge {
+	border: 1px solid currentColor;
+	border-radius: 2px;
+	color: var(--rl-coa-accent);
+	display: inline-block;
+	font-family: var(--rl-coa-mono);
+	font-size: 0.6875rem;
+	letter-spacing: 0.1em;
+	padding: 0.2rem 0.45rem;
+	text-transform: uppercase;
+	white-space: nowrap;
+}
+
+.rl-coa__lot {
+	color: var(--rl-coa-muted);
+	font-family: var(--rl-coa-mono);
+	font-size: 0.75rem;
+	letter-spacing: 0.06em;
+}
+
+.rl-coa__link {
+	font-family: var(--rl-coa-mono);
+	font-size: 0.75rem;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+}
+
+.rl-coa__meta {
+	font-family: var(--rl-coa-mono);
+	font-size: 0.8125rem;
+	margin: 0 0 1rem;
+}
+
+.rl-coa__row {
+	border-bottom: 1px solid var(--rl-coa-border);
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.5rem 1rem;
+	justify-content: space-between;
+	padding-block: 0.5rem;
+}
+
+.rl-coa__row:last-child {
+	border-bottom: 0;
+}
+
+.rl-coa__meta dt {
+	color: var(--rl-coa-muted);
+	font-weight: 400;
+	margin: 0;
+	text-transform: uppercase;
+}
+
+.rl-coa__meta dd {
+	margin: 0;
+	text-align: right;
+}
+
+.rl-coa__actions {
+	margin: 0;
+}
+
+/* Editor placeholders ---------------------------------------------------- */
+
+.rl-coa--editor,
+.rl-coa-library--editor {
+	border: 1px dashed var(--wp--preset--color--violet, #6f47e8);
+	border-radius: 6px;
+	padding: 1rem;
+}
+
+.rl-coa__editor-hint {
+	color: var(--wp--preset--color--muted-text, #6b6872);
+	display: block;
+	font-size: 0.8125rem;
+	margin-top: 0.5rem;
+}
+
+/* Library ---------------------------------------------------------------- */
+
+.rl-coa-library {
+	--rl-coa-accent: var(--wp--preset--color--violet, #6f47e8);
+	--rl-coa-muted: var(--wp--preset--color--muted-text, #6b6872);
+	--rl-coa-border: var(--wp--preset--color--warm-border, #e0d8c8);
+	--rl-coa-mono: var(--wp--preset--font-family--mono, ui-monospace, SFMono-Regular, Menlo, monospace);
+}
+
+.rl-coa-library__filters {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 1rem;
+	margin-bottom: 2rem;
+}
+
+.rl-coa-library__field {
+	display: flex;
+	flex-direction: column;
+	gap: 0.35rem;
+	margin: 0;
+}
+
+.rl-coa-library__field label {
+	font-family: var(--rl-coa-mono);
+	font-size: 0.6875rem;
+	letter-spacing: 0.1em;
+	text-transform: uppercase;
+}
+
+.rl-coa-library__field input {
+	border: 1px solid var(--rl-coa-border);
+	border-radius: 3px;
+	font-size: 1rem;
+	min-height: 44px;
+	padding: 0.5rem 0.65rem;
+}
+
+.rl-coa-library__field--actions {
+	align-items: center;
+	flex-direction: row;
+	gap: 1rem;
+	justify-content: flex-start;
+	align-self: flex-end;
+}
+
+.rl-coa-library__field button {
+	min-height: 44px;
+}
+
+.rl-coa-library__list {
+	display: grid;
+	gap: 1.25rem;
+	grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.rl-coa-library__item {
+	border: 1px solid var(--rl-coa-border);
+	border-radius: 6px;
+	display: flex;
+	flex-direction: column;
+	gap: 0.75rem;
+	padding: 1.25rem;
+}
+
+.rl-coa-library__title {
+	font-size: 1.125rem;
+	letter-spacing: -0.02em;
+	margin: 0;
+}
+
+.rl-coa-library__title a {
+	text-decoration: none;
+}
+
+.rl-coa-library__item .rl-coa__link {
+	margin-top: auto;
+}
+
+.rl-coa-library__empty {
+	border: 1px solid var(--rl-coa-border);
+	border-radius: 6px;
+	padding: 3rem 1.5rem;
+	text-align: center;
+}
+
+.rl-coa-library__empty p {
+	color: var(--rl-coa-muted);
+	margin-inline: auto;
+	max-width: 48ch;
+}
+
+/*
+ * On a dark section the borders and muted text need to invert. The theme's
+ * dark panels set a white text colour, so key off that.
+ */
+.has-near-black-background-color .rl-coa-library__item,
+.has-dark-panel-background-color .rl-coa-library__item,
+.has-near-black-background-color .rl-coa-library__empty,
+.has-dark-panel-background-color .rl-coa-library__empty,
+.has-near-black-background-color .rl-coa__row,
+.has-dark-panel-background-color .rl-coa__row {
+	border-color: rgba(255, 255, 255, 0.16);
+}
+
+.has-near-black-background-color .rl-coa-library__empty p,
+.has-dark-panel-background-color .rl-coa-library__empty p,
+.has-near-black-background-color .rl-coa__meta dt,
+.has-dark-panel-background-color .rl-coa__meta dt,
+.has-near-black-background-color .rl-coa__lot,
+.has-dark-panel-background-color .rl-coa__lot {
+	color: rgba(255, 255, 255, 0.62);
+}
+
+.has-near-black-background-color .rl-coa__badge,
+.has-dark-panel-background-color .rl-coa__badge {
+	color: #fff;
+}
+
+.has-near-black-background-color .rl-coa-library__title a,
+.has-dark-panel-background-color .rl-coa-library__title a {
+	color: #fff;
+}
+
+@media (max-width: 599px) {
+	.rl-coa-library__filters {
+		flex-direction: column;
+	}
+
+	.rl-coa-library__field {
+		width: 100%;
+	}
+
+	.rl-coa-library__field input {
+		width: 100%;
+	}
+}

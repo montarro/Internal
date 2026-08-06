@@ -1,0 +1,21 @@
+/**
+ * core/site-logo
+ *
+ * The supplied logo asset is never redrawn or recoloured — only constrained.
+ * Aspect ratio is preserved by keeping height:auto at every breakpoint.
+ */
+
+.wp-block-site-logo {
+	line-height: 0;
+}
+
+.wp-block-site-logo img {
+	height: auto;
+	max-width: 100%;
+	object-fit: contain;
+}
+
+.wp-block-site-logo a:focus-visible img {
+	outline: 2px solid var(--wp--preset--color--violet);
+	outline-offset: 4px;
+}

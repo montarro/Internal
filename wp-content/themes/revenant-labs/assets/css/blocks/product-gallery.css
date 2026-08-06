@@ -1,0 +1,48 @@
+/**
+ * woocommerce/product-image-gallery
+ */
+
+.wp-block-woocommerce-product-image-gallery .woocommerce-product-gallery {
+	background-color: var(--wp--preset--color--bone);
+	border: 1px solid var(--wp--preset--color--warm-border);
+	border-radius: var(--wp--custom--radius--panel);
+	overflow: hidden;
+}
+
+.wp-block-woocommerce-product-image-gallery .woocommerce-product-gallery__image img {
+	display: block;
+	height: auto;
+	width: 100%;
+}
+
+.wp-block-woocommerce-product-image-gallery .flex-control-thumbs {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.5rem;
+	list-style: none;
+	margin: 0.75rem;
+	padding: 0;
+}
+
+.wp-block-woocommerce-product-image-gallery .flex-control-thumbs li {
+	flex: 0 0 auto;
+	width: calc(25% - 0.5rem);
+}
+
+.wp-block-woocommerce-product-image-gallery .flex-control-thumbs img {
+	border: 1px solid transparent;
+	border-radius: var(--wp--custom--radius--card);
+	cursor: pointer;
+}
+
+.wp-block-woocommerce-product-image-gallery .flex-control-thumbs img.flex-active,
+.wp-block-woocommerce-product-image-gallery .flex-control-thumbs img:hover {
+	border-color: var(--wp--preset--color--violet);
+}
+
+/* Gallery controls must stay reachable on small screens. */
+@media (max-width: 599px) {
+	.wp-block-woocommerce-product-image-gallery .flex-control-thumbs li {
+		width: calc(33.333% - 0.5rem);
+	}
+}

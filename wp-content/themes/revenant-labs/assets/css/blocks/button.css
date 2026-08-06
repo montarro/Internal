@@ -1,0 +1,44 @@
+/**
+ * core/button
+ *
+ * Colour, radius and typography come from theme.json. This file only adds the
+ * behaviour theme.json cannot express: transitions and touch sizing.
+ */
+
+.wp-block-button__link {
+	align-items: center;
+	display: inline-flex;
+	justify-content: center;
+	min-height: 44px;
+	text-align: center;
+	transition: background-color var(--wp--custom--transition--base),
+		border-color var(--wp--custom--transition--base),
+		color var(--wp--custom--transition--base);
+}
+
+.wp-block-button__link:focus-visible {
+	outline: 2px solid var(--wp--preset--color--near-black);
+	outline-offset: 2px;
+}
+
+.is-style-rl-panel-dark .wp-block-button__link:focus-visible,
+.rl-hero__panel .wp-block-button__link:focus-visible {
+	outline-color: var(--wp--preset--color--white);
+}
+
+/* Full-width buttons on very small screens so CTAs stay easy to hit. */
+@media (max-width: 479px) {
+	.wp-block-buttons:not(.is-content-justification-center) .wp-block-button {
+		width: 100%;
+	}
+
+	.wp-block-buttons:not(.is-content-justification-center) .wp-block-button__link {
+		width: 100%;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.wp-block-button__link {
+		transition: none;
+	}
+}

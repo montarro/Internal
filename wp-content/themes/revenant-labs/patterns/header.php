@@ -1,0 +1,46 @@
+<?php
+/**
+ * Title: Main header
+ * Slug: revenant-labs/header
+ * Categories: revenant-labs
+ * Description: Logo, centred navigation and commerce actions.
+ *
+ * @package RevenantLabs
+ */
+
+?>
+<!-- wp:group {"className":"rl-shell rl-header__inner","style":{"spacing":{"padding":{"top":"var:preset|spacing|30","bottom":"var:preset|spacing|30"},"blockGap":"var:preset|spacing|40"}},"layout":{"type":"flex","flexWrap":"nowrap","justifyContent":"space-between","verticalAlignment":"center"}} -->
+<div class="wp-block-group rl-shell rl-header__inner" style="padding-top:var(--wp--preset--spacing--30);padding-bottom:var(--wp--preset--spacing--30)"><!-- wp:site-logo {"width":180,"shouldSyncIcon":false,"className":"rl-logo"} /-->
+
+<!-- wp:group {"className":"rl-nav","layout":{"type":"flex","flexWrap":"nowrap","justifyContent":"center"}} -->
+<div class="wp-block-group rl-nav"><!-- wp:navigation {"ariaLabel":"Main","overlayMenu":"mobile","icon":"menu","overlayBackgroundColor":"white","overlayTextColor":"near-black","style":{"spacing":{"blockGap":"var:preset|spacing|40"}},"layout":{"type":"flex","justifyContent":"center","flexWrap":"wrap"}} -->
+<!-- wp:navigation-link {"label":"Home","url":"/","kind":"custom","isTopLevelLink":true} /-->
+
+<!-- wp:navigation-link {"label":"Catalogue","url":"/catalogue/","kind":"custom","isTopLevelLink":true} /-->
+
+<!-- wp:navigation-link {"label":"Research","url":"/research/","kind":"custom","isTopLevelLink":true} /-->
+
+<!-- wp:navigation-link {"label":"Lab Reports","url":"/lab-reports/","kind":"custom","isTopLevelLink":true} /-->
+
+<!-- wp:navigation-link {"label":"FAQs","url":"/faqs/","kind":"custom","isTopLevelLink":true} /-->
+
+<!-- wp:navigation-link {"label":"Contact","url":"/contact/","kind":"custom","isTopLevelLink":true} /-->
+<!-- /wp:navigation --></div>
+<!-- /wp:group -->
+
+<!-- wp:group {"className":"rl-actions","style":{"spacing":{"blockGap":"var:preset|spacing|20"}},"layout":{"type":"flex","flexWrap":"nowrap","justifyContent":"right","verticalAlignment":"center"}} -->
+<div class="wp-block-group rl-actions"><!-- wp:search {"label":"Search the site","showLabel":false,"placeholder":"Search","buttonText":"Search","buttonPosition":"button-only","buttonUseIcon":true} /-->
+
+<!-- wp:template-part {"slug":"mini-cart","tagName":"div","className":"rl-minicart"} /-->
+
+<!-- wp:paragraph {"className":"rl-account-link rl-hide-mobile","fontSize":"small"} -->
+<p class="rl-account-link rl-hide-mobile has-small-font-size"><a href="/my-account/">Log in</a></p>
+<!-- /wp:paragraph -->
+
+<!-- wp:buttons {"className":"rl-hide-mobile"} -->
+<div class="wp-block-buttons rl-hide-mobile"><!-- wp:button {"className":"is-style-rl-secondary","style":{"typography":{"fontSize":"0.8125rem"},"spacing":{"padding":{"top":"0.6rem","bottom":"0.6rem","left":"1rem","right":"1rem"}}}} -->
+<div class="wp-block-button is-style-rl-secondary"><a class="wp-block-button__link wp-element-button" href="/my-account/" style="padding-top:0.6rem;padding-right:1rem;padding-bottom:0.6rem;padding-left:1rem;font-size:0.8125rem">Sign up</a></div>
+<!-- /wp:button --></div>
+<!-- /wp:buttons --></div>
+<!-- /wp:group --></div>
+<!-- /wp:group -->

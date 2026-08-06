@@ -1,0 +1,23 @@
+/**
+ * woocommerce/breadcrumbs
+ */
+
+.wp-block-woocommerce-breadcrumbs,
+.wc-block-breadcrumbs {
+	color: var(--wp--preset--color--muted-text);
+	font-family: var(--wp--preset--font-family--mono);
+	font-size: var(--wp--preset--font-size--x-small);
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+}
+
+.wc-block-breadcrumbs a {
+	color: var(--wp--preset--color--muted-text);
+	text-decoration: none;
+}
+
+.wc-block-breadcrumbs a:hover,
+.wc-block-breadcrumbs a:focus-visible {
+	color: var(--wp--preset--color--violet);
+	text-decoration: underline;
+}

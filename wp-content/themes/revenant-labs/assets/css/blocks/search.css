@@ -1,0 +1,52 @@
+/**
+ * core/search
+ */
+
+.wp-block-search__input {
+	background-color: var(--wp--preset--color--white);
+	border: 1px solid var(--wp--preset--color--warm-border);
+	border-radius: var(--wp--custom--radius--button);
+	color: var(--wp--preset--color--near-black);
+	font-family: var(--wp--preset--font-family--body);
+	font-size: var(--wp--preset--font-size--small);
+	min-height: 44px;
+	padding: 0.6rem 0.85rem;
+}
+
+.wp-block-search__input::placeholder {
+	color: var(--wp--preset--color--muted-text);
+}
+
+.wp-block-search__input:focus {
+	border-color: var(--wp--preset--color--violet);
+	outline: 2px solid var(--wp--preset--color--violet);
+	outline-offset: 1px;
+}
+
+.wp-block-search__button {
+	align-items: center;
+	background-color: var(--wp--preset--color--violet);
+	border: 1px solid var(--wp--preset--color--violet);
+	border-radius: var(--wp--custom--radius--button);
+	color: var(--wp--preset--color--white);
+	display: inline-flex;
+	justify-content: center;
+	min-height: 44px;
+	min-width: 44px;
+	transition: background-color var(--wp--custom--transition--base);
+}
+
+.wp-block-search__button:hover,
+.wp-block-search__button:focus-visible {
+	background-color: var(--wp--preset--color--violet-dark);
+	border-color: var(--wp--preset--color--violet-dark);
+}
+
+/* Icon-only variant used in the header. */
+.wp-block-search.wp-block-search__button-only .wp-block-search__button {
+	padding: 0.5rem;
+}
+
+.wp-block-search.wp-block-search__button-only .wp-block-search__inside-wrapper {
+	min-width: 0;
+}

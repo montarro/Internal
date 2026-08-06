@@ -1,0 +1,68 @@
+<?php
+/**
+ * Title: Contact section
+ * Slug: revenant-labs/contact-section
+ * Categories: revenant-labs, revenant-labs-pages
+ * Description: Two-column contact layout with a slot for your form plugin's block.
+ *
+ * @package RevenantLabs
+ */
+
+?>
+<!-- wp:columns {"align":"wide","style":{"spacing":{"blockGap":{"top":"var:preset|spacing|60","left":"var:preset|spacing|70"}}}} -->
+<div class="wp-block-columns alignwide"><!-- wp:column {"width":"58%"} -->
+<div class="wp-block-column" style="flex-basis:58%"><!-- wp:post-content {"layout":{"type":"constrained"}} /-->
+
+<!-- wp:group {"className":"rl-empty-state","style":{"spacing":{"margin":{"top":"var:preset|spacing|50"}}},"layout":{"type":"constrained"}} -->
+<div class="wp-block-group rl-empty-state" style="margin-top:var(--wp--preset--spacing--50)"><!-- wp:paragraph {"align":"center","className":"is-style-rl-meta"} -->
+<p class="has-text-align-center is-style-rl-meta">Contact form</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph {"align":"center","fontSize":"small"} -->
+<p class="has-text-align-center has-small-font-size">Insert your form plugin's block here in the Site Editor. No form markup is hardcoded by the theme, so submissions are handled by whichever form plugin you choose.</p>
+<!-- /wp:paragraph --></div>
+<!-- /wp:group --></div>
+<!-- /wp:column -->
+
+<!-- wp:column {"width":"42%"} -->
+<div class="wp-block-column" style="flex-basis:42%"><!-- wp:group {"className":"rl-card","style":{"spacing":{"padding":{"top":"var:preset|spacing|50","bottom":"var:preset|spacing|50","left":"var:preset|spacing|50","right":"var:preset|spacing|50"},"blockGap":"var:preset|spacing|30"}},"layout":{"type":"default"}} -->
+<div class="wp-block-group rl-card" style="padding-top:var(--wp--preset--spacing--50);padding-right:var(--wp--preset--spacing--50);padding-bottom:var(--wp--preset--spacing--50);padding-left:var(--wp--preset--spacing--50)"><!-- wp:heading {"level":2,"className":"is-style-rl-eyebrow","fontSize":"x-small"} -->
+<h2 class="wp-block-heading is-style-rl-eyebrow has-x-small-font-size">Business details</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph {"fontSize":"small"} -->
+<p class="has-small-font-size">Add your contact email, phone, postal address and Australian business details here in the Site Editor. Nothing is pre-filled, so no placeholder contact details are ever published by mistake.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:separator {"className":"is-style-rl-warm"} -->
+<hr class="wp-block-separator has-alpha-channel-opacity is-style-rl-warm"/>
+<!-- /wp:separator -->
+
+<!-- wp:heading {"level":2,"className":"is-style-rl-eyebrow","fontSize":"x-small"} -->
+<h2 class="wp-block-heading is-style-rl-eyebrow has-x-small-font-size">Enquiries we can answer</h2>
+<!-- /wp:heading -->
+
+<!-- wp:list {"fontSize":"small"} -->
+<ul class="wp-block-list has-small-font-size"><!-- wp:list-item -->
+<li>Availability and lead times</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li>Analytical documentation for a specific lot</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li>Dispatch, tracking and returns</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li>Organisation and account enquiries</li>
+<!-- /wp:list-item --></ul>
+<!-- /wp:list -->
+
+<!-- wp:paragraph {"className":"rl-compliance","textColor":"muted-text","fontSize":"x-small"} -->
+<p class="rl-compliance has-muted-text-color has-text-color has-x-small-font-size">We cannot provide handling, preparation, dosing or administration guidance of any kind.</p>
+<!-- /wp:paragraph --></div>
+<!-- /wp:group --></div>
+<!-- /wp:column --></div>
+<!-- /wp:columns -->

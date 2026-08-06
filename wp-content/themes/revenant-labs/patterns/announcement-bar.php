@@ -1,0 +1,16 @@
+<?php
+/**
+ * Title: Announcement bar
+ * Slug: revenant-labs/announcement-bar
+ * Categories: revenant-labs
+ * Description: Full-width announcement bar above the header.
+ *
+ * @package RevenantLabs
+ */
+
+?>
+<!-- wp:group {"className":"rl-announcement","style":{"spacing":{"padding":{"top":"var:preset|spacing|20","bottom":"var:preset|spacing|20"}}},"backgroundColor":"near-black","textColor":"white","layout":{"type":"constrained"}} -->
+<div class="wp-block-group rl-announcement has-white-color has-near-black-background-color has-text-color has-background" style="padding-top:var(--wp--preset--spacing--20);padding-bottom:var(--wp--preset--spacing--20)"><!-- wp:paragraph {"align":"center","fontSize":"x-small"} -->
+<p class="has-text-align-center has-x-small-font-size">FREE EXPRESS SHIPPING ON AUSTRALIAN ORDERS OVER $250</p>
+<!-- /wp:paragraph --></div>
+<!-- /wp:group -->

@@ -1,0 +1,667 @@
+/**
+ * Revenant Labs — global theme styles.
+ *
+ * Design tokens live in theme.json. This file holds only what theme.json
+ * cannot express cleanly: layout shells, responsive grids, motion, the
+ * research-use dialog and accessibility affordances.
+ */
+
+/* -------------------------------------------------------------------------
+ * 1. Foundations
+ * ---------------------------------------------------------------------- */
+
+html {
+	-webkit-text-size-adjust: 100%;
+}
+
+body {
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	overflow-x: hidden;
+	text-rendering: optimizeLegibility;
+}
+
+/* Nothing may push the page sideways at any breakpoint. */
+.wp-site-blocks,
+.wp-site-blocks > * {
+	max-width: 100%;
+}
+
+img,
+video,
+svg,
+iframe {
+	max-width: 100%;
+	height: auto;
+}
+
+/* Reserve space for images that declare dimensions, to avoid layout shift. */
+img[width][height] {
+	height: auto;
+}
+
+/* -------------------------------------------------------------------------
+ * 2. Focus + skip link
+ * ---------------------------------------------------------------------- */
+
+:where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
+	outline: 2px solid var(--wp--preset--color--violet);
+	outline-offset: 2px;
+	border-radius: 2px;
+}
+
+.is-style-rl-panel-dark :where(a, button, input, select, summary):focus-visible,
+.rl-panel-dark :where(a, button, input, select, summary):focus-visible {
+	outline-color: var(--wp--preset--color--white);
+}
+
+.skip-link.screen-reader-text:focus,
+.wp-block-template-part .skip-link:focus {
+	background-color: var(--wp--preset--color--near-black);
+	color: var(--wp--preset--color--white);
+	padding: 0.75rem 1.25rem;
+	z-index: 100000;
+}
+
+/* -------------------------------------------------------------------------
+ * 3. Layout shell
+ * ---------------------------------------------------------------------- */
+
+.rl-shell {
+	margin-inline: auto;
+	max-width: var(--wp--custom--layout--max-width);
+	padding-inline: var(--wp--custom--gutter);
+	width: 100%;
+}
+
+/* The footer shell already sits inside a padded group. */
+.rl-footer .rl-shell {
+	padding-inline: 0;
+}
+
+/* Section rhythm helper for full-width bands. */
+.rl-section {
+	padding-block: var(--wp--preset--spacing--80);
+}
+
+/* -------------------------------------------------------------------------
+ * 4. Announcement bar
+ * ---------------------------------------------------------------------- */
+
+.rl-announcement {
+	font-family: var(--wp--preset--font-family--mono);
+	font-size: 0.6875rem;
+	letter-spacing: 0.12em;
+	text-transform: uppercase;
+}
+
+.rl-announcement p {
+	margin: 0;
+}
+
+/* -------------------------------------------------------------------------
+ * 5. Header
+ * ---------------------------------------------------------------------- */
+
+.rl-header {
+	background-color: var(--wp--preset--color--white);
+	border-bottom: 1px solid var(--wp--preset--color--warm-border);
+	position: sticky;
+	top: 0;
+	z-index: 100;
+	transition: box-shadow var(--wp--custom--transition--base);
+}
+
+.rl-header.is-scrolled {
+	box-shadow: 0 1px 12px rgba(9, 11, 15, 0.06);
+}
+
+.rl-header__inner {
+	min-height: 68px;
+}
+
+.rl-logo {
+	flex-shrink: 0;
+	line-height: 0;
+}
+
+.rl-logo img {
+	height: auto;
+}
+
+@media (max-width: 1023px) {
+	.rl-logo img {
+		width: 160px !important;
+	}
+}
+
+@media (max-width: 599px) {
+	.rl-logo img {
+		width: 140px !important;
+	}
+}
+
+/* When no logo has been set yet, keep the slot from collapsing. */
+.rl-logo:empty::before {
+	color: var(--wp--preset--color--muted-text);
+	content: "Add site logo";
+	font-family: var(--wp--preset--font-family--mono);
+	font-size: 0.6875rem;
+	letter-spacing: 0.1em;
+	line-height: 1.4;
+	text-transform: uppercase;
+}
+
+/* Navigation takes the centre column and stays centred as it flexes. */
+.rl-nav {
+	flex: 1 1 auto;
+	justify-content: center;
+	min-width: 0;
+}
+
+@media (max-width: 781px) {
+	.rl-nav {
+		flex: 0 0 auto;
+		order: 3;
+	}
+}
+
+.rl-actions {
+	gap: 0.75rem;
+}
+
+.rl-account-link {
+	margin: 0;
+	white-space: nowrap;
+}
+
+.rl-account-link a {
+	color: var(--wp--preset--color--near-black);
+	text-decoration: none;
+}
+
+.rl-account-link a:hover,
+.rl-account-link a:focus-visible {
+	color: var(--wp--preset--color--violet);
+	text-decoration: underline;
+}
+
+/* Icon-only controls keep a comfortable touch target. */
+.rl-actions .wp-block-search__button,
+.rl-actions .wc-block-mini-cart__button,
+.rl-actions a {
+	min-height: 44px;
+}
+
+.rl-actions .wp-block-button__link {
+	padding: 0.6rem 1rem;
+}
+
+@media (max-width: 781px) {
+	.rl-actions .rl-hide-mobile {
+		display: none;
+	}
+}
+
+/* -------------------------------------------------------------------------
+ * 6. Hero
+ * ---------------------------------------------------------------------- */
+
+.rl-hero {
+	background-color: var(--wp--preset--color--white);
+}
+
+.rl-hero .wp-block-columns {
+	align-items: center;
+}
+
+/* On mobile the message must sit above the product panel. */
+@media (max-width: 781px) {
+	.rl-hero .wp-block-columns {
+		gap: var(--wp--preset--spacing--60);
+	}
+}
+
+.rl-hero__headline {
+	margin-bottom: 0;
+}
+
+.rl-hero__panel {
+	background-color: var(--wp--preset--color--dark-panel);
+	background-image: var(--wp--preset--gradient--violet-glow);
+	border-radius: var(--wp--custom--radius--panel);
+	color: var(--wp--preset--color--white);
+	overflow: hidden;
+	position: relative;
+}
+
+.rl-hero__panel :where(h1, h2, h3, h4, h5, h6, p) {
+	color: var(--wp--preset--color--white);
+}
+
+.rl-hero__panel .rl-meta-key,
+.rl-panel-dark .rl-meta-key {
+	color: rgba(255, 255, 255, 0.55);
+}
+
+/* -------------------------------------------------------------------------
+ * 7. Neutral placeholders + empty states
+ * ---------------------------------------------------------------------- */
+
+.rl-placeholder {
+	align-items: center;
+	aspect-ratio: 4 / 5;
+	background-color: rgba(255, 255, 255, 0.03);
+	border: 1px dashed rgba(255, 255, 255, 0.22);
+	border-radius: var(--wp--custom--radius--card);
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+	justify-content: center;
+	padding: var(--wp--preset--spacing--50);
+	text-align: center;
+	width: 100%;
+}
+
+.rl-placeholder--light {
+	background-color: var(--wp--preset--color--bone);
+	border-color: var(--wp--preset--color--warm-border);
+}
+
+.rl-placeholder p {
+	font-family: var(--wp--preset--font-family--mono);
+	font-size: var(--wp--preset--font-size--x-small);
+	letter-spacing: 0.1em;
+	margin: 0;
+	text-transform: uppercase;
+}
+
+.rl-empty-state {
+	border: 1px solid var(--wp--preset--color--warm-border);
+	border-radius: var(--wp--custom--radius--card);
+	padding: var(--wp--preset--spacing--70) var(--wp--preset--spacing--50);
+	text-align: center;
+}
+
+.rl-empty-state p {
+	color: var(--wp--preset--color--muted-text);
+	margin-inline: auto;
+	max-width: 46ch;
+}
+
+/* -------------------------------------------------------------------------
+ * 8. Responsive grids (proof strip, categories, steps)
+ * ---------------------------------------------------------------------- */
+
+/*
+ * Native grid layout with a minimum column width already collapses
+ * 4 → 2 → 1. `auto-fit` removes the empty tracks so the columns stay even.
+ */
+.rl-grid.is-layout-grid {
+	grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
+}
+
+.rl-grid--wide.is-layout-grid {
+	grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
+}
+
+.rl-proof-item {
+	border-top: 2px solid var(--wp--preset--color--violet);
+	padding-top: var(--wp--preset--spacing--30);
+}
+
+.rl-proof-item p {
+	margin-block: 0.35rem 0;
+}
+
+/* -------------------------------------------------------------------------
+ * 9. Cards
+ * ---------------------------------------------------------------------- */
+
+.rl-card {
+	background-color: var(--wp--preset--color--white);
+	border: 1px solid var(--wp--preset--color--warm-border);
+	border-radius: var(--wp--custom--radius--card);
+	height: 100%;
+	transition: border-color var(--wp--custom--transition--base), transform var(--wp--custom--transition--base);
+}
+
+.rl-card:hover,
+.rl-card:focus-within {
+	border-color: var(--wp--preset--color--violet);
+	transform: translateY(-2px);
+}
+
+.rl-card__link {
+	text-decoration: none;
+}
+
+.rl-step-number {
+	color: var(--wp--preset--color--violet);
+	font-family: var(--wp--preset--font-family--mono);
+	font-size: var(--wp--preset--font-size--x-small);
+	letter-spacing: 0.14em;
+}
+
+/* -------------------------------------------------------------------------
+ * 10. Technical metadata rows
+ * ---------------------------------------------------------------------- */
+
+.rl-meta {
+	font-family: var(--wp--preset--font-family--mono);
+	font-size: var(--wp--preset--font-size--x-small);
+	letter-spacing: 0.06em;
+	line-height: 1.7;
+}
+
+.rl-meta-row {
+	border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+	display: flex;
+	gap: 1rem;
+	justify-content: space-between;
+	padding-block: 0.5rem;
+}
+
+.rl-meta-row:last-child {
+	border-bottom: 0;
+}
+
+.rl-meta-key {
+	color: var(--wp--preset--color--muted-text);
+	text-transform: uppercase;
+}
+
+.rl-badge {
+	border: 1px solid currentColor;
+	border-radius: 2px;
+	display: inline-block;
+	font-family: var(--wp--preset--font-family--mono);
+	font-size: 0.6875rem;
+	letter-spacing: 0.1em;
+	padding: 0.25rem 0.5rem;
+	text-transform: uppercase;
+}
+
+/* -------------------------------------------------------------------------
+ * 11. Compliance notice band
+ * ---------------------------------------------------------------------- */
+
+.rl-compliance {
+	font-family: var(--wp--preset--font-family--mono);
+	font-size: var(--wp--preset--font-size--x-small);
+	letter-spacing: 0.08em;
+	line-height: 1.6;
+	text-transform: uppercase;
+}
+
+.rl-compliance--strong {
+	border: 1px solid var(--wp--preset--color--warm-border);
+	border-left: 3px solid var(--wp--preset--color--violet);
+	border-radius: var(--wp--custom--radius--button);
+	padding: var(--wp--preset--spacing--30) var(--wp--preset--spacing--40);
+}
+
+/* -------------------------------------------------------------------------
+ * 12. Footer
+ * ---------------------------------------------------------------------- */
+
+.rl-footer a {
+	text-decoration: none;
+}
+
+.rl-footer a:hover,
+.rl-footer a:focus-visible {
+	text-decoration: underline;
+}
+
+.rl-footer .wp-block-list {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.rl-footer .wp-block-list li {
+	margin-block: 0.5rem;
+}
+
+.rl-footer-legal .wp-block-shortcode,
+.rl-footer-legal p {
+	color: var(--wp--preset--color--muted-text);
+	font-size: var(--wp--preset--font-size--x-small);
+	margin: 0;
+}
+
+/* -------------------------------------------------------------------------
+ * 13. First-entry research-use notice
+ * ---------------------------------------------------------------------- */
+
+/*
+ * Hidden until the script promotes it into a modal dialog. With JavaScript
+ * disabled the notice simply never appears and the site stays usable.
+ */
+.rl-research-notice {
+	display: none;
+}
+
+.rl-notice-dialog {
+	background-color: var(--wp--preset--color--white);
+	border: 1px solid var(--wp--preset--color--warm-border);
+	border-radius: var(--wp--custom--radius--panel);
+	box-shadow: var(--wp--preset--shadow--panel);
+	color: var(--wp--preset--color--near-black);
+	max-width: min(34rem, calc(100vw - 2rem));
+	padding: clamp(1.5rem, 5vw, 2.5rem);
+	width: 100%;
+}
+
+.rl-notice-dialog::backdrop {
+	background-color: rgba(9, 11, 15, 0.72);
+}
+
+.rl-notice-dialog .rl-research-notice {
+	display: block;
+}
+
+.rl-notice-dialog .wp-block-buttons {
+	margin-top: 1.5rem;
+}
+
+.rl-notice-dialog :where(h1, h2, h3) {
+	font-size: var(--wp--preset--font-size--x-large);
+	margin-top: 0;
+}
+
+/* -------------------------------------------------------------------------
+ * 14. Motion
+ * ---------------------------------------------------------------------- */
+
+/*
+ * Reveal is opt-in and applied by JavaScript only. If the script never runs,
+ * or reduced motion is requested, content is visible with no transform.
+ */
+.js-rl-reveal {
+	opacity: 0;
+	transform: translateY(14px);
+	transition: opacity 600ms cubic-bezier(0.2, 0, 0.2, 1), transform 600ms cubic-bezier(0.2, 0, 0.2, 1);
+	will-change: opacity, transform;
+}
+
+.js-rl-reveal.is-revealed {
+	opacity: 1;
+	transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	*,
+	*::before,
+	*::after {
+		animation-duration: 0.01ms !important;
+		animation-iteration-count: 1 !important;
+		scroll-behavior: auto !important;
+		transition-duration: 0.01ms !important;
+	}
+
+	.js-rl-reveal {
+		opacity: 1;
+		transform: none;
+	}
+
+	.rl-card:hover,
+	.rl-card:focus-within {
+		transform: none;
+	}
+}
+
+/* -------------------------------------------------------------------------
+ * 15. My Account
+ *
+ * WooCommerce renders My Account with classic markup, so these rules target
+ * WooCommerce's own classes rather than block classes.
+ * ---------------------------------------------------------------------- */
+
+.rl-account .woocommerce-MyAccount-navigation ul {
+	border: 1px solid var(--wp--preset--color--warm-border);
+	border-radius: var(--wp--custom--radius--card);
+	list-style: none;
+	margin: 0;
+	overflow: hidden;
+	padding: 0;
+}
+
+.rl-account .woocommerce-MyAccount-navigation li + li {
+	border-top: 1px solid var(--wp--preset--color--warm-border);
+}
+
+.rl-account .woocommerce-MyAccount-navigation a {
+	color: var(--wp--preset--color--near-black);
+	display: block;
+	font-size: var(--wp--preset--font-size--small);
+	font-weight: 500;
+	min-height: 44px;
+	padding: 0.75rem 1rem;
+	text-decoration: none;
+}
+
+.rl-account .woocommerce-MyAccount-navigation a:hover,
+.rl-account .woocommerce-MyAccount-navigation a:focus-visible {
+	background-color: var(--wp--preset--color--violet-soft);
+	color: var(--wp--preset--color--violet-dark);
+}
+
+/* Current item is marked by weight and a rule, not colour alone. */
+.rl-account .woocommerce-MyAccount-navigation-link.is-active a {
+	background-color: var(--wp--preset--color--bone);
+	box-shadow: inset 3px 0 0 var(--wp--preset--color--violet);
+	font-weight: 700;
+}
+
+.rl-account .woocommerce-MyAccount-content {
+	min-width: 0;
+}
+
+.rl-account .woocommerce-orders-table,
+.rl-account table.shop_table {
+	border: 1px solid var(--wp--preset--color--warm-border);
+	border-collapse: collapse;
+	font-size: var(--wp--preset--font-size--small);
+	width: 100%;
+}
+
+.rl-account table.shop_table th,
+.rl-account table.shop_table td {
+	border-bottom: 1px solid var(--wp--preset--color--warm-border);
+	padding: 0.75rem;
+	text-align: left;
+}
+
+.rl-account table.shop_table th {
+	font-family: var(--wp--preset--font-family--mono);
+	font-size: var(--wp--preset--font-size--x-small);
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+}
+
+/* Tables must scroll inside their own box, never widen the page. */
+.rl-account .woocommerce-MyAccount-content > table.shop_table {
+	display: block;
+	overflow-x: auto;
+}
+
+.rl-account .woocommerce-Button,
+.rl-account .woocommerce-button,
+.rl-account button.button,
+.rl-account a.button {
+	background-color: var(--wp--preset--color--violet);
+	border: 1px solid var(--wp--preset--color--violet);
+	border-radius: var(--wp--custom--radius--button);
+	color: var(--wp--preset--color--white);
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	font-size: var(--wp--preset--font-size--small);
+	font-weight: 600;
+	letter-spacing: 0.04em;
+	min-height: 44px;
+	padding: 0.7rem 1.25rem;
+	text-decoration: none;
+}
+
+.rl-account .woocommerce-Button:hover,
+.rl-account a.button:hover,
+.rl-account button.button:hover {
+	background-color: var(--wp--preset--color--violet-dark);
+	border-color: var(--wp--preset--color--violet-dark);
+}
+
+.rl-account .woocommerce-form-row input,
+.rl-account .woocommerce-input-wrapper input,
+.rl-account .woocommerce-input-wrapper select,
+.rl-account .woocommerce-input-wrapper textarea {
+	border: 1px solid var(--wp--preset--color--warm-border);
+	border-radius: var(--wp--custom--radius--button);
+	font-family: var(--wp--preset--font-family--body);
+	font-size: 1rem;
+	min-height: 44px;
+	padding: 0.6rem 0.75rem;
+	width: 100%;
+}
+
+.rl-account label {
+	display: block;
+	font-size: var(--wp--preset--font-size--small);
+	font-weight: 500;
+	margin-bottom: 0.35rem;
+}
+
+@media (min-width: 782px) {
+	.rl-account .woocommerce-account .woocommerce {
+		display: grid;
+		gap: var(--wp--preset--spacing--60);
+		grid-template-columns: minmax(200px, 260px) 1fr;
+	}
+}
+
+/* -------------------------------------------------------------------------
+ * 16. Utilities
+ * ---------------------------------------------------------------------- */
+
+.screen-reader-text {
+	border: 0;
+	clip-path: inset(50%);
+	height: 1px;
+	margin: -1px;
+	overflow: hidden;
+	padding: 0;
+	position: absolute;
+	white-space: nowrap;
+	width: 1px;
+}
+
+.rl-measure {
+	max-width: 62ch;
+}
+
+.rl-uppercase {
+	letter-spacing: 0.06em;
+	text-transform: uppercase;
+}

@@ -1,0 +1,64 @@
+/**
+ * core/details — used for FAQ accordions and product sections.
+ *
+ * <details>/<summary> is natively keyboard accessible and announces its
+ * expanded state without any JavaScript.
+ */
+
+.wp-block-details {
+	border-bottom: 1px solid var(--wp--preset--color--warm-border);
+	padding-block: var(--wp--preset--spacing--40);
+}
+
+.wp-block-details summary {
+	align-items: center;
+	cursor: pointer;
+	display: flex;
+	font-family: var(--wp--preset--font-family--heading);
+	font-size: var(--wp--preset--font-size--large);
+	font-weight: 600;
+	gap: 1rem;
+	justify-content: space-between;
+	letter-spacing: -0.02em;
+	list-style: none;
+	min-height: 44px;
+	padding-right: 0.25rem;
+}
+
+.wp-block-details summary::-webkit-details-marker {
+	display: none;
+}
+
+/* Plus / minus indicator — shape changes, not colour alone. */
+.wp-block-details summary::after {
+	border-right: 1px solid currentColor;
+	border-bottom: 1px solid currentColor;
+	content: "";
+	flex-shrink: 0;
+	height: 9px;
+	margin-right: 4px;
+	transform: rotate(45deg);
+	transform-origin: center;
+	transition: transform var(--wp--custom--transition--base);
+	width: 9px;
+}
+
+.wp-block-details[open] summary::after {
+	transform: rotate(225deg);
+}
+
+.wp-block-details summary:hover {
+	color: var(--wp--preset--color--violet);
+}
+
+.wp-block-details > *:not(summary) {
+	color: var(--wp--preset--color--muted-text);
+	margin-top: var(--wp--preset--spacing--30);
+	max-width: 68ch;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.wp-block-details summary::after {
+		transition: none;
+	}
+}

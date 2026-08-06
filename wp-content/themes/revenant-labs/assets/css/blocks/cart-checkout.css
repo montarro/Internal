@@ -1,0 +1,114 @@
+/**
+ * woocommerce/cart and woocommerce/checkout
+ *
+ * Native WooCommerce blocks, restyled only. No custom form markup is
+ * introduced and no payment method is implied that has not been configured.
+ */
+
+.wp-block-woocommerce-cart,
+.wp-block-woocommerce-checkout {
+	font-size: var(--wp--preset--font-size--medium);
+}
+
+.wc-block-components-title,
+.wc-block-cart__totals-title,
+.wc-block-checkout__form h2 {
+	font-family: var(--wp--preset--font-family--heading);
+	letter-spacing: -0.03em;
+}
+
+.wc-block-components-sidebar,
+.wc-block-cart__sidebar .wc-block-components-sidebar-layout__sidebar,
+.wc-block-checkout__sidebar {
+	background-color: var(--wp--preset--color--bone);
+	border: 1px solid var(--wp--preset--color--warm-border);
+	border-radius: var(--wp--custom--radius--card);
+	padding: var(--wp--preset--spacing--50);
+}
+
+/* Inputs */
+.wc-block-components-text-input input[type="text"],
+.wc-block-components-text-input input[type="email"],
+.wc-block-components-text-input input[type="tel"],
+.wc-block-components-text-input input[type="number"],
+.wc-block-components-select__container,
+.wc-block-components-textarea {
+	border-color: var(--wp--preset--color--warm-border);
+	border-radius: var(--wp--custom--radius--button);
+	font-family: var(--wp--preset--font-family--body);
+	font-size: 1rem; /* 16px prevents iOS zoom on focus. */
+}
+
+.wc-block-components-text-input input:focus,
+.wc-block-components-textarea:focus {
+	box-shadow: 0 0 0 1px var(--wp--preset--color--violet);
+	outline: 2px solid var(--wp--preset--color--violet);
+	outline-offset: 1px;
+}
+
+.wc-block-components-checkbox__input {
+	accent-color: var(--wp--preset--color--violet);
+	height: 20px;
+	width: 20px;
+}
+
+/* Buttons */
+.wc-block-components-button:not(.is-link) {
+	border-radius: var(--wp--custom--radius--button);
+	font-family: var(--wp--preset--font-family--body);
+	font-size: var(--wp--preset--font-size--small);
+	font-weight: 600;
+	letter-spacing: 0.04em;
+	min-height: 48px;
+}
+
+.wc-block-components-button:not(.is-link):not(:disabled) {
+	background-color: var(--wp--preset--color--violet);
+	color: var(--wp--preset--color--white);
+}
+
+.wc-block-components-button:not(.is-link):not(:disabled):hover,
+.wc-block-components-button:not(.is-link):not(:disabled):focus-visible {
+	background-color: var(--wp--preset--color--violet-dark);
+}
+
+/* Validation + notices — icon and text, never colour alone. */
+.wc-block-components-validation-error {
+	color: #A0261C;
+	font-size: var(--wp--preset--font-size--small);
+	font-weight: 500;
+}
+
+.wc-block-components-notice-banner {
+	border-radius: var(--wp--custom--radius--card);
+	font-size: var(--wp--preset--font-size--small);
+}
+
+/* Order summary */
+.wc-block-components-order-summary-item__description .wc-block-components-product-metadata {
+	font-family: var(--wp--preset--font-family--mono);
+	font-size: var(--wp--preset--font-size--x-small);
+}
+
+.wc-block-components-totals-item__label {
+	color: var(--wp--preset--color--muted-text);
+}
+
+.wc-block-components-totals-footer-item .wc-block-components-totals-item__value {
+	font-family: var(--wp--preset--font-family--heading);
+	font-weight: 800;
+	letter-spacing: -0.03em;
+}
+
+/* The research-use declaration is registered by revenant-labs-core. */
+.wc-block-checkout__additional-fields .wc-block-components-checkbox__label,
+.wc-block-components-checkout-step .wc-block-components-checkbox__label {
+	line-height: 1.5;
+}
+
+@media (max-width: 781px) {
+	.wc-block-components-sidebar,
+	.wc-block-checkout__sidebar {
+		padding: var(--wp--preset--spacing--40);
+	}
+}

@@ -1,0 +1,137 @@
+/**
+ * woocommerce/product-collection — product grids and cards.
+ *
+ * All product data is rendered by WooCommerce from real products. Nothing here
+ * fabricates badges, ratings, counts or urgency.
+ */
+
+.wp-block-woocommerce-product-collection .wc-block-product-template {
+	gap: var(--wp--preset--spacing--50);
+}
+
+.wc-block-product-template__responsive-wrapper .wc-block-product,
+.wp-block-woocommerce-product-template .wc-block-product {
+	background-color: var(--wp--preset--color--white);
+	border: 1px solid var(--wp--preset--color--warm-border);
+	border-radius: var(--wp--custom--radius--card);
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+	height: 100%;
+	overflow: hidden;
+	padding: 0 0 var(--wp--preset--spacing--40);
+	transition: border-color var(--wp--custom--transition--base), transform var(--wp--custom--transition--base);
+}
+
+.wp-block-woocommerce-product-template .wc-block-product:hover,
+.wp-block-woocommerce-product-template .wc-block-product:focus-within {
+	border-color: var(--wp--preset--color--violet);
+	transform: translateY(-2px);
+}
+
+/* Image sits flush at the top of the card, on a bone plate. */
+.wp-block-woocommerce-product-template .wc-block-components-product-image {
+	background-color: var(--wp--preset--color--bone);
+	margin: 0 0 var(--wp--preset--spacing--30);
+}
+
+.wp-block-woocommerce-product-template .wc-block-components-product-image img {
+	aspect-ratio: 1 / 1;
+	display: block;
+	object-fit: cover;
+	width: 100%;
+}
+
+.wp-block-woocommerce-product-template .wc-block-components-product-title,
+.wp-block-woocommerce-product-template .wp-block-post-title {
+	font-family: var(--wp--preset--font-family--heading);
+	font-size: var(--wp--preset--font-size--large);
+	font-weight: 700;
+	letter-spacing: -0.02em;
+	line-height: 1.2;
+	margin: 0;
+	padding-inline: var(--wp--preset--spacing--40);
+}
+
+.wp-block-woocommerce-product-template .wc-block-components-product-title a {
+	color: var(--wp--preset--color--near-black);
+	text-decoration: none;
+}
+
+.wp-block-woocommerce-product-template .wc-block-components-product-title a:hover,
+.wp-block-woocommerce-product-template .wc-block-components-product-title a:focus-visible {
+	color: var(--wp--preset--color--violet);
+}
+
+.wp-block-woocommerce-product-template :where(.wc-block-components-product-price, .wc-block-components-product-sku, .wc-block-components-product-stock-indicator, .wp-block-post-terms, .wp-block-woocommerce-product-button) {
+	padding-inline: var(--wp--preset--spacing--40);
+}
+
+.wp-block-woocommerce-product-template .wc-block-components-product-price {
+	font-family: var(--wp--preset--font-family--heading);
+	font-weight: 700;
+	letter-spacing: -0.02em;
+}
+
+/* Stock status uses text, never colour alone. */
+.wp-block-woocommerce-product-template .wc-block-components-product-stock-indicator {
+	font-family: var(--wp--preset--font-family--mono);
+	font-size: var(--wp--preset--font-size--x-small);
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+}
+
+.wp-block-woocommerce-product-template .wc-block-components-product-stock-indicator--out-of-stock {
+	color: var(--wp--preset--color--muted-text);
+}
+
+.wp-block-woocommerce-product-template .wp-block-post-terms {
+	font-family: var(--wp--preset--font-family--mono);
+	font-size: var(--wp--preset--font-size--x-small);
+	letter-spacing: 0.1em;
+	text-transform: uppercase;
+}
+
+.wp-block-woocommerce-product-template .wp-block-post-terms a {
+	color: var(--wp--preset--color--muted-text);
+	text-decoration: none;
+}
+
+.wp-block-woocommerce-product-template .wp-block-button__link,
+.wp-block-woocommerce-product-template .wc-block-components-product-button__button {
+	margin-top: auto;
+	width: 100%;
+}
+
+/* Sale badge — restrained, never used to imply a fake discount. */
+.wc-block-components-product-sale-badge {
+	background-color: var(--wp--preset--color--violet);
+	border-radius: 2px;
+	color: var(--wp--preset--color--white);
+	font-family: var(--wp--preset--font-family--mono);
+	font-size: 0.6875rem;
+	letter-spacing: 0.08em;
+	padding: 0.2rem 0.45rem;
+	text-transform: uppercase;
+}
+
+/* Honest empty state when a collection returns nothing. */
+.wp-block-woocommerce-product-collection-no-results {
+	border: 1px solid var(--wp--preset--color--warm-border);
+	border-radius: var(--wp--custom--radius--card);
+	padding: var(--wp--preset--spacing--70) var(--wp--preset--spacing--50);
+	text-align: center;
+}
+
+.wp-block-woocommerce-product-collection-no-results p {
+	color: var(--wp--preset--color--muted-text);
+	margin-inline: auto;
+	max-width: 48ch;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.wp-block-woocommerce-product-template .wc-block-product:hover,
+	.wp-block-woocommerce-product-template .wc-block-product:focus-within {
+		transform: none;
+	}
+}

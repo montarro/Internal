@@ -1,0 +1,101 @@
+<!-- wp:template-part {"slug":"announcement-bar","tagName":"div"} /-->
+
+<!-- wp:template-part {"slug":"header","tagName":"header","className":"rl-header"} /-->
+
+<!-- wp:group {"tagName":"main","layout":{"type":"constrained"}} -->
+<main class="wp-block-group"><!-- wp:group {"align":"full","style":{"spacing":{"padding":{"top":"var:preset|spacing|50","bottom":"var:preset|spacing|60"}},"border":{"bottom":{"color":"var:preset|color|warm-border","style":"solid","width":"1px"}}},"backgroundColor":"bone","layout":{"type":"constrained"}} -->
+<div class="wp-block-group alignfull has-bone-background-color has-background" style="border-bottom-color:var(--wp--preset--color--warm-border);border-bottom-style:solid;border-bottom-width:1px;padding-top:var(--wp--preset--spacing--50);padding-bottom:var(--wp--preset--spacing--60)"><!-- wp:woocommerce/breadcrumbs /-->
+
+<!-- wp:query-title {"type":"archive","level":1,"style":{"spacing":{"margin":{"top":"var:preset|spacing|30"}}}} /-->
+
+<!-- wp:term-description {"className":"rl-measure","textColor":"muted-text","fontSize":"large"} /-->
+
+<!-- wp:paragraph {"className":"rl-compliance","style":{"spacing":{"margin":{"top":"var:preset|spacing|30"}}},"textColor":"muted-text","fontSize":"x-small"} -->
+<p class="rl-compliance has-muted-text-color has-text-color has-x-small-font-size" style="margin-top:var(--wp--preset--spacing--30)">ALL MATERIALS ARE SUPPLIED FOR LEGITIMATE IN-VITRO LABORATORY RESEARCH ONLY. NOT FOR HUMAN OR VETERINARY USE.</p>
+<!-- /wp:paragraph --></div>
+<!-- /wp:group -->
+
+<!-- wp:group {"align":"full","style":{"spacing":{"padding":{"top":"var:preset|spacing|60","bottom":"var:preset|spacing|90"}}},"layout":{"type":"constrained"}} -->
+<div class="wp-block-group alignfull" style="padding-top:var(--wp--preset--spacing--60);padding-bottom:var(--wp--preset--spacing--90)"><!-- wp:woocommerce/store-notices /-->
+
+<!-- wp:columns {"align":"wide","style":{"spacing":{"blockGap":{"top":"var:preset|spacing|50","left":"var:preset|spacing|60"}}}} -->
+<div class="wp-block-columns alignwide"><!-- wp:column {"width":"25%"} -->
+<div class="wp-block-column" style="flex-basis:25%"><!-- wp:woocommerce/product-filters {"overlay":"mobile","overlayButtonStyle":"label"} -->
+<div class="wp-block-woocommerce-product-filters"><!-- wp:heading {"level":2,"className":"is-style-rl-eyebrow","fontSize":"x-small"} -->
+<h2 class="wp-block-heading is-style-rl-eyebrow has-x-small-font-size">Filters</h2>
+<!-- /wp:heading -->
+
+<!-- wp:woocommerce/product-filter-active /-->
+
+<!-- wp:woocommerce/product-filter-taxonomy {"taxonomy":"product_cat"} -->
+<!-- wp:woocommerce/product-filter-checkbox-list /-->
+<!-- /wp:woocommerce/product-filter-taxonomy -->
+
+<!-- wp:woocommerce/product-filter-price /-->
+
+<!-- wp:woocommerce/product-filter-status -->
+<!-- wp:woocommerce/product-filter-checkbox-list /-->
+<!-- /wp:woocommerce/product-filter-status -->
+
+<!-- wp:woocommerce/product-filter-clear-button /--></div>
+<!-- /wp:woocommerce/product-filters --></div>
+<!-- /wp:column -->
+
+<!-- wp:column {"width":"75%"} -->
+<div class="wp-block-column" style="flex-basis:75%"><!-- wp:group {"style":{"spacing":{"padding":{"bottom":"var:preset|spacing|40"},"blockGap":"var:preset|spacing|30"},"border":{"bottom":{"color":"var:preset|color|warm-border","style":"solid","width":"1px"}}},"layout":{"type":"flex","flexWrap":"wrap","justifyContent":"space-between","verticalAlignment":"center"}} -->
+<div class="wp-block-group" style="border-bottom-color:var(--wp--preset--color--warm-border);border-bottom-style:solid;border-bottom-width:1px;padding-bottom:var(--wp--preset--spacing--40)"><!-- wp:woocommerce/product-results-count /-->
+
+<!-- wp:woocommerce/catalog-sorting /--></div>
+<!-- /wp:group -->
+
+<!-- wp:woocommerce/product-collection {"queryId":0,"query":{"perPage":12,"pages":0,"offset":0,"postType":"product","order":"asc","orderBy":"title","search":"","exclude":[],"inherit":true,"taxQuery":{},"isProductCollectionBlock":true,"featured":false,"woocommerceOnSale":false,"woocommerceStockStatus":["instock","outofstock","onbackorder"],"woocommerceAttributes":[],"woocommerceHandPickedProducts":[]},"tagName":"div","displayLayout":{"type":"flex","columns":3,"shrinkColumns":true},"style":{"spacing":{"margin":{"top":"var:preset|spacing|50"}}}} -->
+<div class="wp-block-woocommerce-product-collection" style="margin-top:var(--wp--preset--spacing--50)"><!-- wp:woocommerce/product-template -->
+<!-- wp:woocommerce/product-image {"imageSizing":"thumbnail","isDescendentOfQueryLoop":true} /-->
+
+<!-- wp:post-terms {"term":"product_cat","fontSize":"x-small","__woocommerceNamespace":"woocommerce/product-collection/product-collection"} /-->
+
+<!-- wp:post-title {"level":2,"isLink":true,"fontSize":"large","__woocommerceNamespace":"woocommerce/product-collection/product-title"} /-->
+
+<!-- wp:woocommerce/product-price {"isDescendentOfQueryLoop":true} /-->
+
+<!-- wp:woocommerce/product-stock-indicator /-->
+
+<!-- wp:revenant-labs/product-coa {"display":"badge"} /-->
+
+<!-- wp:woocommerce/product-button {"isDescendentOfQueryLoop":true} /-->
+<!-- /wp:woocommerce/product-template -->
+
+<!-- wp:woocommerce/product-collection-no-results -->
+<!-- wp:heading {"level":2,"textAlign":"center","fontSize":"x-large"} -->
+<h2 class="wp-block-heading has-text-align-center has-x-large-font-size">No products match these filters</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph {"align":"center","textColor":"muted-text"} -->
+<p class="has-text-align-center has-muted-text-color has-text-color">Clear the filters to see the full catalogue, or contact the lab about availability.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:buttons {"layout":{"type":"flex","justifyContent":"center","flexWrap":"wrap"}} -->
+<div class="wp-block-buttons"><!-- wp:button {"className":"is-style-rl-secondary"} -->
+<div class="wp-block-button is-style-rl-secondary"><a class="wp-block-button__link wp-element-button" href="/catalogue/">CLEAR FILTERS</a></div>
+<!-- /wp:button -->
+
+<!-- wp:button {"className":"is-style-rl-secondary"} -->
+<div class="wp-block-button is-style-rl-secondary"><a class="wp-block-button__link wp-element-button" href="/contact/">CONTACT THE LAB</a></div>
+<!-- /wp:button --></div>
+<!-- /wp:buttons -->
+<!-- /wp:woocommerce/product-collection-no-results -->
+
+<!-- wp:query-pagination {"style":{"spacing":{"margin":{"top":"var:preset|spacing|70"}}},"layout":{"type":"flex","justifyContent":"space-between"}} -->
+<!-- wp:query-pagination-previous {"label":"Previous"} /-->
+
+<!-- wp:query-pagination-numbers /-->
+
+<!-- wp:query-pagination-next {"label":"Next"} /-->
+<!-- /wp:query-pagination --></div>
+<!-- /wp:woocommerce/product-collection --></div>
+<!-- /wp:column --></div>
+<!-- /wp:columns --></div>
+<!-- /wp:group --></main>
+<!-- /wp:group -->
+
+<!-- wp:template-part {"slug":"footer","tagName":"footer"} /-->
