@@ -201,7 +201,7 @@ function entryRow(e, mode){
     return row;
   }
   const cat = catOf(e);
-  const chip = cat==='household' ? '<span class="chip household">House</span>' : (cat==='bill' ? '<span class="chip bill">Bill</span>' : (cat==='gas' ? '<span class="chip gas">Gas</span>' : (cat==='work' ? '<span class="chip work">Work</span>' : '')));
+  const chip = chipHtml(cat);
   const readOnly = (mode==='month' && e._fromWeek);
   let label = '';
   if(mode==='week'){ label = (selectedDay===null) ? '<span class="eday">' + DAY_NAMES[e.day] + '</span>' : ''; }
