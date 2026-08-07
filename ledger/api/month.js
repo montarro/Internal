@@ -38,7 +38,7 @@ function sanitize(data) {
           desc: String((e && e.desc) || '').slice(0, 200),
           amount: Number((e && e.amount) || 0),
         };
-        if (e && (e.cat === 'bill' || e.cat === 'household' || e.cat === 'regular' || e.cat === 'gas' || e.cat === 'work')) o.cat = e.cat;
+        if (e && (e.cat === 'bill' || e.cat === 'household' || e.cat === 'regular' || e.cat === 'gas' || e.cat === 'work' || e.cat === 'food')) o.cat = e.cat;
         return o;
       });
     }
