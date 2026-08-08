@@ -1,9 +1,9 @@
-<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="color-scheme" content="light dark"><title>Finance Tracker</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap"><style>
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="color-scheme" content="light dark"><title>Finance Tracker</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap"></noscript><style>
 :root{--bg:#F4F7F5;--panel:#FFFFFF;--panel-2:#F1F5F2;--line:#DDE5DF;--line-strong:#C4D2C8;--ink:#16241C;--ink-soft:#55675C;--ink-faint:#84958B;--teal:#12996B;--teal-ink:#0A5C40;--coral:#D9564A;--gold:#C08A2C;--work:#4173C8;--food:#3F9455;--ring-track:#E3EAE5;--shadow:0 1px 2px rgba(18,40,28,.05),0 8px 24px rgba(18,40,28,.07);--shadow-lg:0 12px 40px rgba(18,40,28,.18);--radius:16px}
 :root[data-theme="dark"]{--bg:#0E1512;--panel:#16201B;--panel-2:#1C2822;--line:#27352D;--line-strong:#33443A;--ink:#E6EDE8;--ink-soft:#9BAAA1;--ink-faint:#6D7E74;--teal:#43C48D;--teal-ink:#BDECD6;--coral:#E2705C;--gold:#D5AC5A;--work:#7FA0E2;--food:#79B972;--ring-track:#232F28;--shadow:0 1px 2px rgba(0,0,0,.4),0 10px 30px rgba(0,0,0,.35);--shadow-lg:0 20px 60px rgba(0,0,0,.55)}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0E1512;--panel:#16201B;--panel-2:#1C2822;--line:#27352D;--line-strong:#33443A;--ink:#E6EDE8;--ink-soft:#9BAAA1;--ink-faint:#6D7E74;--teal:#43C48D;--teal-ink:#BDECD6;--coral:#E2705C;--gold:#D5AC5A;--work:#7FA0E2;--food:#79B972;--ring-track:#232F28;--shadow:0 1px 2px rgba(0,0,0,.4),0 10px 30px rgba(0,0,0,.35);--shadow-lg:0 20px 60px rgba(0,0,0,.55)}}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:'Inter',sans-serif;-webkit-font-smoothing:antialiased;line-height:1.5}
-.mono{font-family:'IBM Plex Mono',monospace;font-variant-numeric:tabular-nums}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:'Inter',ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;-webkit-font-smoothing:antialiased;line-height:1.5}
+.mono{font-family:'IBM Plex Mono',ui-monospace,'SF Mono',Menlo,Consolas,monospace;font-variant-numeric:tabular-nums}
 h1,h2,h3{margin:0;letter-spacing:-.02em}
 button,input,select{font-family:inherit}
 .shell{display:grid;grid-template-columns:230px 1fr;min-height:100vh}
@@ -234,7 +234,7 @@ button,input,select{font-family:inherit}
 </main>
 </div>
 
-<button class="fab" id="fab" type="button" hidden><span class="sp">&#10022;</span> Ask the assistant</button>
+<button class="fab" id="fab" type="button"><span class="sp">&#10022;</span> Ask the assistant</button>
 <section class="assistant" id="assistant" aria-label="AI assistant" hidden>
   <div class="ahead"><div class="av">&#10022;</div><div class="t">Assistant<small>works across the whole site</small></div><button class="x" id="closeA" type="button" aria-label="Minimize">&#8211;</button></div>
   <div class="alog" id="alog"></div>
@@ -374,7 +374,11 @@ document.getElementById('todayBtn').onclick=function(){loadWeek(THIS_WEEK_START)
 async function fetchMonth(ms){try{var r=await fetch('/api/month?month='+encodeURIComponent(ms));if(r.status===401){location.href='/login.html';return null;}if(!r.ok)return null;return await r.json();}catch(e){return null;}}
 function weeksOverlappingMonth(ms){var p=ms.split('-').map(Number);var first=new Date(Date.UTC(p[0],p[1]-1,1));var last=new Date(Date.UTC(p[0],p[1],0));var ws=sundayOf(first);var out=[];while(ws.getTime()<=last.getTime()){out.push(toISO(ws));var n=new Date(ws);n.setUTCDate(n.getUTCDate()+7);ws=n;}return out;}
 async function fetchWeekData(w){if(weekCache[w])return weekCache[w];var stored=null;try{stored=await storage.get(w);}catch(e){stored=null;}var data=(stored&&Array.isArray(stored.entries))?{budget:stored.budget!=null?stored.budget:null,entries:stored.entries}:{budget:null,entries:[]};data.entries=ensureIds(data.entries);weekCache[w]=data;return data;}
-async function weekEntriesForMonth(ms){var weeks=weeksOverlappingMonth(ms);var results=[];for(var i=0;i<weeks.length;i++){var w=weeks[i];var data=await fetchWeekData(w);var wsDate=fromISO(w);data.entries.forEach(function(e){var d=new Date(wsDate);d.setUTCDate(d.getUTCDate()+(Number(e.day)||0));var ds=toISO(d);if(monthOf(ds)===ms){results.push({id:'w:'+w+':'+e.id,date:ds,desc:e.desc,amount:e.amount,cat:e.cat,flag:e.flag,_fromWeek:w});}});}return results;}
+async function weekEntriesForMonth(ms){var weeks=weeksOverlappingMonth(ms);
+  var datas=await Promise.all(weeks.map(function(w){return fetchWeekData(w);}));
+  var results=[];
+  weeks.forEach(function(w,i){var data=datas[i];if(!data)return;var wsDate=fromISO(w);data.entries.forEach(function(e){var d=new Date(wsDate);d.setUTCDate(d.getUTCDate()+(Number(e.day)||0));var ds=toISO(d);if(monthOf(ds)===ms){results.push({id:'w:'+w+':'+e.id,date:ds,desc:e.desc,amount:e.amount,cat:e.cat,flag:e.flag,_fromWeek:w});}});});
+  return results;}
 async function loadMonth(ms){currentMonth=ms;monthEditingId=null;
   if(monthCache[ms]){monthData=monthCache[ms];}else{var stored=await fetchMonth(ms);monthData=(stored&&Array.isArray(stored.entries))?{budget:stored.budget!=null?stored.budget:null,entries:stored.entries}:{budget:null,entries:[]};monthData.entries=ensureIds(monthData.entries);monthCache[ms]=monthData;}
   monthWeekEntries=await weekEntriesForMonth(ms);monthLoadedFor=ms;renderMonth();}
@@ -439,8 +443,16 @@ document.getElementById('binName').addEventListener('keydown',function(e){if(e.k
 document.getElementById('binCost').addEventListener('keydown',function(e){if(e.key==='Enter')document.getElementById('binAdd').click();});
 
 // ================= OVERVIEW =================
-async function loadOverview(){var ms=thisMonthStr();var md=monthCache[ms];if(!md){var stored=await fetchMonth(ms);md=(stored&&Array.isArray(stored.entries))?{budget:stored.budget!=null?stored.budget:null,entries:stored.entries}:{budget:null,entries:[]};md.entries=ensureIds(md.entries);monthCache[ms]=md;}ovMonth=md;ovWeekEntries=await weekEntriesForMonth(ms);
-  if(!billsLoaded){try{var r=await fetch('/api/bills');if(r.status===401){location.href='/login.html';return;}bills=r.ok?await r.json():[];bills=ensureIds(Array.isArray(bills)?bills:[]);billsLoaded=true;}catch(e){}}
+async function loadOverview(){var ms=thisMonthStr();
+  var needMonth=!monthCache[ms];
+  var pMonth=needMonth?fetchMonth(ms):Promise.resolve(null);
+  var pWeeks=weekEntriesForMonth(ms);
+  var pBills=billsLoaded?Promise.resolve(null):fetch('/api/bills').then(function(r){if(r.status===401){location.href='/login.html';return null;}return r.ok?r.json():[];}).catch(function(){return [];});
+  var res=await Promise.all([pMonth,pWeeks,pBills]);
+  if(needMonth){var stored=res[0];var md=(stored&&Array.isArray(stored.entries))?{budget:stored.budget!=null?stored.budget:null,entries:stored.entries}:{budget:null,entries:[]};md.entries=ensureIds(md.entries);monthCache[ms]=md;}
+  ovMonth=monthCache[ms]||{budget:null,entries:[]};
+  ovWeekEntries=res[1]||[];
+  if(res[2]!==null){bills=ensureIds(Array.isArray(res[2])?res[2]:[]);billsLoaded=true;}
   renderOverview();}
 function daySparkPath(ms,entries){var p=ms.split('-').map(Number);var days=new Date(Date.UTC(p[0],p[1],0)).getUTCDate();var daily=new Array(days+1).fill(0);entries.forEach(function(e){if(catOf(e)==='household')return;var d=e.date?Number(e.date.slice(8,10)):0;if(d>=1&&d<=days)daily[d]+=Number(e.amount||0);});var cum=0,pts=[];for(var d=1;d<=days;d++){cum+=daily[d];pts.push(cum);}var max=Math.max(cum,1);var W=520,H=78;var line='',area='';for(var i=0;i<pts.length;i++){var x=(days<=1)?0:(i/(days-1))*W;var y=H-(pts[i]/max)*(H-6)-4;line+=(i===0?'M':'L')+x.toFixed(1)+','+y.toFixed(1)+' ';}var lastX=W,lastY=(pts.length?H-(pts[pts.length-1]/max)*(H-6)-4:H);
   area=line+'L'+lastX+','+(H+10)+' L0,'+(H+10)+' Z';
@@ -500,5 +512,8 @@ document.getElementById('importDismiss').onclick=function(){document.getElementB
 document.getElementById('importGo').onclick=async function(){var btn=document.getElementById('importGo');btn.disabled=true;btn.textContent='Importing...';var keys=localLedgerKeys();for(var i=0;i<keys.length;i++){var k=keys[i];var week=k.slice('ledger:'.length);if(!isWeekStr(week))continue;try{var data=JSON.parse(localStorage.getItem(k));await fetch('/api/ledger',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({week:week,data:data})});}catch(e){}}keys.forEach(function(k){try{localStorage.removeItem(k);}catch(e){}});document.getElementById('importBanner').classList.remove('show');weekCache={};if(view==='overview')loadOverview();};
 
 // ================= BOOT =================
-(async function(){try{var r=await fetch('/api/auth');if(!r.ok){location.href='/login.html';return;}var me=await r.json();var em=me.email||'Signed in';document.getElementById('acctWho').textContent=em;document.getElementById('avatar').textContent=(em[0]||'?').toUpperCase();}catch(e){location.href='/login.html';return;}maybeShowImport();loadOverview();})();
+(async function(){
+  var pOv=loadOverview().catch(function(){});
+  try{var r=await fetch('/api/auth');if(!r.ok){location.href='/login.html';return;}var me=await r.json();var em=me.email||'Signed in';document.getElementById('acctWho').textContent=em;document.getElementById('avatar').textContent=(em[0]||'?').toUpperCase();}catch(e){location.href='/login.html';return;}
+  maybeShowImport();await pOv;})();
 </script></body></html>
