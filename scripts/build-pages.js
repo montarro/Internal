@@ -55,17 +55,17 @@ const HEADER = `
   <header class="site-header">
     <div class="wrap site-header__inner">
       <a class="brand" href="/" aria-label="Turf and Landscaping — home">
-        <img class="brand__logo" src="/assets/logo-mark.svg" alt="Turf and Landscaping logo" width="46" height="46" />
+        <img class="brand__logo" src="/assets/logo-mark-light.svg" alt="Turf and Landscaping logo" width="46" height="46" />
         <span class="brand__text">
           <span class="brand__name">Turf <b>and</b> Landscaping</span>
           <span class="brand__tag">North-West Melbourne</span>
         </span>
       </a>
       <nav class="primary-nav" aria-label="Primary">
-        <a href="/#services">Services</a>
-        <a href="/#work">Recent work</a>
-        <a href="/#reviews">Reviews</a>
-        <a href="/#areas">Areas</a>
+        <a href="/#who-we-are">Who We Are</a>
+        <a href="/#services">What We Do</a>
+        <a href="/#areas">Who We Service</a>
+        <a href="/#work">Our Work</a>
         <a href="/#faq">FAQ</a>
       </nav>
       <div class="header-cta">
@@ -81,13 +81,14 @@ const HEADER = `
       </div>
     </div>
     <nav class="mobile-nav" id="mobile-nav" data-open="false" aria-label="Mobile">
-      <a href="/#services">Services</a>
-      <a href="/#how">How it works</a>
+      <a href="/#who-we-are">Who We Are</a>
+      <a href="/#services">What We Do</a>
+      <a href="/#areas">Who We Service</a>
+      <a href="/#how">How We Work</a>
+      <a href="/#work">Our Work</a>
       <a href="/#reviews">Reviews</a>
-      <a href="/#work">Recent work</a>
-      <a href="/#areas">Areas we serve</a>
       <a href="/#faq">FAQ</a>
-      <a class="btn btn--primary btn--block" href="/#quote">Get a free quote</a>
+      <a class="btn btn--call btn--block" href="/#quote">Get a free quote</a>
     </nav>
   </header>`;
 
@@ -97,7 +98,7 @@ const FOOTER = `
       <div class="footer__grid">
         <div class="footer__brand">
           <a class="brand" href="/" aria-label="Turf and Landscaping — home">
-            <img class="brand__logo" src="/assets/logo-mark.svg" alt="Turf and Landscaping logo" width="44" height="44" />
+            <img class="brand__logo" src="/assets/logo-mark-light.svg" alt="Turf and Landscaping logo" width="44" height="44" />
             <span class="brand__text">
               <span class="brand__name">Turf <b>and</b> Landscaping</span>
               <span class="brand__tag">North-West Melbourne</span>

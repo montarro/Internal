@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Turf and Landscaping emblem">
+  <defs>
+    <linearGradient id="grassL" x1="0" y1="1" x2="0" y2="0">
+      <stop offset="0" stop-color="#5a9c3e"/>
+      <stop offset="1" stop-color="#b7e08a"/>
+    </linearGradient>
+    <linearGradient id="treeL" x1="0" y1="1" x2="0" y2="0">
+      <stop offset="0" stop-color="#4e9a48"/>
+      <stop offset="1" stop-color="#9ed072"/>
+    </linearGradient>
+  </defs>
+  <!-- arc -->
+  <path d="M12 15 A28 28 0 0 1 58 20" fill="none" stroke="#86c05a" stroke-width="3" stroke-linecap="round"/>
+  <!-- hill -->
+  <path d="M4 50 C18 40 30 40 44 46 C52 49 58 49 62 46 L62 60 L4 60 Z" fill="#86c05a"/>
+  <path d="M4 52 C18 44 34 46 46 51 C53 54 58 53 62 51 L62 60 L4 60 Z" fill="#4e8f3c"/>
+  <!-- grass tuft -->
+  <g fill="url(#grassL)">
+    <path d="M20 50 C17 40 16 30 18 20 C21 30 22 40 22 50 Z"/>
+    <path d="M24 50 C24 38 25 28 27 18 C29 30 28 40 27 50 Z"/>
+    <path d="M28 50 C30 40 33 32 38 26 C36 36 33 44 31 50 Z"/>
+    <path d="M17 50 C13 43 10 36 9 29 C14 36 17 43 19 50 Z"/>
+  </g>
+  <!-- tree -->
+  <g>
+    <rect x="46.5" y="40" width="2.4" height="10" rx="1" fill="#a9825a"/>
+    <circle cx="47.7" cy="34" r="9" fill="url(#treeL)"/>
+    <circle cx="41" cy="37" r="5.5" fill="url(#treeL)"/>
+    <circle cx="54" cy="37" r="5.5" fill="url(#treeL)"/>
+  </g>
+</svg>
