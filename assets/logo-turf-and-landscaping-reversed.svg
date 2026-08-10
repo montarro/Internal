@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 690 200" role="img" aria-label="Turf and Landscaping">
+  <title>Turf and Landscaping</title>
+  <!-- Reversed / knockout header lockup for dark green backgrounds.
+       Tighter crop than the full-colour master, with the emblem enlarged and
+       lightened so both it and the wordmark stay legible at small sizes. -->
+  <defs>
+    <linearGradient id="rBladeA" x1="0" y1="1" x2="0" y2="0">
+      <stop offset="0" stop-color="#6fbb45"/><stop offset="1" stop-color="#d3efa2"/>
+    </linearGradient>
+    <linearGradient id="rBladeB" x1="0" y1="1" x2="0" y2="0">
+      <stop offset="0" stop-color="#55a53c"/><stop offset="1" stop-color="#aad97e"/>
+    </linearGradient>
+    <linearGradient id="rCanopy" x1="0" y1="1" x2="0" y2="0">
+      <stop offset="0" stop-color="#4e9a40"/><stop offset="1" stop-color="#9ed072"/>
+    </linearGradient>
+  </defs>
+
+  <!-- ===== EMBLEM (design space 120 x 64) ===== -->
+  <g transform="translate(6,38) scale(1.9)">
+    <!-- sweeping arc -->
+    <path d="M17 32 C36 7 76 2 104 17" fill="none" stroke="#9ed072" stroke-width="4.4" stroke-linecap="round"/>
+    <path d="M22 31 C40 12 74 8 99 20" fill="none" stroke="#eaf7dc" stroke-width="2.6" stroke-linecap="round"/>
+
+    <!-- hill / ground wave -->
+    <path d="M2 49 C24 40 46 43 66 49 C84 54 101 53 118 46 L118 64 L2 64 Z" fill="#b7e08a"/>
+    <path d="M2 54 C24 46 48 49 68 55 C86 60 103 58 118 52 L118 64 L2 64 Z" fill="#6aa84f"/>
+
+    <!-- grass tuft -->
+    <g>
+      <path d="M28 53 C23 42 19 31 17 20 C24 31 29 42 31 53 Z" fill="url(#rBladeB)"/>
+      <path d="M32 53 C28 40 27 26 30 11 C34 26 35 40 34 53 Z" fill="url(#rBladeA)"/>
+      <path d="M36 53 C35 38 36 23 39 7 C42 23 41 38 39 53 Z" fill="url(#rBladeA)"/>
+      <path d="M41 53 C42 38 45 25 52 13 C50 28 46 40 44 53 Z" fill="url(#rBladeB)"/>
+      <path d="M45 53 C48 43 54 33 61 25 C56 35 51 44 48 53 Z" fill="url(#rBladeA)"/>
+    </g>
+
+    <!-- trees -->
+    <g>
+      <rect x="94.2" y="40" width="2.1" height="10" rx="1" fill="#c39a6b"/>
+      <circle cx="95.2" cy="35" r="8" fill="url(#rCanopy)"/>
+      <circle cx="89.4" cy="38.5" r="5" fill="url(#rCanopy)"/>
+      <circle cx="101" cy="38.5" r="5" fill="url(#rCanopy)"/>
+    </g>
+    <g>
+      <rect x="108.4" y="45" width="1.6" height="7" rx=".8" fill="#c39a6b"/>
+      <circle cx="109.2" cy="41.5" r="5.4" fill="url(#rCanopy)"/>
+      <circle cx="105" cy="44" r="3.4" fill="url(#rCanopy)"/>
+      <circle cx="113.4" cy="44" r="3.4" fill="url(#rCanopy)"/>
+    </g>
+  </g>
+
+  <!-- ===== WORDMARK =====
+       textLength pins each line's width so the lockup renders identically on
+       every device regardless of which font is available. -->
+  <text x="252" y="100"
+        font-family="'Arial Black','Arial Bold',Arial,Helvetica,sans-serif"
+        font-weight="900" font-size="60" fill="#8cc63f"
+        textLength="196" lengthAdjust="spacingAndGlyphs">TURF AND</text>
+
+  <text x="252" y="172"
+        font-family="'Arial Black','Arial Bold',Arial,Helvetica,sans-serif"
+        font-weight="900" font-size="76" fill="#ffffff"
+        textLength="420" lengthAdjust="spacingAndGlyphs">LANDSCAPING</text>
+</svg>

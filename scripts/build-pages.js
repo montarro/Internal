@@ -55,11 +55,8 @@ const HEADER = `
   <header class="site-header">
     <div class="wrap site-header__inner">
       <a class="brand" href="/" aria-label="Turf and Landscaping — home">
-        <img class="brand__logo" src="/assets/logo-mark-light.svg" alt="Turf and Landscaping logo" width="46" height="46" />
-        <span class="brand__text">
-          <span class="brand__name">Turf <b>and</b> Landscaping</span>
-          <span class="brand__tag">North-West Melbourne</span>
-        </span>
+        <img class="brand__logo" src="/assets/logo-lockup.svg"
+             alt="Turf and Landscaping" width="690" height="200" />
       </a>
       <nav class="primary-nav" aria-label="Primary">
         <a href="/#who-we-are">Who We Are</a>
@@ -69,10 +66,9 @@ const HEADER = `
         <a href="/#faq">FAQ</a>
       </nav>
       <div class="header-cta">
-        <a class="header-call" href="tel:${PHONE_TEL}">
-          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6.6 10.8a15.5 15.5 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.24 11.4 11.4 0 0 0 3.6.58 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1 11.4 11.4 0 0 0 .58 3.6 1 1 0 0 1-.24 1z"/></svg>
-          <span class="header-call__label">Call</span>
-          <span class="header-call__num">0457&nbsp;357&nbsp;085</span>
+        <a class="header-call" href="/#quote">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 4h16v12H7l-3 3z"/></svg>
+          <span class="header-call__num">Get a free quote</span>
         </a>
         <button class="nav-toggle" type="button" aria-label="Open menu" aria-controls="mobile-nav" aria-expanded="false">
           <svg class="icon-open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
@@ -97,12 +93,9 @@ const FOOTER = `
     <div class="wrap">
       <div class="footer__grid">
         <div class="footer__brand">
-          <a class="brand" href="/" aria-label="Turf and Landscaping — home">
-            <img class="brand__logo" src="/assets/logo-mark-light.svg" alt="Turf and Landscaping logo" width="44" height="44" />
-            <span class="brand__text">
-              <span class="brand__name">Turf <b>and</b> Landscaping</span>
-              <span class="brand__tag">North-West Melbourne</span>
-            </span>
+          <a class="brand brand--footer" href="/" aria-label="Turf and Landscaping — home">
+            <img class="brand__logo" src="/assets/logo-turf-and-landscaping-reversed.svg"
+                 alt="Turf and Landscaping" width="1024" height="497" />
           </a>
           <p style="margin-top:1rem;max-width:22rem;color:#9db8a4;">Turf, paving, retaining walls and garden design for homeowners across Melbourne's north-west.</p>
           <div class="footer__socials">

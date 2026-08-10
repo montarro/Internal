@@ -26,16 +26,20 @@ fs.rmSync(DIST, { recursive: true, force: true });
 fs.mkdirSync(DIST, { recursive: true });
 
 // Static, hand-written files
-[
-  "index.html",
-  "style.css",
-  "main.js",
-  "robots.txt",
-  "sitemap.xml",
-  "assets/logo-mark.svg",
-  "assets/logo-mark-light.svg",
-  "assets/favicon.svg",
-].forEach(copy);
+["index.html", "style.css", "main.js", "robots.txt", "sitemap.xml"].forEach(copy);
+
+// Whole assets/ tree (logos, favicon, photography) — copying the directory
+// rather than a hand-maintained list means any new asset ships automatically.
+function copyDir(relDir) {
+  const src = path.join(ROOT, relDir);
+  if (!fs.existsSync(src)) return;
+  for (const entry of fs.readdirSync(src, { withFileTypes: true })) {
+    const rel = path.join(relDir, entry.name);
+    if (entry.isDirectory()) copyDir(rel);
+    else copy(rel);
+  }
+}
+copyDir("assets");
 
 // Generated pages + images, written straight into dist
 const env = { ...process.env, OUTDIR: DIST };
