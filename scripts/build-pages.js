@@ -95,7 +95,7 @@ const FOOTER = `
         <div class="footer__brand">
           <a class="brand brand--footer" href="/" aria-label="Turf and Landscaping — home">
             <img class="brand__logo" src="/assets/logo-turf-and-landscaping-reversed.svg"
-                 alt="Turf and Landscaping" width="1024" height="497" />
+                 alt="Turf and Landscaping" width="690" height="200" />
           </a>
           <p style="margin-top:1rem;max-width:22rem;color:#9db8a4;">Turf, paving, retaining walls and garden design for homeowners across Melbourne's north-west.</p>
           <div class="footer__socials">
