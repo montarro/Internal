@@ -605,3 +605,27 @@ p  { margin: 0 0 1rem; }
 
 /* Quote form heading set in caps */
 .form__title { text-transform: uppercase; letter-spacing: .04em; font-size: 1.35rem; }
+
+/* --- Two-step quote form --- */
+.steps-bar {
+  list-style: none; margin: 0 0 1.3rem; padding: 0;
+  display: grid; grid-template-columns: 1fr 1fr; gap: .5rem;
+}
+.steps-bar__item {
+  display: flex; align-items: center; gap: .5rem;
+  font-size: .88rem; font-weight: 700; color: var(--mist);
+  padding-top: .6rem; border-top: 3px solid var(--line);
+}
+.steps-bar__item span {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 1.5rem; height: 1.5rem; border-radius: 50%; flex: none;
+  background: var(--line); color: var(--slate); font-size: .8rem;
+}
+.steps-bar__item.is-active { color: var(--green-900); border-top-color: var(--green-700); }
+.steps-bar__item.is-active span { background: var(--green-700); color: #fff; }
+.steps-bar__item.is-done { color: var(--green-700); border-top-color: var(--lime-500); }
+.steps-bar__item.is-done span { background: var(--lime-500); color: var(--green-900); }
+
+.form__nav { display: flex; gap: .7rem; }
+.form__nav .btn--ghost { flex: 0 0 auto; }
+.form__nav .btn--primary { flex: 1; }

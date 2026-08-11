@@ -103,6 +103,44 @@
 
   if (photos) { photos.addEventListener("change", validatePhotos); }
 
+  /* ---------- Two-step flow ----------
+     Step 1 takes contact details, so an abandoned form still leaves a usable
+     lead. Step 2 takes the job itself. Both live in one <form>, so submission
+     and the multipart photo handling are unchanged. */
+  var stepEls = form.querySelectorAll(".form__step");
+  var barItems = form.querySelectorAll(".steps-bar__item");
+  var nextBtn = form.querySelector("[data-next]");
+  var backBtn = form.querySelector("[data-back]");
+
+  function showStep(n) {
+    stepEls.forEach(function (el) {
+      el.hidden = el.getAttribute("data-step") !== String(n);
+    });
+    barItems.forEach(function (el) {
+      el.classList.toggle("is-active", el.getAttribute("data-for") === String(n));
+      el.classList.toggle("is-done", Number(el.getAttribute("data-for")) < n);
+    });
+    // keep the top of the form in view when switching
+    var card = form.getBoundingClientRect();
+    if (card.top < 0) { form.scrollIntoView({ behavior: "smooth", block: "start" }); }
+  }
+
+  if (nextBtn) {
+    nextBtn.addEventListener("click", function () {
+      var stepOne = form.querySelector('.form__step[data-step="1"]');
+      var fields = stepOne.querySelectorAll("input, select, textarea");
+      for (var i = 0; i < fields.length; i++) {
+        if (!fields[i].checkValidity()) { fields[i].reportValidity(); return; }
+      }
+      setStatus("", "");
+      showStep(2);
+    });
+  }
+  if (backBtn) {
+    backBtn.addEventListener("click", function () { showStep(1); });
+  }
+
+
   form.addEventListener("submit", function (e) {
     e.preventDefault();
 

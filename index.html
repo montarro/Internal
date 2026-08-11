@@ -188,79 +188,94 @@
 
           <form class="form" id="quote-form" novalidate>
             <h2 class="form__title">Get your free quote</h2>
-            <p class="form__intro">Tell us about the job and we'll call you back to arrange a visit.</p>
 
-            <div class="form__row form__row--2">
-              <div class="field">
-                <label for="name">Name <span class="req" aria-hidden="true">*</span></label>
-                <input type="text" id="name" name="name" autocomplete="name" required />
+            <ol class="steps-bar" aria-label="Progress">
+              <li class="steps-bar__item is-active" data-for="1"><span>1</span> Your details</li>
+              <li class="steps-bar__item" data-for="2"><span>2</span> Your job</li>
+            </ol>
+
+            <!-- Step 1 — contact first, so a drop-off still leaves us a lead -->
+            <div class="form__step" data-step="1">
+              <div class="form__row form__row--2">
+                <div class="field">
+                  <label for="name">Name <span class="req" aria-hidden="true">*</span></label>
+                  <input type="text" id="name" name="name" autocomplete="name" required />
+                </div>
+                <div class="field">
+                  <label for="phone">Phone <span class="req" aria-hidden="true">*</span></label>
+                  <input type="tel" id="phone" name="phone" autocomplete="tel" inputmode="tel" required />
+                </div>
               </div>
-              <div class="field">
-                <label for="phone">Phone <span class="req" aria-hidden="true">*</span></label>
-                <input type="tel" id="phone" name="phone" autocomplete="tel" inputmode="tel" required />
+
+              <div class="form__row">
+                <div class="field">
+                  <label for="email">Email</label>
+                  <input type="email" id="email" name="email" autocomplete="email" inputmode="email" />
+                </div>
+              </div>
+
+              <button class="btn btn--primary btn--block" type="button" data-next>Next</button>
+            </div>
+
+            <!-- Step 2 — the job itself -->
+            <div class="form__step" data-step="2" hidden>
+              <div class="form__row form__row--2">
+                <div class="field">
+                  <label for="suburb">Suburb <span class="req" aria-hidden="true">*</span></label>
+                  <select id="suburb" name="suburb" required>
+                    <option value="" selected disabled>Select your suburb</option>
+                    <option>Craigieburn</option>
+                    <option>Mickleham</option>
+                    <option>Sunbury</option>
+                    <option>Point Cook</option>
+                    <option>Melton</option>
+                    <option>Werribee</option>
+                    <option value="Other">Other / not listed</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label for="service">Service <span class="req" aria-hidden="true">*</span></label>
+                  <select id="service" name="service" required>
+                    <option value="" selected disabled>What do you need?</option>
+                    <option>Natural Turf Solutions</option>
+                    <option>Paving &amp; Stepping Stones</option>
+                    <option>Retaining Walls</option>
+                    <option>Soft Landscaping</option>
+                    <option>Garden Design</option>
+                    <option value="Not sure">Not sure / other</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form__row">
+                <div class="field">
+                  <label for="message">Tell us about the job</label>
+                  <textarea id="message" name="message" placeholder="Rough size, what you'd like done, and any timing that suits you."></textarea>
+                </div>
+              </div>
+
+              <div class="form__row">
+                <div class="field">
+                  <label for="photos">Photos of the area <span class="field__opt">(optional)</span></label>
+                  <input class="field__file" type="file" id="photos" name="photos" accept="image/*" multiple />
+                  <p class="field__note">Up to 5 photos, 10MB each. A couple of quick snaps of the space helps us quote accurately.</p>
+                  <ul class="filelist" id="photo-list"></ul>
+                </div>
+              </div>
+
+              <!-- Honeypot: hidden from people, catches bots -->
+              <div class="field field--hp" aria-hidden="true">
+                <label for="company">Company</label>
+                <input type="text" id="company" name="company" tabindex="-1" autocomplete="off" />
+              </div>
+
+              <p class="form__consent">By submitting this form you agree to be contacted about your enquiry. We never share your details.</p>
+              <div class="form__nav">
+                <button class="btn btn--ghost" type="button" data-back>Back</button>
+                <button class="btn btn--primary" type="submit">Request my free quote</button>
               </div>
             </div>
 
-            <div class="form__row">
-              <div class="field">
-                <label for="email">Email</label>
-                <input type="email" id="email" name="email" autocomplete="email" inputmode="email" />
-              </div>
-            </div>
-
-            <div class="form__row form__row--2">
-              <div class="field">
-                <label for="suburb">Suburb <span class="req" aria-hidden="true">*</span></label>
-                <select id="suburb" name="suburb" required>
-                  <option value="" selected disabled>Select your suburb</option>
-                  <option>Craigieburn</option>
-                  <option>Mickleham</option>
-                  <option>Sunbury</option>
-                  <option>Point Cook</option>
-                  <option>Melton</option>
-                  <option>Werribee</option>
-                  <option value="Other">Other / not listed</option>
-                </select>
-              </div>
-              <div class="field">
-                <label for="service">Service <span class="req" aria-hidden="true">*</span></label>
-                <select id="service" name="service" required>
-                  <option value="" selected disabled>What do you need?</option>
-                  <option>Natural Turf Solutions</option>
-                  <option>Paving &amp; Stepping Stones</option>
-                  <option>Retaining Walls</option>
-                  <option>Soft Landscaping</option>
-                  <option>Garden Design</option>
-                  <option value="Not sure">Not sure / other</option>
-                </select>
-              </div>
-            </div>
-
-            <div class="form__row">
-              <div class="field">
-                <label for="message">Tell us about the job</label>
-                <textarea id="message" name="message" placeholder="Rough size, what you'd like done, and any timing that suits you."></textarea>
-              </div>
-            </div>
-
-            <div class="form__row">
-              <div class="field">
-                <label for="photos">Photos of the area <span class="field__opt">(optional)</span></label>
-                <input class="field__file" type="file" id="photos" name="photos"
-                       accept="image/*" multiple />
-                <p class="field__note">Up to 5 photos, 10MB each. A couple of quick snaps of the space helps us quote accurately.</p>
-                <ul class="filelist" id="photo-list"></ul>
-              </div>
-            </div>
-
-            <!-- Honeypot: hidden from people, catches bots -->
-            <div class="field field--hp" aria-hidden="true">
-              <label for="company">Company</label>
-              <input type="text" id="company" name="company" tabindex="-1" autocomplete="off" />
-            </div>
-
-            <p class="form__consent">By submitting this form you agree to be contacted about your enquiry. We never share your details.</p>
-            <button class="btn btn--primary btn--block" type="submit">Request my free quote</button>
             <p class="form__status" role="status" aria-live="polite"></p>
           </form>
         </div>
