@@ -40,7 +40,7 @@
 
   --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 
-  --header-h: 68px;
+  --header-h: 76px;
   --bottombar-h: 62px;
 }
 
@@ -133,7 +133,7 @@ p  { margin: 0 0 1rem; }
 }
 .brand { display: inline-flex; align-items: center; text-decoration: none; margin-right: auto; }
 /* The logo is a wide lockup (~2.06:1) — size it by height and let width follow. */
-.brand__logo { height: 50px; width: auto; display: block; }
+.brand__logo { height: 58px; width: auto; display: block; }
 
 .primary-nav { display: none; }
 .header-cta { display: flex; align-items: center; gap: .6rem; }
@@ -216,7 +216,7 @@ p  { margin: 0 0 1rem; }
 .hero__rating .stars { color: var(--gold); }
 
 .hero__panel { max-width: 34rem; }
-.hero__trust { list-style: none; margin: 0 0 1rem; padding: 0; display: grid; gap: .55rem; }
+.hero__trust { list-style: none; margin: 1.2rem 0 0; padding: 0; display: grid; gap: .55rem; }
 .hero__trust li {
   display: flex; align-items: center; gap: .55rem;
   color: #eaf3ea; font-weight: 600; font-size: .97rem;
@@ -446,18 +446,18 @@ p  { margin: 0 0 1rem; }
    logo the room instead. */
 @media (max-width: 819px) {
   .header-call { display: none; }
-  .brand__logo { height: 56px; }
+  .brand__logo { height: 64px; }
 }
 /* desktop: quote button only, phone lives in the footer + page CTAs */
 @media (min-width: 820px) {
   .header-phone { display: none; }
 }
 @media (max-width: 559px) {
-  .brand__logo { height: 52px; }
+  .brand__logo { height: 60px; }
   .site-header__inner { gap: .5rem; }
 }
 @media (max-width: 359px) {
-  .brand__logo { height: 46px; }
+  .brand__logo { height: 52px; }
 }
 
 @media (min-width: 560px) {
@@ -469,7 +469,7 @@ p  { margin: 0 0 1rem; }
 
 @media (min-width: 820px) {
   /* taller bar so the full logo lockup has breathing room */
-  :root { --header-h: 78px; }
+  :root { --header-h: 90px; }
 
   .cards { grid-template-columns: repeat(3, 1fr); }
   .steps { grid-template-columns: repeat(4, 1fr); }
@@ -493,7 +493,7 @@ p  { margin: 0 0 1rem; }
   .nav-toggle { display: none; }
   .header-call__label { display: inline; }
   .header-call__num { font-size: 1.02rem; }
-  .brand__logo { height: 66px; }
+  .brand__logo { height: 78px; }
   .mobile-bar { display: none; }
   body { padding-bottom: 0; }
   .areas { grid-template-columns: repeat(3, 1fr); }
