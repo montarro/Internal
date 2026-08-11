@@ -187,16 +187,26 @@ p  { margin: 0 0 1rem; }
 .hero { position: relative; color: #fff; isolation: isolate; }
 .hero__media { position: absolute; inset: 0; z-index: -2; overflow: hidden; }
 .hero__media img { width: 100%; height: 100%; object-fit: cover; }
+/* The hero photo is already dark green, so keep the scrim light or the grass
+   disappears. Mobile: a soft even wash. Desktop: weighted to the left, where
+   the headline sits, leaving the right side of the photo clear. */
 .hero::after {
   content: ""; position: absolute; inset: 0; z-index: -1;
-  background: linear-gradient(180deg, rgba(9,38,23,.55) 0%, rgba(9,38,23,.62) 45%, rgba(9,38,23,.78) 100%);
+  background: linear-gradient(180deg, rgba(9,38,23,.30) 0%, rgba(9,38,23,.38) 55%, rgba(9,38,23,.52) 100%);
+}
+@media (min-width: 820px) {
+  .hero::after {
+    background:
+      linear-gradient(90deg, rgba(9,38,23,.62) 0%, rgba(9,38,23,.40) 42%, rgba(9,38,23,.12) 75%),
+      linear-gradient(180deg, rgba(9,38,23,.10), rgba(9,38,23,.28));
+  }
 }
 /* Hero: copy, then the trust points and quote form directly beneath the CTAs.
    On wide screens the form moves alongside so the hero stays a sensible height. */
 .hero__inner { padding-block: clamp(2.6rem, 8vw, 4.6rem); display: grid; gap: 2rem; }
 .hero__copy { max-width: 44rem; }
-.hero h1 { color: #fff; text-shadow: 0 2px 18px rgba(0,0,0,.28); }
-.hero__sub { font-size: clamp(1.08rem, 2.6vw, 1.3rem); color: #eaf3ea; margin-bottom: 1.7rem; max-width: 34rem; }
+.hero h1 { color: #fff; text-shadow: 0 2px 10px rgba(0,0,0,.55), 0 1px 30px rgba(0,0,0,.35); }
+.hero__sub { font-size: clamp(1.08rem, 2.6vw, 1.3rem); color: #eaf3ea; text-shadow: 0 1px 8px rgba(0,0,0,.5); margin-bottom: 1.7rem; max-width: 34rem; }
 .hero__actions { display: flex; flex-wrap: wrap; gap: .8rem; }
 .hero__actions .btn { flex: 1 1 auto; min-width: 12rem; }
 .hero__rating {
