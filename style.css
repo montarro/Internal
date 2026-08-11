@@ -241,9 +241,12 @@ p  { margin: 0 0 1rem; }
 .hero__actions .btn { flex: 1 1 auto; min-width: 12rem; }
 .hero__rating {
   display: inline-flex; align-items: center; gap: .5rem; margin-top: 1.5rem; margin-bottom: 0;
-  font-size: .95rem; color: #eaf3ea;
+  font-size: .9rem; font-weight: 600; color: #fff;
+  background: rgba(14, 59, 35, .45); border: 1px solid rgba(255, 255, 255, .25);
+  backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+  padding: .5rem .9rem; border-radius: 999px;
 }
-.hero__rating .stars { color: var(--gold); }
+.hero__rating .stars { color: var(--gold); letter-spacing: .05em; }
 
 .hero__panel { max-width: 34rem; }
 .hero__trust { list-style: none; margin: 1.2rem 0 0; padding: 0; display: grid; gap: .55rem; }
