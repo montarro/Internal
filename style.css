@@ -247,6 +247,7 @@ p  { margin: 0 0 1rem; }
 .hero__rating .stars {
   display: inline-block; color: var(--gold); letter-spacing: .05em; line-height: 1;
   background: #fff; padding: .4rem .65rem; border-radius: 999px; box-shadow: var(--shadow-sm);
+  text-shadow: none;
 }
 
 .hero__panel { max-width: 34rem; }
