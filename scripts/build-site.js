@@ -61,4 +61,7 @@ if (fs.existsSync(SRC_IMG)) {
   }
 }
 
+// Real client photos (assets/photos/) win over everything above.
+execFileSync("node", [path.join(__dirname, "apply-photos.js")], { stdio: "inherit", env });
+
 console.log("Build complete ->", DIST);
