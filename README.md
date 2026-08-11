@@ -62,12 +62,24 @@ the visitor to call rather than silently failing.
 
 ## Deploy to Vercel
 
-Static site, no build step:
+The repo is git-connected: **every push to `main` deploys automatically.**
 
-1. Import the repo in Vercel (**Add New → Project**).
-2. Framework Preset: **Other**. Leave the Build Command empty; Output Directory
-   is the project root. `vercel.json` handles clean URLs and asset caching.
-3. Deploy, then point the domain (`turfandlandscaping.com.au`) at the project.
+Vercel settings (already captured in `vercel.json`, no manual entry needed):
+
+| Setting | Value |
+| --- | --- |
+| Framework Preset | Other |
+| Root Directory | `./` |
+| Build Command | `node scripts/build-site.js` |
+| Output Directory | `dist` |
+| Production Branch | `main` |
+
+The build installs `sharp`, generates the 11 service/suburb pages and the 16
+WebP images into `dist/`, and copies anything in `assets/` over the top — so
+dropping a real photo into `assets/images/` with the same filename ships it.
+
+Point the domain (`turfandlandscaping.com.au`) at the project under
+**Settings → Domains** when you're ready.
 
 ## ✅ Before you publish — confirm these placeholders
 
