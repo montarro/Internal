@@ -573,3 +573,24 @@ p  { margin: 0 0 1rem; }
 .hero__actions { align-items: center; }
 .hero__or { color: #cfe0d3; font-size: .95rem; }
 @media (max-width: 559px) { .hero__or { display: block; width: 100%; } }
+
+/* --- Quote form: photo upload --- */
+.field__opt { font-weight: 600; color: var(--mist); font-size: .85rem; }
+.field__note { font-size: .82rem; color: var(--mist); margin: .1rem 0 0; }
+.field__file {
+  font: inherit; color: var(--slate); background: var(--cloud);
+  border: 1.5px dashed var(--line); border-radius: 10px;
+  padding: .7rem .9rem; width: 100%; min-height: 48px; cursor: pointer;
+}
+.field__file:hover { border-color: var(--green-500); background: var(--sand); }
+.field__file::file-selector-button {
+  font: inherit; font-weight: 700; cursor: pointer;
+  background: var(--green-700); color: #fff; border: 0;
+  border-radius: 999px; padding: .45rem 1rem; margin-right: .8rem;
+}
+.field__file::file-selector-button:hover { background: var(--green-800); }
+.filelist { list-style: none; margin: .55rem 0 0; padding: 0; display: grid; gap: .3rem; }
+.filelist li {
+  font-size: .85rem; color: var(--green-900); background: var(--sand);
+  border-radius: 8px; padding: .4rem .6rem; word-break: break-word;
+}

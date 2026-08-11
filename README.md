@@ -56,9 +56,18 @@ job: turn a visitor into a booked, on-site quote.
 ## Wiring up the quote form
 
 Open `main.js` and set `WEBHOOK_URL` to the endpoint you want the form to POST
-to. It sends a JSON body with: `name, phone, email, suburb, service, message,
-source_page, submitted_at`. Until a URL is set, the form validates and tells
-the visitor to call rather than silently failing.
+to. Until a URL is set, the form validates and tells the visitor to call rather
+than silently failing.
+
+The payload shape depends on whether the visitor attached photos:
+
+| Photos attached | Content type | Fields |
+| --- | --- | --- |
+| No | `application/json` | `name, phone, email, suburb, service, message, source_page, submitted_at` |
+| Yes | `multipart/form-data` | the same fields, plus one `photos` part per file |
+
+**Make sure the webhook accepts `multipart/form-data`** — Make and Zapier both
+do. Photos are capped client-side at 5 files, 10MB each, images only.
 
 ## Deploy to Vercel
 
