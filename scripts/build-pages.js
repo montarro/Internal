@@ -56,7 +56,7 @@ const HEADER = `
     <div class="wrap site-header__inner">
       <a class="brand" href="/" aria-label="Turf and Landscaping — home">
         <img class="brand__logo" src="/assets/logo-turf-and-landscaping.png"
-             alt="Turf and Landscaping" width="1024" height="500" />
+             alt="Turf and Landscaping" width="848" height="350" />
       </a>
       <nav class="primary-nav" aria-label="Primary">
         <a href="/#who-we-are">Who We Are</a>
@@ -98,7 +98,7 @@ const FOOTER = `
         <div class="footer__brand">
           <a class="brand brand--footer" href="/" aria-label="Turf and Landscaping — home">
             <img class="brand__logo" src="/assets/logo-turf-and-landscaping-white.png"
-                 alt="Turf and Landscaping" width="1024" height="500" />
+                 alt="Turf and Landscaping" width="848" height="350" />
           </a>
           <p style="margin-top:1rem;max-width:22rem;color:#9db8a4;">Turf, paving, retaining walls and garden design for homeowners across Melbourne's north-west.</p>
           <div class="footer__socials">

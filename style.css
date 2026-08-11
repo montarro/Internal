@@ -133,7 +133,7 @@ p  { margin: 0 0 1rem; }
 }
 .brand { display: inline-flex; align-items: center; text-decoration: none; margin-right: auto; }
 /* The logo is a wide lockup (~2.06:1) — size it by height and let width follow. */
-.brand__logo { height: 46px; width: auto; display: block; }
+.brand__logo { height: 50px; width: auto; display: block; }
 
 .primary-nav { display: none; }
 .header-cta { display: flex; align-items: center; gap: .6rem; }
@@ -359,7 +359,7 @@ p  { margin: 0 0 1rem; }
 .site-footer a { color: #eaf3ea; text-decoration: none; }
 .site-footer a:hover { color: #fff; text-decoration: underline; }
 .footer__grid { display: grid; gap: 2rem; grid-template-columns: 1fr; }
-.brand--footer .brand__logo { height: 66px; }
+.brand--footer .brand__logo { height: 72px; }
 .footer h4 { color: #fff; font-size: .8rem; letter-spacing: .12em; text-transform: uppercase; margin-bottom: .9rem; }
 .footer ul { list-style: none; margin: 0; padding: 0; display: grid; gap: .55rem; }
 .footer__socials { display: flex; gap: .7rem; margin-top: 1rem; }
@@ -436,18 +436,18 @@ p  { margin: 0 0 1rem; }
    logo the room instead. */
 @media (max-width: 819px) {
   .header-call { display: none; }
-  .brand__logo { height: 52px; }
+  .brand__logo { height: 56px; }
 }
 /* desktop: quote button only, phone lives in the footer + page CTAs */
 @media (min-width: 820px) {
   .header-phone { display: none; }
 }
 @media (max-width: 559px) {
-  .brand__logo { height: 48px; }
+  .brand__logo { height: 52px; }
   .site-header__inner { gap: .5rem; }
 }
 @media (max-width: 359px) {
-  .brand__logo { height: 42px; }
+  .brand__logo { height: 46px; }
 }
 
 @media (min-width: 560px) {
@@ -483,7 +483,7 @@ p  { margin: 0 0 1rem; }
   .nav-toggle { display: none; }
   .header-call__label { display: inline; }
   .header-call__num { font-size: 1.02rem; }
-  .brand__logo { height: 62px; }
+  .brand__logo { height: 66px; }
   .mobile-bar { display: none; }
   body { padding-bottom: 0; }
   .areas { grid-template-columns: repeat(3, 1fr); }
@@ -571,8 +571,6 @@ p  { margin: 0 0 1rem; }
 /* Hero: single prominent call button, with a nudge toward the form */
 .btn--lg { padding: 1.05rem 1.7rem; font-size: 1.08rem; min-height: 56px; }
 .hero__actions { align-items: center; }
-.hero__or { color: #cfe0d3; font-size: .95rem; }
-@media (max-width: 559px) { .hero__or { display: block; width: 100%; } }
 
 /* --- Quote form: photo upload --- */
 .field__opt { font-weight: 600; color: var(--mist); font-size: .85rem; }
@@ -594,3 +592,6 @@ p  { margin: 0 0 1rem; }
   font-size: .85rem; color: var(--green-900); background: var(--sand);
   border-radius: 8px; padding: .4rem .6rem; word-break: break-word;
 }
+
+/* Quote form heading set in caps */
+.form__title { text-transform: uppercase; letter-spacing: .04em; font-size: 1.35rem; }
