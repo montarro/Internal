@@ -1,8 +1,33 @@
 /* =====================================================================
    Turf and Landscaping — north-west Melbourne
    Design system: mobile-first, green + neutral, trade-professional.
-   No external fonts or requests: system stack keeps LCP fast on 4G.
+   Body copy stays on the system stack for speed; Poppins (self-hosted,
+   latin subset only, ~24KB total) is used for headings, nav and buttons
+   so the brand has a distinct voice without hurting LCP.
    ===================================================================== */
+
+/* ---------- Display typeface (self-hosted, no external request) ---------- */
+@font-face {
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("/assets/fonts/poppins-600.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("/assets/fonts/poppins-700.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url("/assets/fonts/poppins-800.woff2") format("woff2");
+}
 
 /* ---------- Design tokens ---------- */
 :root {
@@ -39,6 +64,7 @@
   --shadow-lg: 0 18px 44px rgba(14,59,35,.16);
 
   --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-display: "Poppins", var(--font);
 
   --header-h: 76px;
   --bottombar-h: 62px;
@@ -66,7 +92,7 @@ img { max-width: 100%; height: auto; display: block; }
 a { color: var(--green-700); text-decoration-thickness: .08em; text-underline-offset: .15em; }
 a:hover { color: var(--green-600); }
 
-h1, h2, h3, h4 { color: var(--green-900); line-height: 1.15; margin: 0 0 .5em; letter-spacing: -.01em; font-weight: 800; }
+h1, h2, h3, h4 { font-family: var(--font-display); color: var(--green-900); line-height: 1.15; margin: 0 0 .5em; letter-spacing: -.01em; font-weight: 800; }
 h1 { font-size: clamp(2rem, 7vw, 3.4rem); }
 h2 { font-size: clamp(1.65rem, 5vw, 2.5rem); }
 h3 { font-size: clamp(1.2rem, 3.4vw, 1.45rem); }
@@ -79,7 +105,7 @@ p  { margin: 0 0 1rem; }
 .section__head { max-width: 46rem; margin-bottom: clamp(1.6rem, 4vw, 2.6rem); }
 .section__head--center { margin-inline: auto; text-align: center; }
 .eyebrow {
-  display: inline-block; font-size: .8rem; font-weight: 800; letter-spacing: .14em;
+  display: inline-block; font-family: var(--font-display); font-size: .8rem; font-weight: 700; letter-spacing: .14em;
   text-transform: uppercase; color: var(--green-600); margin-bottom: .7rem;
 }
 .lead { font-size: clamp(1.05rem, 2.4vw, 1.2rem); color: var(--slate); }
@@ -102,7 +128,7 @@ p  { margin: 0 0 1rem; }
 /* ---------- Buttons ---------- */
 .btn {
   display: inline-flex; align-items: center; justify-content: center; gap: .5rem;
-  font: inherit; font-weight: 700; line-height: 1.1; text-decoration: none;
+  font-family: var(--font-display); font-size: 1rem; font-weight: 700; line-height: 1.1; text-decoration: none;
   padding: .92rem 1.4rem; border-radius: 999px; border: 2px solid transparent;
   cursor: pointer; transition: transform .06s ease, background .15s ease, box-shadow .15s ease, color .15s ease;
   min-height: 48px;                 /* comfortable tap target */
@@ -140,7 +166,7 @@ p  { margin: 0 0 1rem; }
 .header-call {
   display: inline-flex; align-items: center; gap: .45rem;
   background: var(--green-700); color: #fff; text-decoration: none;
-  font-weight: 800; padding: .58rem .9rem; border-radius: 999px; min-height: 44px;
+  font-family: var(--font-display); font-weight: 700; padding: .58rem .9rem; border-radius: 999px; min-height: 44px;
   white-space: nowrap; box-shadow: var(--shadow-sm);
 }
 .header-call:hover { background: var(--green-800); color: #fff; }
@@ -151,7 +177,7 @@ p  { margin: 0 0 1rem; }
 .header-phone {
   display: inline-flex; align-items: center; gap: .4rem;
   background: var(--green-700); color: #fff; text-decoration: none;
-  font-weight: 800; padding: .55rem .85rem; border-radius: 999px; min-height: 44px;
+  font-family: var(--font-display); font-weight: 700; padding: .55rem .85rem; border-radius: 999px; min-height: 44px;
   white-space: nowrap; font-size: .95rem; box-shadow: var(--shadow-sm);
 }
 .header-phone:hover { background: var(--green-800); color: #fff; }
@@ -177,7 +203,7 @@ p  { margin: 0 0 1rem; }
 }
 .mobile-nav[data-open="true"] { display: block; }
 .mobile-nav a {
-  display: block; padding: .85rem .25rem; color: var(--green-900); font-weight: 600;
+  display: block; padding: .85rem .25rem; color: var(--green-900); font-family: var(--font-display); font-weight: 600;
   text-decoration: none; border-bottom: 1px solid var(--line);
 }
 .mobile-nav a:last-of-type { border-bottom: 0; }
@@ -206,6 +232,10 @@ p  { margin: 0 0 1rem; }
 .hero__inner { padding-block: clamp(2.6rem, 8vw, 4.6rem); display: grid; gap: 2rem; }
 .hero__copy { max-width: 44rem; }
 .hero h1 { color: #fff; text-shadow: 0 2px 10px rgba(0,0,0,.55), 0 1px 30px rgba(0,0,0,.35); }
+.hero h1::after {
+  content: ""; display: block; width: 3.25rem; height: 4px; margin-top: .9rem;
+  background: var(--gold); border-radius: 999px;
+}
 .hero__sub { font-size: clamp(1.08rem, 2.6vw, 1.3rem); color: #eaf3ea; text-shadow: 0 1px 8px rgba(0,0,0,.5); margin-bottom: 1.7rem; max-width: 34rem; }
 .hero__actions { display: flex; flex-wrap: wrap; gap: .8rem; }
 .hero__actions .btn { flex: 1 1 auto; min-width: 12rem; }
@@ -486,10 +516,11 @@ p  { margin: 0 0 1rem; }
   /* header switches to full nav on desktop; hide mobile-only chrome */
   .primary-nav { display: flex; align-items: center; gap: 1.15rem; margin-right: 1.1rem; }
   .primary-nav a {
-    text-decoration: none; color: var(--green-900); font-weight: 700; font-size: .95rem;
+    text-decoration: none; color: var(--green-900); font-family: var(--font-display); font-weight: 600; font-size: .95rem;
     white-space: nowrap; padding: .35rem 0; border-bottom: 2px solid transparent;
+    transition: color .15s ease, border-color .15s ease;
   }
-  .primary-nav a:hover { color: var(--green-600); border-bottom-color: var(--lime-500); }
+  .primary-nav a:hover, .primary-nav a:focus-visible { color: var(--green-700); border-bottom-color: var(--gold); }
   .nav-toggle { display: none; }
   .header-call__label { display: inline; }
   .header-call__num { font-size: 1.02rem; }
