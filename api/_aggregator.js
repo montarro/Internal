@@ -59,6 +59,16 @@ const CATEGORIES = {
     label: { en: 'France & French Politics', fr: 'France & Politique', ar: 'فرنسا والسياسة' },
     q: { en: 'France politics', fr: 'politique française', ar: 'فرنسا سياسة' },
   },
+  // Continent-wide politics (beyond the Maghreb already covered by
+  // northafrica). Follows the UI language like the other standard topics.
+  africanpolitics: {
+    label: { en: 'African Politics', fr: 'Politique africaine', ar: 'السياسة الأفريقية' },
+    q: {
+      en: '"Africa politics" OR "African Union" OR Nigeria OR Kenya OR Ethiopia OR "South Africa" OR Ghana OR Senegal OR Sudan OR Congo',
+      fr: '"politique africaine" OR "Union africaine" OR Nigéria OR Kenya OR Éthiopie OR "Afrique du Sud" OR Sénégal OR Soudan OR Congo',
+      ar: 'السياسة الأفريقية OR الاتحاد الأفريقي OR نيجيريا OR كينيا OR إثيوبيا OR جنوب أفريقيا OR السنغال OR السودان OR الكونغو',
+    },
+  },
   // Independent of the UI language: always pulls real Arabic-language
   // headlines from Arabic outlets, so an EN/FR reader can still follow Arabic
   // news in Arabic (not machine-translated), same as flipping to AR would,
@@ -92,6 +102,24 @@ const SOURCE_FEEDS = {
     { url: 'https://www.aljazeera.net/feed', source: 'الجزيرة' },
     { url: googleNews('site:alarabiya.net', 'ar'), source: 'العربية' },
     { url: 'https://www.skynewsarabia.com/rss', source: 'سكاي نيوز عربية' },
+  ],
+};
+
+// Real outlets with photo-bearing RSS, pulled in alongside the Google News
+// search for "African Politics" so the topic isn't just text-only search
+// results. BBC's regional feed and Al Jazeera are already known-good in this
+// codebase; RFI is added as a real French-language Africa desk.
+const AFRICA_SOURCE_FEEDS = {
+  en: [
+    { url: 'https://feeds.bbci.co.uk/news/world/africa/rss.xml', source: 'BBC Africa' },
+    { url: 'https://www.aljazeera.com/xml/rss/all.xml', source: 'Al Jazeera' },
+  ],
+  fr: [
+    { url: 'https://www.rfi.fr/fr/afrique/rss', source: 'RFI Afrique' },
+    { url: 'https://www.france24.com/fr/rss', source: 'France 24' },
+  ],
+  ar: [
+    { url: 'https://www.aljazeera.net/feed', source: 'الجزيرة' },
   ],
 };
 
@@ -192,6 +220,13 @@ const CAT_TERMS = {
   middleeast: ['middle east', 'moyen-orient', 'الشرق الأوسط', 'gaza', 'israel', 'iran', 'syria', 'lebanon', 'palestin'],
   northafrica: ['maghreb', 'north africa', 'afrique du nord', 'algeria', 'morocco', 'libya', 'algérie', 'maroc', 'libye', 'المغرب', 'الجزائر', 'ليبيا', 'شمال أفريقيا'],
   france: ['france', 'french', 'française', 'français', 'فرنسا', 'macron', 'paris'],
+  africanpolitics: [
+    'africa', 'african union', 'nigeria', 'kenya', 'ethiopia', 'south africa', 'ghana', 'uganda',
+    'tanzania', 'sudan', 'congo', 'senegal', 'mali', 'niger', 'chad', 'somalia', 'zimbabwe', 'zambia',
+    'rwanda', "côte d'ivoire", 'ivory coast', 'cameroon', 'mozambique', 'angola', 'burkina faso',
+    'afrique', 'union africaine', 'nigéria', 'kenya', 'éthiopie', 'afrique du sud', 'sénégal', 'soudan',
+    'أفريقيا', 'الاتحاد الأفريقي', 'نيجيريا', 'كينيا', 'إثيوبيا', 'جنوب أفريقيا', 'السودان', 'الكونغو',
+  ],
   arabicnews: null,
 };
 
@@ -474,6 +509,11 @@ async function getNews({ categories, q, limit, lang, source, force } = {}) {
       // The broad World view also pulls Aymen's preferred outlets directly.
       if (cat === 'world') {
         for (const sf of SOURCE_FEEDS[L] || []) feeds.push(sf);
+      }
+      // African Politics also pulls real outlets directly so it isn't just
+      // text-only Google News search results — the reader gets photos too.
+      if (cat === 'africanpolitics') {
+        for (const af of AFRICA_SOURCE_FEEDS[L] || []) feeds.push(af);
       }
     }
 
