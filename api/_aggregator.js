@@ -126,30 +126,23 @@ const AFRICA_SOURCE_FEEDS = {
   ar: [],
 };
 
-// Used to keep African Politics from being diluted by the sports/entertainment
-// coverage that a general regional feed (like BBC Africa) also carries: an
-// article matching a sports/entertainment term with no political term at all
-// is dropped. Political term lists are intentionally broad (institutions,
-// office-holders, processes) so real political stories are never mistakenly
-// cut just for mentioning a stadium or a match in passing.
+// Used to keep African Politics from being diluted by the sports,
+// entertainment, wildlife and general-interest coverage that a broad regional
+// feed (like BBC Africa) also carries. Rather than trying to blocklist every
+// possible non-political topic (sports, celebrity news, wildlife, health...),
+// an article is only kept if it explicitly matches a political term.
+// Political term lists are intentionally broad (institutions, office-holders,
+// processes) so real political stories are still reliably caught.
 const POLITICS_TERMS = {
   en: ['president', 'election', 'government', 'minister', 'parliament', 'coup', 'referendum', 'opposition', 'sanction', 'corruption', 'constitution', 'cabinet', 'diplomat', 'junta', 'protest', 'vote', 'campaign', 'ruling party', 'prime minister', 'politic', 'african union', 'summit', 'ambassador'],
   fr: ['président', 'élection', 'gouvernement', 'ministre', 'parlement', "coup d'état", 'putsch', 'référendum', 'opposition', 'sanction', 'corruption', 'constitution', 'diplomate', 'junte', 'manifestation', 'vote', 'campagne', 'politique', 'union africaine', 'sommet', 'ambassadeur'],
   ar: ['رئيس', 'انتخابات', 'حكومة', 'وزير', 'برلمان', 'انقلاب', 'استفتاء', 'معارضة', 'عقوبات', 'فساد', 'دستور', 'دبلوماسي', 'احتجاج', 'تصويت', 'حملة', 'سياس', 'الاتحاد الأفريقي', 'قمة', 'سفير'],
 };
-const SPORTS_ENTERTAINMENT_TERMS = {
-  en: ['world cup', 'football', 'soccer', 'match', 'goal', 'score', 'league', 'tournament', 'player', 'coach', 'championship', 'olympic', 'athlete', 'stadium', 'kickoff', 'referee'],
-  fr: ['coupe du monde', 'football', 'match', 'but', 'score', 'ligue', 'tournoi', 'joueur', 'entraîneur', 'championnat', 'olympique', 'athlète', 'stade', 'arbitre'],
-  ar: ['كأس العالم', 'كرة القدم', 'مباراة', 'هدف', 'الدوري', 'بطولة', 'لاعب', 'مدرب', 'أولمبياد', 'رياضي', 'ملعب', 'حكم'],
-};
 
 function isPoliticallyRelevant(article, lang) {
   const hay = `${article.title} ${article.snippet}`.toLowerCase();
   const pol = POLITICS_TERMS[lang] || POLITICS_TERMS.en;
-  const sport = SPORTS_ENTERTAINMENT_TERMS[lang] || SPORTS_ENTERTAINMENT_TERMS.en;
-  const hasPolitics = pol.some((term) => hay.includes(term.toLowerCase()));
-  const hasSport = sport.some((term) => hay.includes(term.toLowerCase()));
-  return !(hasSport && !hasPolitics);
+  return pol.some((term) => hay.includes(term.toLowerCase()));
 }
 
 // Real Arabic-language outlets, used directly (not translated) for the
