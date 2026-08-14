@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="color-scheme" content="light" />
+<title>Aymen's News</title>
+<style>
+  :root{
+    --bg:#ffffff;--bg-2:#f5f8fc;--card:#ffffff;--card-2:#eef5fc;
+    --border:#d6e2ee;--border-soft:#e6eef6;
+    --emerald:#87cefa;--emerald-bright:#2f8fd0;--mint:#bfe0fb;--mint-soft:#2f7fb5;
+    --text:#17222e;--text-muted:#566370;--text-faint:#8a97a3;
+    --radius:16px;--radius-sm:11px;--shadow:0 12px 30px -16px rgba(31,71,112,.28);
+    --ring:0 0 0 1px rgba(135,206,250,.6);
+    --font:"Inter","Segoe UI",system-ui,-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:var(--bg);color:var(--text);font-family:var(--font);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+  body{min-height:100vh;padding:22px;background:
+    radial-gradient(900px 500px at 100% -10%,rgba(135,206,250,.22),transparent 60%),
+    radial-gradient(700px 420px at -10% 110%,rgba(135,206,250,.14),transparent 55%),var(--bg)}
+  .app{width:100%;max-width:780px;margin:0 auto;display:flex;flex-direction:column;gap:20px}
+  .app__topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}
+  .brand{display:inline-flex;align-items:center;gap:9px}
+  .brand__mark{width:22px;height:22px;border-radius:7px;background:linear-gradient(135deg,var(--emerald-bright),var(--emerald));box-shadow:0 0 0 4px rgba(135,206,250,.28)}
+  .brand__name{font-weight:700;letter-spacing:.02em;font-size:.95rem;color:var(--mint-soft)}
+  .langswitch{display:inline-flex;gap:2px;background:var(--card-2);border:1px solid var(--border);border-radius:999px;padding:3px}
+  .lang{border:none;background:transparent;color:var(--text-muted);font-family:inherit;font-weight:700;font-size:.78rem;letter-spacing:.03em;padding:5px 11px;border-radius:999px;cursor:pointer;transition:all .14s}
+  .lang:hover{color:var(--text)}
+  .lang[aria-pressed="true"]{background:linear-gradient(135deg,var(--emerald-bright),var(--emerald));color:#fff}
+  .app__title{font-size:1.72rem;line-height:1.15;font-weight:800;letter-spacing:-.01em;margin-bottom:8px}
+  .app__subtitle{color:var(--text-muted);font-size:.96rem;line-height:1.5;max-width:60ch}
+  .controls{background:var(--bg-2);border:1px solid var(--border);border-radius:var(--radius);padding:16px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:14px}
+  .search{display:flex;align-items:center;gap:10px;background:var(--card);border:1px solid var(--border);border-radius:var(--radius-sm);padding:11px 13px;transition:box-shadow .15s,border-color .15s}
+  .search:focus-within{border-color:var(--emerald);box-shadow:var(--ring)}
+  .search__icon{color:var(--text-faint);font-size:1.05rem}
+  .search__input{flex:1;background:transparent;border:none;outline:none;color:var(--text);font-size:.98rem;font-family:inherit}
+  .search__input::placeholder{color:var(--text-faint)}
+  .search__clear{background:transparent;border:none;color:var(--text-muted);font-size:1.3rem;line-height:1;cursor:pointer;padding:0 4px}
+  .search__clear:hover{color:var(--text)}
+  .sourcebar{display:flex;align-items:center;gap:10px}
+  .sourcebar__label{font-size:.82rem;font-weight:600;color:var(--text-muted)}
+  .sourceselect{flex:1;max-width:260px;background:var(--card);color:var(--text);border:1px solid var(--border);border-radius:var(--radius-sm);padding:9px 12px;font-size:.9rem;font-family:inherit;font-weight:600;cursor:pointer}
+  .sourceselect:focus{outline:none;border-color:var(--emerald);box-shadow:var(--ring)}
+  .chips{display:flex;flex-wrap:wrap;gap:8px}
+  .chip{border:1px solid var(--border);background:var(--card);color:var(--text-muted);border-radius:999px;padding:7px 14px;font-size:.86rem;font-weight:600;font-family:inherit;cursor:pointer;transition:all .14s;white-space:nowrap}
+  .chip:hover{border-color:var(--emerald);color:var(--text)}
+  .chip[aria-pressed="true"]{background:linear-gradient(135deg,rgba(135,206,250,.32),rgba(135,206,250,.18));border-color:var(--emerald);color:var(--mint-soft)}
+  .controls__foot{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+  .meta{font-size:.82rem;color:var(--text-faint)}
+  .refresh{display:inline-flex;align-items:center;gap:6px;background:var(--card-2);border:1px solid var(--border);color:var(--text-muted);border-radius:var(--radius-sm);padding:7px 13px;font-size:.84rem;font-weight:600;font-family:inherit;cursor:pointer;transition:all .14s}
+  .refresh:hover{border-color:var(--emerald);color:var(--text)}
+  .refresh__icon{font-size:1rem}
+  .refresh.is-spinning .refresh__icon{display:inline-block;animation:spin .8s linear infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .feed{display:flex;flex-direction:column;gap:12px}
+  .card{display:block;text-decoration:none;color:inherit;background:var(--card);border:1px solid var(--border-soft);border-radius:var(--radius);padding:16px 18px;transition:transform .14s,border-color .14s,background .14s}
+  .card:hover{transform:translateY(-2px);border-color:var(--emerald);background:var(--card-2)}
+  .card__img{display:block;width:100%;height:180px;object-fit:cover;border-radius:10px;margin-bottom:12px;background:var(--card-2)}
+  .card__top{display:flex;align-items:center;gap:8px;margin-bottom:8px;font-size:.76rem;color:var(--text-faint)}
+  .card__source{color:var(--emerald-bright);font-weight:700;letter-spacing:.01em}
+  .card__title{font-size:1.04rem;line-height:1.35;font-weight:700;color:var(--text);margin-bottom:6px}
+  a.card__title{display:block;text-decoration:none}
+  .card:hover .card__title{color:var(--mint-soft)}
+  .like{margin-inline-start:auto;border:none;background:transparent;color:var(--text-faint);font-size:1.1rem;line-height:1;cursor:pointer;padding:2px 4px;border-radius:6px;transition:transform .12s,color .14s}
+  .like:hover{color:#e0556b;transform:scale(1.15)}
+  .like[aria-pressed="true"]{color:#e0556b}
+  .foot__actions{display:flex;gap:8px;flex-wrap:wrap}
+  .refresh[aria-pressed="true"]{border-color:var(--emerald);color:var(--mint-soft);background:linear-gradient(135deg,rgba(135,206,250,.28),rgba(135,206,250,.18))}
+  .card__snippet{font-size:.9rem;line-height:1.5;color:var(--text-muted);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  .skeleton{background:var(--card);border:1px solid var(--border-soft);border-radius:var(--radius);padding:16px 18px}
+  .skeleton__line{height:12px;border-radius:6px;background:linear-gradient(90deg,var(--card-2) 25%,#dbe7f2 50%,var(--card-2) 75%);background-size:200% 100%;animation:shimmer 1.3s ease-in-out infinite;margin-bottom:10px}
+  .skeleton__line.short{width:40%}.skeleton__line.title{width:85%;height:16px}
+  .skeleton__line.body{width:100%}.skeleton__line.body.b2{width:70%;margin-bottom:0}
+  @keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+  .state{text-align:center;padding:40px 20px;background:var(--bg-2);border:1px dashed var(--border);border-radius:var(--radius)}
+  .state__title{font-weight:700;font-size:1.05rem;margin-bottom:6px}
+  .state__hint{color:var(--text-muted);font-size:.9rem;line-height:1.5}
+  .legal{text-align:center;color:var(--text-faint);font-size:.76rem;line-height:1.5;padding:4px 0 8px}
+  [dir="rtl"] .app__header{text-align:right}
+  [dir="rtl"] .app__subtitle{margin-left:auto}
+  [dir="rtl"] .card__title,[dir="rtl"] .card__snippet{text-align:right}
+  @media(max-width:560px){body{padding:16px}.app__title{font-size:1.44rem}.card__title{font-size:.99rem}.app__topbar{flex-wrap:wrap}}
+</style>
+</head>
+<body>
+<main class="app">
+  <header class="app__header">
+    <div class="app__topbar">
+      <div class="brand"><span class="brand__mark"></span><span class="brand__name">Aymen's&nbsp;News</span></div>
+      <!-- Language switch: labels stay Latin so you can always get back -->
+      <div class="langswitch" id="langSwitch" dir="ltr" role="group" aria-label="Language">
+        <button class="lang" type="button" data-lang="en">EN</button>
+        <button class="lang" type="button" data-lang="fr">FR</button>
+        <button class="lang" type="button" data-lang="ar">AR</button>
+      </div>
+    </div>
+    <h1 class="app__title" id="tagline">What's happening today</h1>
+  </header>
+
+  <section class="controls">
+    <form class="search" id="searchForm" role="search">
+      <span class="search__icon">&#9906;</span>
+      <input class="search__input" id="searchInput" type="search" autocomplete="off" aria-label="Keyword filter" />
+      <button class="search__clear" id="clearBtn" type="button" aria-label="Clear keyword" hidden>&times;</button>
+    </form>
+    <div class="sourcebar">
+      <label class="sourcebar__label" id="channelLabel" for="sourceSelect">Channel</label>
+      <select class="sourceselect" id="sourceSelect" aria-label="Channel"></select>
+    </div>
+    <div class="chips" id="chips" role="group" aria-label="Topics"></div>
+    <div class="controls__foot">
+      <span class="meta" id="metaLine"></span>
+      <div class="foot__actions">
+        <button class="refresh" id="savedBtn" type="button" aria-pressed="false"><span aria-hidden="true">&#9825;</span> <span id="savedLabel">Saved</span> <span id="savedCount"></span></button>
+        <button class="refresh" id="refreshBtn" type="button"><span class="refresh__icon">&#8635;</span> <span id="refreshLabel">Refresh</span></button>
+      </div>
+    </div>
+  </section>
+
+  <section class="feed" id="feed" aria-live="polite"></section>
+
+  <div class="state" id="stateBox" hidden>
+    <p class="state__title" id="stateTitle"></p>
+    <p class="state__hint" id="stateHint"></p>
+  </div>
+
+  <footer class="legal" id="footer"></footer>
+</main>
+
+<script>
+"use strict";
+
+var LANGS = ["en","fr","ar"];
+
+function gnews(query, lang){
+  var q = encodeURIComponent(query);
+  if(lang==="fr") return "https://news.google.com/rss/search?q="+q+"&hl=fr&gl=FR&ceid=FR:fr";
+  if(lang==="ar") return "https://news.google.com/rss/search?q="+q+"&hl=ar&gl=EG&ceid=EG:ar";
+  return "https://news.google.com/rss/search?q="+q+"&hl=en-US&gl=US&ceid=US:en";
+}
+
+// Localized labels + search queries per topic.
+var CATEGORIES = [
+  {key:"world",       label:{en:"World & Politics",fr:"Monde & Politique",ar:"العالم والسياسة"},           q:{en:"world politics",fr:"politique mondiale",ar:"العالم سياسة"}},
+  {key:"sports",      label:{en:"Soccer",fr:"Football",ar:"كرة القدم"},                                   q:{en:"soccer football",fr:"football",ar:"كرة القدم"}},
+  {key:"tunisia",     label:{en:"Tunisia",fr:"Tunisie",ar:"تونس"},                                        q:{en:"Tunisia",fr:"Tunisie",ar:"تونس"}},
+  {key:"middleeast",  label:{en:"Middle East",fr:"Moyen-Orient",ar:"الشرق الأوسط"},                       q:{en:'"Middle East"',fr:"Moyen-Orient",ar:"الشرق الأوسط"}},
+  {key:"northafrica", label:{en:"North Africa / Maghreb",fr:"Afrique du Nord / Maghreb",ar:"شمال أفريقيا / المغرب العربي"}, q:{en:'Maghreb OR "North Africa" OR Algeria OR Morocco OR Libya',fr:'Maghreb OR "Afrique du Nord" OR Algérie OR Maroc OR Libye',ar:"المغرب العربي OR شمال أفريقيا OR الجزائر OR المغرب OR ليبيا"}},
+  {key:"france",      label:{en:"France & French Politics",fr:"France & Politique",ar:"فرنسا والسياسة"},   q:{en:"France politics",fr:"politique française",ar:"فرنسا سياسة"}}
+];
+var DEFAULT_SELECTED = ["world","tunisia","middleeast","northafrica","france"];
+
+// Aymen's preferred outlets, pulled via Google News scoped to each outlet's
+// domain so we get the real source in the chosen language (e.g. aljazeera.net
+// = Al Jazeera Arabic). Added to the broad "World" view.
+var SOURCE_SITES = {
+  en:["bbc.com","aljazeera.com","news.sky.com","english.alarabiya.net"],
+  fr:["france24.com","aljazeera.com"],
+  ar:["aljazeera.net","alarabiya.net","skynewsarabia.com","bbc.com/arabic"]
+};
+
+// Individually pickable channels (label + per-language domain).
+var CHANNELS = [
+  {key:"aljazeera", label:{en:"Al Jazeera",fr:"Al Jazeera",ar:"الجزيرة"},        domain:{en:"aljazeera.com",fr:"aljazeera.com",ar:"aljazeera.net"}},
+  {key:"bbc",       label:{en:"BBC",fr:"BBC",ar:"BBC عربي"},                     domain:{en:"bbc.com",fr:"bbc.com",ar:"bbc.com/arabic"}},
+  {key:"sky",       label:{en:"Sky News",fr:"Sky News",ar:"سكاي نيوز عربية"},    domain:{en:"news.sky.com",fr:"news.sky.com",ar:"skynewsarabia.com"}},
+  {key:"alarabiya", label:{en:"Al Arabiya",fr:"Al Arabiya",ar:"العربية"},        domain:{en:"english.alarabiya.net",fr:"english.alarabiya.net",ar:"alarabiya.net"}},
+  {key:"france24",  label:{en:"France 24",fr:"France 24",ar:"فرانس 24"},         domain:{en:"france24.com",fr:"france24.com",ar:"france24.com"}},
+  {key:"aljazeera_ar", label:{en:"Al Jazeera Arabic",fr:"Al Jazeera Arabe",ar:"الجزيرة (عربي)"}, domain:{en:"aljazeera.net",fr:"aljazeera.net",ar:"aljazeera.net"}},
+  {key:"franceinfo",   label:{en:"France Info",fr:"France Info",ar:"فرانس أنفو"},                domain:{en:"franceinfo.fr",fr:"franceinfo.fr",ar:"franceinfo.fr"}},
+  {key:"tv5monde",     label:{en:"TV5 Monde",fr:"TV5 Monde",ar:"تي في 5 موند"},                  domain:{en:"tv5monde.com",fr:"tv5monde.com",ar:"tv5monde.com"}},
+  {key:"abcau",        label:{en:"ABC Australia",fr:"ABC Australie",ar:"إيه بي سي أستراليا"},     domain:{en:"abc.net.au",fr:"abc.net.au",ar:"abc.net.au"}},
+  {key:"rtarabic",     label:{en:"RT Arabic",fr:"RT Arabic",ar:"آر تي بالعربية"},                 domain:{en:"arabic.rt.com",fr:"arabic.rt.com",ar:"arabic.rt.com"}},
+  {key:"asharq",       label:{en:"Asharq Al-Awsat",fr:"Asharq Al-Awsat",ar:"الشرق الأوسط (صحيفة)"},domain:{en:"aawsat.com",fr:"aawsat.com",ar:"aawsat.com"}},
+  {key:"bfmtv",        label:{en:"BFM TV",fr:"BFM TV",ar:"بي إف إم تي في"},                       domain:{en:"bfmtv.com",fr:"bfmtv.com",ar:"bfmtv.com"}},
+  {key:"tf1",          label:{en:"TF1 Info",fr:"TF1 Info",ar:"تي إف 1"},                          domain:{en:"tf1info.fr",fr:"tf1info.fr",ar:"tf1info.fr"}},
+  {key:"skyau",        label:{en:"Sky News Australia",fr:"Sky News Australie",ar:"سكاي نيوز أستراليا"}, domain:{en:"skynews.com.au",fr:"skynews.com.au",ar:"skynews.com.au"}}
+];
+function channelByKey(k){ for(var i=0;i<CHANNELS.length;i++) if(CHANNELS[i].key===k) return CHANNELS[i]; return null; }
+
+// A picked channel reads its own RSS feed so real photos come through.
+var CHANNEL_FEEDS = {
+  aljazeera:{ en:["https://www.aljazeera.com/xml/rss/all.xml"], fr:["https://www.aljazeera.com/xml/rss/all.xml"], ar:["https://www.aljazeera.net/feed"] },
+  bbc:{ en:["https://feeds.bbci.co.uk/news/world/rss.xml"], fr:["https://feeds.bbci.co.uk/news/world/rss.xml"], ar:["https://feeds.bbci.co.uk/arabic/rss.xml"] },
+  sky:{ en:["https://feeds.skynews.com/feeds/rss/world.xml"], fr:["https://feeds.skynews.com/feeds/rss/world.xml"], ar:["https://www.skynewsarabia.com/rss"] },
+  alarabiya:{ en:[], fr:[], ar:[] },
+  france24:{ en:["https://www.france24.com/en/rss"], fr:["https://www.france24.com/fr/rss"], ar:["https://www.france24.com/ar/rss"] },
+  aljazeera_ar:{ en:["https://www.aljazeera.net/feed"], fr:["https://www.aljazeera.net/feed"], ar:["https://www.aljazeera.net/feed"] },
+  franceinfo:{ en:["https://www.franceinfo.fr/titres.rss"], fr:["https://www.franceinfo.fr/titres.rss"], ar:["https://www.franceinfo.fr/titres.rss"] },
+  tv5monde:{ en:["https://information.tv5monde.com/rss.xml"], fr:["https://information.tv5monde.com/rss.xml"], ar:["https://information.tv5monde.com/rss.xml"] },
+  abcau:{ en:["https://www.abc.net.au/news/feed/51120/rss.xml"], fr:["https://www.abc.net.au/news/feed/51120/rss.xml"], ar:["https://www.abc.net.au/news/feed/51120/rss.xml"] },
+  rtarabic:{ en:["https://arabic.rt.com/rss/"], fr:["https://arabic.rt.com/rss/"], ar:["https://arabic.rt.com/rss/"] },
+  asharq:{ en:["https://aawsat.com/feed"], fr:["https://aawsat.com/feed"], ar:["https://aawsat.com/feed"] },
+  // No working direct RSS found for these after probing; falls back to the
+  // Google News site: search (functional, but no photos — Google News links
+  // can't be scraped for og:image, same limitation as Al Arabiya).
+  bfmtv:{ en:[], fr:[], ar:[] },
+  tf1:{ en:[], fr:[], ar:[] },
+  skyau:{ en:[], fr:[], ar:[] }
+};
+// Fallback search language for single-language channels with no direct feed —
+// always their own native language, regardless of UI language selected.
+// (Al Arabiya is bilingual, so it correctly keeps adapting to the UI language.)
+var CHANNEL_FALLBACK_LANG = { bfmtv:"fr", tf1:"fr", skyau:"en" };
+var CAT_TERMS = {
+  world:null, sports:["soccer","football","كرة القدم"],
+  tunisia:["tunisia","tunisie","tunis","تونس"],
+  middleeast:["middle east","moyen-orient","الشرق الأوسط","gaza","israel","iran","syria","lebanon","palestin"],
+  northafrica:["maghreb","north africa","afrique du nord","algeria","morocco","libya","algérie","maroc","libye","المغرب","الجزائر","ليبيا","شمال أفريقيا"],
+  france:["france","french","française","français","فرنسا","macron","paris"]
+};
+function catMatch(a,cat){ var terms=CAT_TERMS[cat]; if(!terms) return true; var hay=(a.title+" "+a.snippet).toLowerCase(); return terms.some(function(tm){return hay.indexOf(tm.toLowerCase())!==-1;}); }
+
+var I18N = {
+  en:{subtitle:"Pick the subjects you care about and pull matching headlines from across the web.",
+    placeholder:"Add a keyword (e.g. election, football, energy)…",tagline:"What's happening today",
+    refresh:"Refresh",loading:"Loading…",saved:"Saved",channel:"Channel",allChannels:"All channels",savedEmptyTitle:"No saved articles yet",savedEmptyHint:"Tap the ♥ on any headline to save it here for next time.",savedCount:function(n){return n+" saved";},footer:"Headlines link out to their original publishers. Live news is fetched in your browser via a public reader proxy.",
+    noMatchTitle:"No matching headlines",noMatchKeyword:function(k){return "Nothing found for “"+k+"”. Try a broader keyword or add more topics.";},
+    noTopic:"Select at least one topic above.",offTitle:"Couldn't reach the news service",
+    offHint:"The free public reader proxy didn't respond (it can be slow or rate-limited). Wait a moment and press Refresh. The online version doesn't rely on this proxy.",
+    headline:function(n){return n+" headline"+(n===1?"":"s");},updated:"updated"},
+  fr:{subtitle:"Choisissez les sujets qui vous intéressent et recevez les titres correspondants de tout le web.",
+    placeholder:"Ajouter un mot-clé (ex. élection, football, énergie)…",tagline:"L'actualité du jour",
+    refresh:"Actualiser",loading:"Chargement…",saved:"Enregistrés",channel:"Chaîne",allChannels:"Toutes les chaînes",savedEmptyTitle:"Aucun article enregistré",savedEmptyHint:"Touchez le ♥ sur un titre pour l’enregistrer ici.",savedCount:function(n){return n+" enregistré"+(n===1?"":"s");},footer:"Les titres renvoient vers leurs éditeurs d'origine. Les actualités sont récupérées dans votre navigateur via un relais public.",
+    noMatchTitle:"Aucun titre correspondant",noMatchKeyword:function(k){return "Rien trouvé pour « "+k+" ». Essayez un mot-clé plus large ou ajoutez des sujets.";},
+    noTopic:"Sélectionnez au moins un sujet ci-dessus.",offTitle:"Impossible de joindre le service",
+    offHint:"Le relais public gratuit n'a pas répondu (il peut être lent ou limité). Patientez puis appuyez sur Actualiser. La version en ligne ne dépend pas de ce relais.",
+    headline:function(n){return n+" titre"+(n===1?"":"s");},updated:"mis à jour"},
+  ar:{subtitle:"اختر المواضيع التي تهمّك واحصل على العناوين المطابقة من مختلف مواقع الويب.",
+    placeholder:"أضف كلمة مفتاحية (مثال: انتخابات، كرة القدم، طاقة)…",tagline:"أخبار اليوم",
+    refresh:"تحديث",loading:"جارٍ التحميل…",saved:"المحفوظة",channel:"القناة",allChannels:"كل القنوات",savedEmptyTitle:"لا مقالات محفوظة بعد",savedEmptyHint:"اضغط على ♥ في أي عنوان لحفظه هنا.",savedCount:function(n){return n+" محفوظ";},footer:"تحيل العناوين إلى مصادرها الأصلية. تُجلب الأخبار في متصفحك عبر وسيط قراءة عام.",
+    noMatchTitle:"لا توجد عناوين مطابقة",noMatchKeyword:function(k){return "لا نتائج عن «"+k+"». جرّب كلمة أعمّ أو أضف مواضيع.";},
+    noTopic:"اختر موضوعًا واحدًا على الأقل بالأعلى.",offTitle:"تعذّر الوصول إلى خدمة الأخبار",
+    offHint:"لم يستجب وسيط القراءة العام المجاني (قد يكون بطيئًا أو محدودًا). انتظر لحظة ثم اضغط تحديث. النسخة على الإنترنت لا تعتمد على هذا الوسيط.",
+    headline:function(n){return n+" عنوان";},updated:"آخر تحديث"}
+};
+
+var PROXIES = [
+  {url:function(u){return "https://api.codetabs.com/v1/proxy/?quest="+encodeURIComponent(u);}, json:false},
+  {url:function(u){return "https://api.allorigins.win/raw?url="+encodeURIComponent(u);}, json:false},
+  {url:function(u){return "https://api.allorigins.win/get?url="+encodeURIComponent(u);}, json:true},
+  {url:function(u){return "https://thingproxy.freeboard.io/fetch/"+u;}, json:false}
+];
+
+function q(s){return document.querySelector(s);}
+var els = {chips:q("#chips"),feed:q("#feed"),searchForm:q("#searchForm"),searchInput:q("#searchInput"),
+  clearBtn:q("#clearBtn"),refreshBtn:q("#refreshBtn"),refreshLabel:q("#refreshLabel"),
+  savedBtn:q("#savedBtn"),savedLabel:q("#savedLabel"),savedCount:q("#savedCount"),meta:q("#metaLine"),
+  stateBox:q("#stateBox"),stateTitle:q("#stateTitle"),stateHint:q("#stateHint"),langSwitch:q("#langSwitch"),
+  tagline:q("#tagline"),footer:q("#footer"),sourceSelect:q("#sourceSelect"),channelLabel:q("#channelLabel")};
+
+var selected = new Set(DEFAULT_SELECTED), keyword = "", lang = "en", source = "all", reqId = 0;
+var currentArticles = [], savedView = false;
+function t(){return I18N[lang]||I18N.en;}
+
+var LIKES_KEY = "aymen_likes_v1";
+function loadLikes(){ try{ return JSON.parse(localStorage.getItem(LIKES_KEY))||[]; }catch(e){ return []; } }
+function saveLikes(a){ try{ localStorage.setItem(LIKES_KEY, JSON.stringify(a)); }catch(e){} }
+var likes = loadLikes();
+function isLiked(link){ return likes.some(function(l){return l.link===link;}); }
+function toggleLike(a){
+  if(isLiked(a.link)) likes = likes.filter(function(l){return l.link!==a.link;});
+  else likes = [Object.assign({likedAt:Date.now()}, a)].concat(likes);
+  saveLikes(likes); updateSavedCount();
+}
+function updateSavedCount(){ els.savedCount.textContent = likes.length ? "("+likes.length+")" : ""; }
+
+function readState(){
+  var p = new URLSearchParams(location.hash.slice(1));
+  if(p.get("c")!==null) selected = new Set(p.get("c").split(",").filter(Boolean));
+  keyword = p.get("q") || "";
+  lang = LANGS.indexOf(p.get("l"))!==-1 ? p.get("l") : "en";
+  source = p.get("s") || "all";
+}
+function writeState(){
+  var p = new URLSearchParams();
+  p.set("c",[...selected].join(","));
+  if(keyword) p.set("q",keyword);
+  p.set("l",lang);
+  if(source && source!=="all") p.set("s",source);
+  history.replaceState(null,"","#"+p.toString());
+}
+function buildChannelSelect(){
+  var sel = els.sourceSelect;
+  sel.innerHTML = "";
+  var all = document.createElement("option");
+  all.value = "all"; all.textContent = t().allChannels; sel.appendChild(all);
+  CHANNELS.forEach(function(c){
+    var o = document.createElement("option");
+    o.value = c.key; o.textContent = c.label[lang]; sel.appendChild(o);
+  });
+  sel.value = source;
+  if(sel.value !== source){ source = "all"; sel.value = "all"; }
+}
+
+function applyLanguageChrome(){
+  document.documentElement.setAttribute("dir", lang==="ar"?"rtl":"ltr");
+  document.documentElement.setAttribute("lang", lang);
+  els.tagline.textContent = t().tagline;
+  els.searchInput.placeholder = t().placeholder;
+  els.refreshLabel.textContent = t().refresh;
+  els.savedLabel.textContent = t().saved;
+  els.channelLabel.textContent = t().channel;
+  els.footer.textContent = t().footer;
+  els.langSwitch.querySelectorAll(".lang").forEach(function(b){
+    b.setAttribute("aria-pressed", b.dataset.lang===lang?"true":"false");
+  });
+}
+
+async function fetchWithTimeout(u, ms){
+  var ctrl = new AbortController(); var to = setTimeout(function(){ctrl.abort();}, ms);
+  try{ return await fetch(u,{cache:"no-store",signal:ctrl.signal}); } finally{ clearTimeout(to); }
+}
+async function fetchFeed(url){
+  for(var i=0;i<PROXIES.length;i++){
+    try{
+      var res = await fetchWithTimeout(PROXIES[i].url(url), 9000);
+      if(!res.ok) continue;
+      var text = await res.text();
+      if(PROXIES[i].json){ try{ text = JSON.parse(text).contents || ""; }catch(e){ continue; } }
+      if(text && /<(rss|feed|item|entry)[\s>]/i.test(text)){
+        var arts = parseFeed(text);
+        if(arts.length) return arts;
+      }
+    }catch(e){}
+  }
+  return [];
+}
+
+function txt(node,sel){ var el=node.querySelector(sel); return el?el.textContent.trim():""; }
+function normImg(u){ if(!u) return null; u=u.trim(); if(u.indexOf("//")===0) return "https:"+u; return /^https?:\/\//i.test(u)?u:null; }
+function extractImg(item, desc){
+  var el = item.getElementsByTagName("media:content")[0] || item.getElementsByTagName("media:thumbnail")[0];
+  if(el && el.getAttribute("url")) return normImg(el.getAttribute("url"));
+  var enc = item.querySelector("enclosure");
+  if(enc && /image/i.test(enc.getAttribute("type")||"") && enc.getAttribute("url")) return normImg(enc.getAttribute("url"));
+  var im = (desc||"").match(/<img[^>]*src=["']([^"']+)["']/i);
+  if(im) return normImg(im[1]);
+  return null;
+}
+function parseFeed(xml){
+  var out=[], doc;
+  try{ doc = new DOMParser().parseFromString(xml,"application/xml"); }catch(e){ return out; }
+  doc.querySelectorAll("item, entry").forEach(function(item){
+    var title = txt(item,"title");
+    var link="", linkEl=item.querySelector("link");
+    if(linkEl){ link=(linkEl.textContent||"").trim()||linkEl.getAttribute("href")||""; }
+    if(!title||!link) return;
+    var srcEl=item.querySelector("source");
+    var source = srcEl?srcEl.textContent.trim():hostOf(link);
+    var date = txt(item,"pubDate")||txt(item,"published")||txt(item,"updated");
+    var desc = txt(item,"description")||txt(item,"summary")||"";
+    out.push({title:stripTags(title),link:link,source:source,publishedAt:date?new Date(date):null,snippet:stripTags(desc).slice(0,280),image:extractImg(item,desc)});
+  });
+  return out;
+}
+function hostOf(u){ try{ return new URL(u).hostname.replace(/^www\./,""); }catch(e){ return "News"; } }
+function stripTags(s){ var d=document.createElement("div"); d.innerHTML=s||""; return (d.textContent||"").replace(/\s+/g," ").trim(); }
+function dedupe(list){
+  var seen=new Set(), out=[];
+  list.forEach(function(a){ var k=a.title.toLowerCase().replace(/[^a-z0-9]+/g," ").trim(); if(k && seen.has(k)) return; if(k) seen.add(k); out.push(a); });
+  return out;
+}
+
+async function load(){
+  savedView = false;
+  els.savedBtn.setAttribute("aria-pressed","false");
+  var mine = ++reqId;
+  skeletons();
+  els.meta.textContent = t().loading;
+  var cats = [...selected];
+  if(!cats.length && !keyword) cats = DEFAULT_SELECTED.slice();
+  var urls = new Set();
+  var ch = source!=="all" ? channelByKey(source) : null;
+  if(ch){
+    // Single channel: read its own RSS feed so photos come through.
+    var cf = (CHANNEL_FEEDS[source] && (CHANNEL_FEEDS[source][lang]||CHANNEL_FEEDS[source].en)) || [];
+    cf.forEach(function(u){ urls.add(u); });
+    if(!cf.length){
+      var fbLang = CHANNEL_FALLBACK_LANG[source] || lang;
+      urls.add(gnews("site:"+(ch.domain[fbLang]||ch.domain.en), fbLang)); // no images for this outlet (see CHANNEL_FEEDS comment)
+    }
+  } else {
+    CATEGORIES.forEach(function(c){
+      if(cats.indexOf(c.key)!==-1){
+        urls.add(gnews(c.q[lang], lang));
+        if(c.key==="world") (SOURCE_SITES[lang]||[]).forEach(function(s){ urls.add(gnews("site:"+s, lang)); });
+      }
+    });
+    if(keyword) urls.add(gnews(keyword, lang));
+  }
+
+  var lists = await Promise.all([...urls].map(fetchFeed));
+  if(mine !== reqId) return;
+  var reachable = lists.some(function(l){return l.length>0;});
+
+  // Each feed newest-first, then round-robin so no single high-volume topic
+  // buries the others (e.g. World & Politics vs Tunisia).
+  lists.forEach(function(l){ l.sort(function(a,b){ return (b.publishedAt?b.publishedAt.getTime():0)-(a.publishedAt?a.publishedAt.getTime():0); }); });
+  var articles = [];
+  for(var i=0, more=true; more; i++){
+    more=false;
+    lists.forEach(function(l){ if(l[i]){ articles.push(l[i]); more=true; } });
+  }
+  articles = dedupe(articles);
+
+  if(keyword){
+    var phrase = keyword.toLowerCase();
+    var toks = phrase.split(/\s+/).filter(function(x){return x.length>1;});
+    articles = articles.filter(function(a){
+      var hay=(a.title+" "+a.snippet).toLowerCase();
+      return hay.indexOf(phrase)!==-1 || toks.every(function(x){return hay.indexOf(x)!==-1;});
+    });
+  }
+  // Single-channel: narrow to picked topics, but never to empty.
+  if(ch && selected.size){
+    var narrowed = articles.filter(function(a){ return cats.some(function(k){ return catMatch(a,k); }); });
+    if(narrowed.length) articles = narrowed;
+  }
+  articles = articles.slice(0,120);
+
+  if(articles.length){
+    render(articles);
+    var loc = lang==="ar"?"ar":lang==="fr"?"fr":undefined;
+    els.meta.textContent = t().headline(articles.length)+" · "+t().updated+" "+new Date().toLocaleTimeString(loc,{hour:"2-digit",minute:"2-digit"});
+  } else {
+    showEmpty(reachable);
+    els.meta.textContent = reachable ? t().noMatchTitle : t().offTitle;
+  }
+}
+
+function skeletons(){
+  els.stateBox.hidden=true;
+  var h="";
+  for(var i=0;i<6;i++) h+='<div class="skeleton"><div class="skeleton__line short"></div><div class="skeleton__line title"></div><div class="skeleton__line body"></div><div class="skeleton__line body b2"></div></div>';
+  els.feed.innerHTML=h;
+}
+function timeAgo(d){
+  if(!d) return "";
+  var s=Math.max(1,Math.floor((Date.now()-d.getTime())/1000)),m=Math.floor(s/60),h=Math.floor(m/60),dy=Math.floor(h/24);
+  var loc = lang==="ar"?"ar":lang==="fr"?"fr":undefined;
+  if(s<60) return t().updated;
+  if(m<60) return m+"m";
+  if(h<24) return h+"h";
+  if(dy<7) return dy+"d";
+  return d.toLocaleDateString(loc,{month:"short",day:"numeric"});
+}
+function esc(s){ var d=document.createElement("div"); d.textContent=s==null?"":String(s); return d.innerHTML; }
+function cardHTML(a){
+  var tm=timeAgo(a.publishedAt), liked=isLiked(a.link);
+  return '<article class="card">'
+    +(a.image?'<img class="card__img" src="'+esc(a.image)+'" alt="" loading="lazy" onerror="this.remove()" />':'')
+    +'<div class="card__top"><span class="card__source">'+esc(a.source)+'</span>'
+    +(tm?'<span>·</span><span class="card__time">'+esc(tm)+'</span>':'')
+    +'<button class="like" type="button" data-link="'+esc(a.link)+'" aria-pressed="'+(liked?'true':'false')+'" aria-label="Save">'+(liked?'♥':'♡')+'</button>'
+    +'</div>'
+    +'<a class="card__title" href="'+encodeURI(a.link)+'" target="_blank" rel="noopener noreferrer">'+esc(a.title)+'</a>'
+    +(a.snippet?'<div class="card__snippet">'+esc(a.snippet)+'</div>':'')+'</article>';
+}
+function render(list){
+  currentArticles = list;
+  els.stateBox.hidden=true;
+  els.feed.innerHTML = list.map(cardHTML).join("");
+}
+function showSaved(){
+  savedView = true;
+  els.savedBtn.setAttribute("aria-pressed","true");
+  var list = likes.slice().sort(function(a,b){return (b.likedAt||0)-(a.likedAt||0);});
+  currentArticles = list;
+  if(!list.length){ els.feed.innerHTML=""; els.stateBox.hidden=false; els.stateTitle.textContent=t().savedEmptyTitle; els.stateHint.textContent=t().savedEmptyHint; }
+  else render(list);
+  els.meta.textContent = t().savedCount(likes.length);
+}
+function showEmpty(reachable){
+  els.feed.innerHTML="";
+  els.stateBox.hidden=false;
+  if(!reachable){ els.stateTitle.textContent=t().offTitle; els.stateHint.textContent=t().offHint; }
+  else if(keyword){ els.stateTitle.textContent=t().noMatchTitle; els.stateHint.textContent=t().noMatchKeyword(keyword); }
+  else { els.stateTitle.textContent=t().noMatchTitle; els.stateHint.textContent=t().noTopic; }
+}
+
+function renderChips(){
+  els.chips.innerHTML="";
+  CATEGORIES.forEach(function(c){
+    var b=document.createElement("button");
+    b.type="button"; b.className="chip"; b.textContent=c.label[lang];
+    b.setAttribute("aria-pressed", selected.has(c.key)?"true":"false");
+    b.addEventListener("click",function(){
+      if(selected.has(c.key)) selected.delete(c.key); else selected.add(c.key);
+      b.setAttribute("aria-pressed", selected.has(c.key)?"true":"false");
+      writeState(); load();
+    });
+    els.chips.appendChild(b);
+  });
+}
+
+function setLanguage(next){
+  if(LANGS.indexOf(next)===-1 || next===lang) return;
+  lang = next; writeState(); applyLanguageChrome(); buildChannelSelect(); renderChips();
+  if(savedView) showSaved(); else load();
+}
+function onFeedClick(e){
+  var btn = e.target.closest(".like");
+  if(!btn) return;
+  var link = btn.dataset.link;
+  var article = currentArticles.find(function(a){return a.link===link;});
+  if(!article) return;
+  toggleLike(article);
+  var nowLiked = isLiked(link);
+  btn.setAttribute("aria-pressed", nowLiked?"true":"false");
+  btn.textContent = nowLiked?"♥":"♡";
+  if(savedView && !nowLiked) showSaved();
+}
+
+var searchTimer=null;
+els.searchInput.addEventListener("input",function(){
+  var v=els.searchInput.value.trim(); els.clearBtn.hidden=!v;
+  clearTimeout(searchTimer); searchTimer=setTimeout(function(){ keyword=v; writeState(); load(); },400);
+});
+els.searchForm.addEventListener("submit",function(e){ e.preventDefault(); clearTimeout(searchTimer); keyword=els.searchInput.value.trim(); writeState(); load(); });
+els.clearBtn.addEventListener("click",function(){ els.searchInput.value=""; els.clearBtn.hidden=true; keyword=""; writeState(); load(); });
+els.refreshBtn.addEventListener("click",function(){ els.refreshBtn.classList.add("is-spinning"); load().finally(function(){ els.refreshBtn.classList.remove("is-spinning"); }); });
+els.langSwitch.querySelectorAll(".lang").forEach(function(b){ b.addEventListener("click",function(){ setLanguage(b.dataset.lang); }); });
+els.savedBtn.addEventListener("click",function(){ if(savedView) load(); else showSaved(); });
+els.feed.addEventListener("click", onFeedClick);
+els.sourceSelect.addEventListener("change",function(){ source = els.sourceSelect.value || "all"; writeState(); load(); });
+
+readState();
+applyLanguageChrome();
+buildChannelSelect();
+els.searchInput.value=keyword;
+els.clearBtn.hidden=!keyword;
+updateSavedCount();
+renderChips();
+load();
+</script>
+</body>
+</html>
