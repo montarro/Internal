@@ -139,10 +139,19 @@ const POLITICS_TERMS = {
   ar: ['رئيس', 'انتخابات', 'حكومة', 'وزير', 'برلمان', 'انقلاب', 'استفتاء', 'معارضة', 'عقوبات', 'فساد', 'دستور', 'دبلوماسي', 'احتجاج', 'تصويت', 'حملة', 'سياس', 'الاتحاد الأفريقي', 'قمة', 'سفير'],
 };
 
+// Plain substring matching would let short terms like "coup" false-positive
+// match inside unrelated words (e.g. "couples"), so require the term to sit
+// on a word boundary. \p{L} covers letters in any script, so this works for
+// French accents and Arabic alike, not just ASCII.
+function termAppears(hay, term) {
+  const escaped = term.toLowerCase().replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  return new RegExp(`(^|[^\\p{L}])${escaped}($|[^\\p{L}])`, 'iu').test(hay);
+}
+
 function isPoliticallyRelevant(article, lang) {
   const hay = `${article.title} ${article.snippet}`.toLowerCase();
   const pol = POLITICS_TERMS[lang] || POLITICS_TERMS.en;
-  return pol.some((term) => hay.includes(term.toLowerCase()));
+  return pol.some((term) => termAppears(hay, term));
 }
 
 // Real Arabic-language outlets, used directly (not translated) for the
