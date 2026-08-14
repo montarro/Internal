@@ -61,12 +61,15 @@ const CATEGORIES = {
   },
   // Continent-wide politics (beyond the Maghreb already covered by
   // northafrica). Follows the UI language like the other standard topics.
+  // The query requires a political-action term alongside the geography terms
+  // (not just a country name on its own), since a bare country name matches
+  // just as much sports/business coverage as politics.
   africanpolitics: {
     label: { en: 'African Politics', fr: 'Politique africaine', ar: 'السياسة الأفريقية' },
     q: {
-      en: '"Africa politics" OR "African Union" OR Nigeria OR Kenya OR Ethiopia OR "South Africa" OR Ghana OR Senegal OR Sudan OR Congo',
-      fr: '"politique africaine" OR "Union africaine" OR Nigéria OR Kenya OR Éthiopie OR "Afrique du Sud" OR Sénégal OR Soudan OR Congo',
-      ar: 'السياسة الأفريقية OR الاتحاد الأفريقي OR نيجيريا OR كينيا OR إثيوبيا OR جنوب أفريقيا OR السنغال OR السودان OR الكونغو',
+      en: '(Africa OR "African Union" OR Nigeria OR Kenya OR Ethiopia OR "South Africa" OR Ghana OR Senegal OR Sudan OR Congo OR Mali OR Zimbabwe OR Uganda OR Tanzania) (politics OR president OR election OR government OR minister OR parliament OR coup OR opposition)',
+      fr: '(Afrique OR "Union africaine" OR Nigéria OR Kenya OR Éthiopie OR "Afrique du Sud" OR Sénégal OR Soudan OR Congo OR Mali OR Zimbabwe OR Ouganda OR Tanzanie) (politique OR président OR élection OR gouvernement OR ministre OR parlement OR putsch OR opposition)',
+      ar: '(أفريقيا OR الاتحاد الأفريقي OR نيجيريا OR كينيا OR إثيوبيا OR جنوب أفريقيا OR السنغال OR السودان OR الكونغو OR مالي OR زيمبابوي OR أوغندا OR تنزانيا) (سياسة OR رئيس OR انتخابات OR حكومة OR وزير OR برلمان OR انقلاب OR معارضة)',
     },
   },
   // Independent of the UI language: always pulls real Arabic-language
@@ -107,21 +110,47 @@ const SOURCE_FEEDS = {
 
 // Real outlets with photo-bearing RSS, pulled in alongside the Google News
 // search for "African Politics" so the topic isn't just text-only search
-// results. BBC's regional feed and Al Jazeera are already known-good in this
-// codebase; RFI is added as a real French-language Africa desk.
+// results. Only genuinely Africa-desk feeds — the general Al Jazeera/France24
+// feeds used to be included too, but they aren't Africa-specific (mostly
+// non-African stories) and just diluted the topic, so they were dropped.
+// These are also whole-region feeds (not politics-only), so they're run
+// through the politics/sports filter below (politicsOnly: true) — BBC's
+// Africa feed in particular mixes in sports coverage.
 const AFRICA_SOURCE_FEEDS = {
   en: [
-    { url: 'https://feeds.bbci.co.uk/news/world/africa/rss.xml', source: 'BBC Africa' },
-    { url: 'https://www.aljazeera.com/xml/rss/all.xml', source: 'Al Jazeera' },
+    { url: 'https://feeds.bbci.co.uk/news/world/africa/rss.xml', source: 'BBC Africa', politicsOnly: true },
   ],
   fr: [
-    { url: 'https://www.rfi.fr/fr/afrique/rss', source: 'RFI Afrique' },
-    { url: 'https://www.france24.com/fr/rss', source: 'France 24' },
+    { url: 'https://www.rfi.fr/fr/afrique/rss', source: 'RFI Afrique', politicsOnly: true },
   ],
-  ar: [
-    { url: 'https://www.aljazeera.net/feed', source: 'الجزيرة' },
-  ],
+  ar: [],
 };
+
+// Used to keep African Politics from being diluted by the sports/entertainment
+// coverage that a general regional feed (like BBC Africa) also carries: an
+// article matching a sports/entertainment term with no political term at all
+// is dropped. Political term lists are intentionally broad (institutions,
+// office-holders, processes) so real political stories are never mistakenly
+// cut just for mentioning a stadium or a match in passing.
+const POLITICS_TERMS = {
+  en: ['president', 'election', 'government', 'minister', 'parliament', 'coup', 'referendum', 'opposition', 'sanction', 'corruption', 'constitution', 'cabinet', 'diplomat', 'junta', 'protest', 'vote', 'campaign', 'ruling party', 'prime minister', 'politic', 'african union', 'summit', 'ambassador'],
+  fr: ['président', 'élection', 'gouvernement', 'ministre', 'parlement', "coup d'état", 'putsch', 'référendum', 'opposition', 'sanction', 'corruption', 'constitution', 'diplomate', 'junte', 'manifestation', 'vote', 'campagne', 'politique', 'union africaine', 'sommet', 'ambassadeur'],
+  ar: ['رئيس', 'انتخابات', 'حكومة', 'وزير', 'برلمان', 'انقلاب', 'استفتاء', 'معارضة', 'عقوبات', 'فساد', 'دستور', 'دبلوماسي', 'احتجاج', 'تصويت', 'حملة', 'سياس', 'الاتحاد الأفريقي', 'قمة', 'سفير'],
+};
+const SPORTS_ENTERTAINMENT_TERMS = {
+  en: ['world cup', 'football', 'soccer', 'match', 'goal', 'score', 'league', 'tournament', 'player', 'coach', 'championship', 'olympic', 'athlete', 'stadium', 'kickoff', 'referee'],
+  fr: ['coupe du monde', 'football', 'match', 'but', 'score', 'ligue', 'tournoi', 'joueur', 'entraîneur', 'championnat', 'olympique', 'athlète', 'stade', 'arbitre'],
+  ar: ['كأس العالم', 'كرة القدم', 'مباراة', 'هدف', 'الدوري', 'بطولة', 'لاعب', 'مدرب', 'أولمبياد', 'رياضي', 'ملعب', 'حكم'],
+};
+
+function isPoliticallyRelevant(article, lang) {
+  const hay = `${article.title} ${article.snippet}`.toLowerCase();
+  const pol = POLITICS_TERMS[lang] || POLITICS_TERMS.en;
+  const sport = SPORTS_ENTERTAINMENT_TERMS[lang] || SPORTS_ENTERTAINMENT_TERMS.en;
+  const hasPolitics = pol.some((term) => hay.includes(term.toLowerCase()));
+  const hasSport = sport.some((term) => hay.includes(term.toLowerCase()));
+  return !(hasSport && !hasPolitics);
+}
 
 // Real Arabic-language outlets, used directly (not translated) for the
 // "Arabic News" category regardless of which UI language is selected.
@@ -546,8 +575,14 @@ async function getNews({ categories, q, limit, lang, source, force } = {}) {
   const sources = [];
   for (const r of results) {
     if (r.ok) {
-      lists.push(r.articles.slice().sort(byDateDesc));
-      sources.push({ url: r.feed.url, source: r.feed.source, count: r.articles.length });
+      // Whole-region feeds pulled in for African Politics (e.g. BBC Africa)
+      // carry sports/entertainment too — drop those so the topic stays
+      // actually political.
+      const feedArticles = r.feed.politicsOnly
+        ? r.articles.filter((a) => isPoliticallyRelevant(a, L))
+        : r.articles;
+      lists.push(feedArticles.slice().sort(byDateDesc));
+      sources.push({ url: r.feed.url, source: r.feed.source, count: feedArticles.length });
     } else {
       sources.push({ url: r.feed.url, source: r.feed.source, error: r.error });
     }
